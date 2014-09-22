@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<ui:composition lang="pt_br" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:menubar>
+			<p:menuitem value="Atividades Complementares" outcome="/pages/atividades_complementares" />
+			<p:menuitem value="Períodos" outcome="/pages/periodo" />
+			<p:submenu label="Usuários" >
+				<p:menuitem value="Aluno" outcome="/pages/lista_alunos"/>
+				<p:menuitem value="Professor" action="#{professorBean.load}" ajax="false"/>					
+			</p:submenu>
+			<p:menuitem value="Sair" action="#{loginBean.logout}" ajax="false" icon="ui-icon-power"/>
+	</p:menubar>
+		
+</ui:composition>

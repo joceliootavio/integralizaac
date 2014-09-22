@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:p="http://primefaces.org/ui"
+   template="/layout/template.xhtml">
+   
+   <ui:define name="content">
+   
+   		<p:breadCrumb>
+   			<p:menuitem value="" url="#" />
+   			<p:menuitem value="Início" url="#" />   			
+   			<p:menuitem value="Dados Cadastrais" url="#"/>
+   		</p:breadCrumb>
+   		
+		<h:form id="dadosCadastraisForm">	
+			<p:panel header="Dados Cadastrais" id="fields">
+		   		<div class="campo">		   		
+			   		<h:outputLabel value="*Matricula: "/> <br />
+			   		<p:inputText id="matricula" value="#{dadosCadastraisBean.matricula}" 
+			   			required="true" label="Matricula" maxlength="6"/>
+			   	</div>
+			   	
+				<div class="campo">
+					<h:outputLabel value="*Nome: "/> <br />
+			   		<p:inputText id="nome" value="#{dadosCadastraisBean.nome}" 
+			   			required="true" label="Nome" maxlength="50"/>
+			   	</div>
+		   		
+		   		<div class="campo">
+			   		<h:outputLabel value="*E-mail: "/> <br />
+			   		<p:inputText id="email" value="#{dadosCadastraisBean.email}" 
+			   			required="true" label="E-mail" maxlength="30" validatorMessage="E-mail inválido">
+			   			<f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+			   		</p:inputText>
+			   	</div>
+			   	
+			   	<h:panelGroup rendered="#{loginBean.perfilAluno}">
+			   		<div class="campo">		                    
+						<h:outputLabel value="*Período de ingresso: " for="periodo"/> <br />
+				   		<p:selectOneMenu id="periodo" value="#{dadosCadastraisBean.periodo}" 
+				   			required="true" label="Período de ingresso" style="width: 160px">
+				   			<f:selectItem itemLabel="Selecione" itemValue=""/>
+				   			<f:selectItems value="#{periodoBean.listaTodosPeriodos}" var="p" itemLabel="#{p.nome}"/>
+				   		</p:selectOneMenu>		                    
+				   	</div>
+				</h:panelGroup>
+				
+				<br clear="all" />
+				
+				<p:panel style="width: 30%">
+					<div class="campo">
+						<h:selectBooleanCheckbox id="atualizaSenha" value="#{dadosCadastraisBean.atualizaSenha}" >
+							<f:ajax event="change" render="camposSenha" />
+						</h:selectBooleanCheckbox>
+						<h:outputLabel value="Alterar senha" for="atualizaSenha"/>
+					</div>
+					
+					<br clear="all"/>					
+					
+					<h:panelGroup id="camposSenha">
+						<div class="campo">
+							<h:outputLabel value="Senha atual: "/> <br />
+					   		<p:password id="senhaAtual" value="#{dadosCadastraisBean.senhaAtual}" 
+					   			required="true" disabled="#{not dadosCadastraisBean.atualizaSenha}" 
+					   			label="Senha atual" maxlength="30"/>
+					   	</div>
+					   	
+					   	<div class="campo">
+							<h:outputLabel value="Nova senha: "/> <br />
+					   		<p:password id="novaSenha" value="#{dadosCadastraisBean.novaSenha}" 
+					   			required="true" disabled="#{!dadosCadastraisBean.atualizaSenha}" 
+					   			label="Nova senha" maxlength="30"/>
+					   	</div>
+					</h:panelGroup>
+					<br clear="all" />
+					
+				</p:panel>
+				
+			</p:panel>
+			
+			<p:toolbar id="barraBotoes">
+				<p:toolbarGroup align="left">
+					<p:commandButton id="btnSalvar" value="Salvar"
+								actionListener="#{dadosCadastraisBean.salvar}" 
+								process="@this fields" update="@form" />
+					<p:commandButton id="btnCancelar" value="Cancelar" immediate="true" 
+								actionListener="#{dadosCadastraisBean.clean}" 
+								process="@this" update="@form" />
+				</p:toolbarGroup>
+			</p:toolbar>
+			
+		</h:form>
+		
+   </ui:define>
+   
+</ui:composition>

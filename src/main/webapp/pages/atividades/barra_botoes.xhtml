@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<p:toolbar id="barraBotoes">
+		<p:toolbarGroup align="left" rendered="#{loginBean.perfilAluno}">
+			<p:commandButton id="btnNovo" value="Novo" immediate="true" 
+						actionListener="#{atividadeAlunoBean.clean()}" icon="ui-icon-document" 
+						process="@this" update="@form" />
+			<p:commandButton id="btnIncluir" value="Incluir" 
+						actionListener="#{atividadeAlunoBean.incluir()}" 
+						ajax="false" binding="#{botaoIncluir}"
+						disabled="#{atividadeAlunoBean.atualizando}" />			
+			<p:commandButton id="btnAtualizar" value="Atualizar"
+						actionListener="#{atividadeAlunoBean.atualizar()}" 
+						process="@this fields" update="@form" binding="#{botaoAtualizar}"	
+						disabled="#{not atividadeAlunoBean.atualizando}" />
+			<p:commandButton id="btnExcluir" value="Excluir"
+						actionListener="#{atividadeAlunoBean.excluir()}" 
+						process="@this" update="fields barraBotoes"	
+						disabled="#{not atividadeAlunoBean.atualizando}" />										
+			<p:commandButton id="btnVoltar" value="Dashboard"
+						style="margin-left: 10px"
+						icon="ui-icon-arrow-1-nw"
+						action="#{atividadeAlunoBean.voltar()}"
+						immediate="true" 
+						process="@this" ajax="false">
+						
+				<f:param name="idAluno" value="#{atividadeAlunoBean.atividadeAluno.aluno.id}" />
+			</p:commandButton>
+		</p:toolbarGroup>
+	</p:toolbar>             
+</ui:composition>

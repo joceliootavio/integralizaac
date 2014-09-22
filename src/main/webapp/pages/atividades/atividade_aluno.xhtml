@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:c="http://java.sun.com/jsp/jstl/core"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:p="http://primefaces.org/ui"
+   template="/layout/template.xhtml">   
+	
+	<ui:define name="content">
+   		<f:metadata>
+   			<f:viewParam name="natureza" value="#{atividadeAlunoBean.letraNatureza}"/>
+   			<f:viewParam name="idAtividadeAluno" value="#{atividadeAlunoBean.idAtividadeAluno}"/>   			
+   			<f:event listener="#{atividadeAlunoBean.load}" type="preRenderView" />
+   		</f:metadata>
+   		
+   		<p:breadCrumb rendered="#{loginBean.perfilAluno}">
+   			<p:menuitem value="" url="#" />
+   			<p:menuitem value="#{atividadeAlunoBean.natureza.descricao}" url="#"/>   			
+   		</p:breadCrumb>
+   		
+   		<h:form id="atividadeAlunoForm">
+			<p:panel id="fields" header="Dados gerais">
+				<div class="campo">
+					<h:outputLabel value="*Atividade Complementar: " for="atividadeComplementar" /><br />
+					<p:autoComplete id="atividadeComplementar" value="#{atividadeAlunoBean.atividadeAluno.atividade}"
+						converter="entityConverter" label="Atividade Complementar"
+						completeMethod="#{atividadeAlunoBean.completeAtividadeComplementar}" var="ac"
+						itemLabel="#{ac.descricao}" itemValue="#{ac}" dropdown="true"
+						required="true" styleClass="autocompleteAtividade" 
+						disabled="#{atividadeAlunoBean.atividadeAprovada}">
+					</p:autoComplete>
+				</div>
+				
+				<br clear="all" />
+			
+				<div class="campo">		   		
+			   		<h:outputLabel value="*Descrição: " for="descricao" /><br />
+			   		<p:inputText value="#{atividadeAlunoBean.atividadeAluno.descricao}"
+			   			id="descricao" 
+			   			maxlength="30" style="width: 300px;" label="Descrição" 
+			   			required="true" />
+			   	</div>
+			   	
+				<div class="campo">
+					<h:outputLabel value="*Instituição: " for="instituicao"/><br />
+					<p:selectOneMenu id="instituicao" value="#{atividadeAlunoBean.atividadeAluno.instituicao}" 
+						label="Instituição" required="#{botaoIncluir.clientId != null or botaoAtualizar.clientId != null}" 
+						style="width: 300px">
+						<f:selectItem itemLabel="Selecione" itemValue=""/>
+			   			<f:selectItems value="#{atividadeAlunoBean.listaTodasInstituicoes}" var="p" itemLabel="#{p.nome}" />
+			   			<p:ajax update="panelOutraInstituicao" process="@this" partialSubmit="true" immediate="true"/>
+			   		</p:selectOneMenu>
+			   	</div>
+			   	
+			   	<h:panelGroup id="panelOutraInstituicao">			   	
+				   	<h:panelGroup rendered="#{atividadeAlunoBean.outraInstituicao}">
+						<div class="campo">
+					   		<h:outputLabel value="*Nome instituição: " for="nomeInstituicao" /><br />
+					   		<p:inputText value="#{atividadeAlunoBean.nomeInstituicao}"
+					   			id="nomeInstituicao" 
+					   			maxlength="50" style="width: 300px;" label="Nome instituição" 
+					   			required="true" />
+						</div>	   	
+					</h:panelGroup>
+				</h:panelGroup>
+			   	
+			   	<br clear="all"/>	   	
+			   	
+				<div class="campo">		   		
+			   		<h:outputLabel value="Nome do evento: " for="nomeEvento"/><br />
+			   		<p:inputText id="nomeEvento" value="#{atividadeAlunoBean.atividadeAluno.nomeEvento}" 
+			   			maxlength="50" style="width: 230px;" label="Nome do evento" />
+			   	</div>	   		   	
+			   	
+				<div class="campo">		   		
+			   		<h:outputLabel value="Tipo de participação: " for="tipoParticipacao"/><br />
+			   		<p:inputText value="#{atividadeAlunoBean.atividadeAluno.tipoParticipacao}" 
+			   			id="tipoParticipacao" maxlength="50" style="width: 230px" 
+			   			label="Tipo de participação" />
+			   	</div>
+			   	
+			   	<br clear="all"/>
+			   		   		
+				<div class="campo">
+					<h:outputLabel value="*Período: "/><br />
+					<p:selectOneMenu id="periodo" value="#{atividadeAlunoBean.atividadeAluno.periodo}" 
+						label="Período" required="true" disabled="#{atividadeAlunoBean.atividadeAprovada}"
+						style="width: 100px">
+						<f:selectItem itemLabel="Selecione" itemValue=""/>
+			   			<f:selectItems value="#{periodoBean.listaTodosPeriodos}" var="p" itemLabel="#{p.nome}" />
+			   		</p:selectOneMenu>
+			   	</div>
+			  		
+				<div class="campo">		   		
+			   		<h:outputLabel value="*Carga horária: "/><br />
+			   		<p:inputText value="#{atividadeAlunoBean.atividadeAluno.cargaHoraria}"
+			   			disabled="#{atividadeAlunoBean.atividadeAprovada}" 
+			   			maxlength="3" style="width: 100px;" label="Carga horária" 
+			   			required="true" styleClass="numerico"/>
+			   	</div>
+			   	
+			   	<br clear="all" />
+			  		
+			  	<p:dataTable id="certificadosTable"
+					widgetVar="certificadosTableW"
+					var="_certificado"
+					value="#{atividadeAlunoBean.atividadeAluno.certificados}"
+					rowKey="#{_certificado.hashCode()}"
+					emptyMessage="Nenhum certificado inserido."
+					rows="#{resources.pageRows}"
+					style="width: 600px; margin: 10px 0px 10px 0px" >
+					
+					<f:facet name="header">*Certificados</f:facet>
+					
+					<p:column >
+						<h:commandLink value="#{_certificado.nome}" actionListener="#{atividadeAlunoBean.exibirCertificado(_certificado)}" target="_blank" />
+					</p:column>
+					
+					<p:column style="width: 30px;" rendered="#{loginBean.perfilAluno}">
+						<p:commandButton value="X" 
+							actionListener="#{atividadeAlunoBean.removerCertificado(_certificado)}"
+							update="certificadosTable" immediate="true"/>
+					</p:column>
+						
+				</p:dataTable>
+				
+				<p:fileUpload fileUploadListener="#{atividadeAlunoBean.handleFileUpload}"
+						label="Selecionar" showButtons="false" auto="true" 
+						invalidFileMessage="Arquivo inválido" invalidSizeMessage="Tamanho do arquivo de ser de até 2MB"
+			            sizeLimit="2000000"  allowTypes="/(\.|\/)(jpe?g|pdf)$/" 
+			            update="certificadosTable" rendered="#{loginBean.perfilAluno}"/>
+			               
+			    <p:outputLabel value="Extensões de arquivo permitidas: pdf e jpeg" style="color: red; font-size: 11px"/>
+			</p:panel>
+	                  
+			<ui:include src="barra_botoes.xhtml">
+				<ui:param name="atividadeAlunoBean" value="#{atividadeAlunoBean}" />
+			</ui:include>	                  
+	    </h:form>
+    </ui:define>
+</ui:composition>

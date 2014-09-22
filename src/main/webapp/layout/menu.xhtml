@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<ui:composition lang="pt_br" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:form id="formMenu">
+		<h:panelGroup rendered="#{loginBean.perfilAluno}">
+			<ui:include src="menu_aluno.xhtml" />
+		</h:panelGroup>			
+		<h:panelGroup rendered="#{loginBean.perfilProfessor}">
+			<ui:include src="menu_professor.xhtml" />
+		</h:panelGroup>		
+		<h:panelGroup rendered="#{loginBean.perfilAdministrador}">
+			<ui:include src="menu_administrador.xhtml" />
+		</h:panelGroup>		
+	</h:form>
+	
+	<ui:insert name="mensagens">
+		<p:outputPanel>
+			<h:panelGroup id="mensagens" layout="block">
+				<p:messages id="messages" autoUpdate="true" redisplay="false"/>
+			</h:panelGroup>
+		</p:outputPanel>
+	</ui:insert>
+	
+</ui:composition>

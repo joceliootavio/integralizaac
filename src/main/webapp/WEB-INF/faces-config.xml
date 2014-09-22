@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config version="2.0" 
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+	
+	<converter>
+		<display-name>entityConverter</display-name>
+		<converter-for-class>br.uece.computacao.integralizaac.entity.BaseEntity</converter-for-class>
+		<converter-class>br.uece.computacao.integralizaac.view.converters.SimpleEntityConverter</converter-class>
+	</converter>
+	<converter>
+		<display-name>entityConverter2</display-name>
+		<converter-id>entityConverter</converter-id>
+		<converter-class>br.uece.computacao.integralizaac.view.converters.SimpleEntityConverter</converter-class>
+	</converter>
+	
+	<application>
+		<resource-bundle>
+			<base-name>br.uece.computacao.integralizaac.bundles.Resources</base-name>
+			<var>resources</var>
+		</resource-bundle>
+		<resource-bundle>
+			<base-name>br.uece.computacao.integralizaac.bundles.CustomMessages</base-name>
+			<var>messages</var>
+		</resource-bundle>
+		<message-bundle>br.uece.computacao.integralizaac.bundles.ApplicationMessages</message-bundle>
+		<locale-config>
+			<default-locale>pt_BR</default-locale>
+		</locale-config>
+	</application>
+	<factory>
+		<exception-handler-factory>br.uece.computacao.integralizaac.view.MyExceptionHandlerFactory</exception-handler-factory>
+	</factory>
+	<lifecycle>
+		<!--phase-listener>br.uece.computacao.integralizaac.listeners.LifeCycleJsfListener</phase-listener-->
+	</lifecycle>
+</faces-config>

@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"	
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+
+	<ui:define name="content">
+		<f:metadata> 
+    		<f:viewParam name="idAluno" value="#{dashboardBean.aluno}" converter="alunoConverter"/>
+			<f:event listener="#{dashboardBean.init}" type="preRenderView" />    		
+    	</f:metadata>
+	
+		<h:form id="formDashboard">
+			<p:focus for="aluno"/>
+		
+			<p:panel header="Quadro de atividades complementares">
+
+				<h:panelGroup rendered="#{not loginBean.perfilAluno}">
+					<div class="filtroAluno">
+						<h:outputLabel value="Aluno: " for="aluno" /><br />
+						<p:autoComplete id="aluno" value="#{dashboardBean.aluno}"
+							converter="entityConverter" effect="blind"
+							completeMethod="#{alunoBean.completeAluno}" var="a"
+							queryDelay="500"
+							itemLabel="#{a.nome}" itemValue="#{a}" dropdown="true">
+	
+							<p:ajax event="itemSelect" update="atividadesDoAlunoTable sumarioHorasAtividades"
+								listener="#{dashboardBean.autocompleteSelect}" />
+	
+							<p:column>
+								<p:outputLabel value="#{a.matricula} - #{a.nome}" />
+							</p:column>
+	
+						</p:autoComplete>
+					</div>
+					
+				</h:panelGroup>
+
+				<p:dataTable id="atividadesDoAlunoTable"
+					widgetVar="atividadesDoAlunoTableW" 
+					styleClass="dashboardTabelaInterna"
+					value="#{dashboardBean.listaNaturezas}" var="_natureza"
+					emptyMessage="Nenhuma atividade cadastrada."
+					rowKey="#{_natureza}" binding="#{statusAtividade}">
+					
+					<c:set var="_listaDashboard" value="#{dashboardBean.atividadesPorNatureza(_natureza)}"/>					
+
+					<p:column>
+		                <p:panelGrid>				
+				            <p:row>
+						     	<p:column rowspan="#{_listaDashboard.size()}"
+						     		style="width: 100px">
+					            	#{_natureza.descricao}
+						        </p:column>					
+							
+								<p:column>
+									<p:dataTable value="#{_listaDashboard.listaDtos}" var="_atividadeDto"
+										rowIndexVar="indexVar">
+										<p:column headerText="Ordem" 
+											style="width:40px; text-align: center">
+											<h:outputText value="#{indexVar + 1}" />
+										</p:column>
+															
+										<p:column headerText="Atividade"
+											style="min-width: 200px; white-space: normal;">
+											<h:outputText value="#{_atividadeDto.atividadeComplementar}" />
+										</p:column>
+																									
+										<p:column headerText="Descrição"
+											style="width: 120px; white-space: normal;">
+											<h:outputText value="#{_atividadeDto.atividade}" />
+										</p:column>
+										
+										<p:column headerText="Instituição" 
+											style="width: 120px; white-space: normal;">
+											<h:outputText value="#{_atividadeDto.instituicao}" />
+										</p:column>											
+					
+										<p:column headerText="Período"
+											style="text-align: center; width: 60px;">
+											<h:outputText value="#{_atividadeDto.periodo}" />
+										</p:column>
+					
+										<p:column headerText="Carga horária"
+											style="text-align: center; width: 60px;">
+											<h:outputText value="#{_atividadeDto.cargaHoraria}" />
+										</p:column>					
+										
+										<p:column headerText="Carga horária aproveitada"
+											styleClass="#{_atividadeDto.classeCssStatus}"
+											style="width: 60px; white-space: normal; text-align: center; ">
+											<h:panelGroup id="panelHorasAproveitadas" layout="block" 
+												style="width: 100%; height: 100%;">
+												<h:outputText value="#{_atividadeDto.cargaHorariaAproveitada}" />
+											</h:panelGroup>
+											
+											<p:overlayPanel id="limitesHoras" for="panelHorasAproveitadas" 
+												showEvent="mouseover" hideEvent="mouseout" 
+												showEffect="blind" hideEffect="blind" dynamic="true" style="width:240px">
+												<p:panelGrid>
+													<p:row>
+														<p:column styleClass="ui-state-default ui-widget-header">Máximo Horas Período</p:column>
+														<p:column styleClass="ui-state-default ui-widget-header">Máximo Horas Curso</p:column>
+													</p:row>
+													<p:row>
+														<p:column>#{_atividadeDto.maxHorasPeriodo}</p:column>
+														<p:column>#{_atividadeDto.maxHorasCurso}</p:column>
+													</p:row>													
+												</p:panelGrid>
+										    </p:overlayPanel>
+										</p:column>
+										
+										<p:column headerText="Ações"
+											style="text-align: center; width: 80px">
+											
+											<p:button icon="ui-icon-pencil" rendered="#{loginBean.perfilAluno}" 
+												title="Editar"
+												outcome="atividades/atividade_aluno.jsf">
+												<f:param name="idAtividadeAluno" value="#{_atividadeDto.idAtividade}" />
+											</p:button>
+											
+											<p:button icon="ui-icon-extlink" rendered="#{not loginBean.perfilAluno}" 
+												title="Visualizar"
+												outcome="atividades/consulta_atividade_aluno.jsf">
+												<f:param name="idAtividadeAluno" value="#{_atividadeDto.idAtividade}" />
+											</p:button>											
+											
+											<p:commandButton icon="ui-icon-check" title="Parecer"
+												actionListener="#{dashboardBean.selecionarAtividadeAluno(_atividadeDto)}" 
+												update=":parecerForm" oncomplete="parecerDialogW.show()">
+											</p:commandButton>
+					
+										</p:column>
+										
+										<f:facet name="footer">
+						                    <p:column style="text-align:right">
+						                    	<h:outputText value="Total Horas: #{_listaDashboard.somaTotalHoras}" />
+						                    </p:column>
+						                </f:facet>
+									</p:dataTable>
+								</p:column>
+				            </p:row>
+		                </p:panelGrid>
+	                </p:column>
+	                
+	               	<f:facet name="footer">
+						<h:panelGroup style="float: right; margin: 5px" rendered="#{not empty dashboardBean.listaNaturezas}">
+							<p:outputLabel value="Horas aprovadas" 
+								style="color: blue; font-size: 11px"/>
+							<p:outputLabel value="Horas reprovadas" 
+								style="color: red; font-size: 11px; margin-left: 5px"/>									
+						</h:panelGroup>	               	
+	               	</f:facet>
+
+				</p:dataTable>
+			
+				<br clear="all" />
+
+				<h:panelGroup id="sumarioHorasAtividades" styleClass="detalheHorasAtividades">
+					<div style="min-height: 15px; background: #dedede; padding:3px;">
+						<STRONG>
+							<p:outputLabel 
+								style="margin-left: 10px;"
+								value="#{dashboardBean.somaTotalHoras}" />
+						</STRONG>
+						<p:outputLabel value="Carga horária total: " />
+						
+					</div>
+					<div style="min-height: 15px;margin:1px 0; background: #dedede; padding:3px;">
+						<STRONG>
+							<p:outputLabel style="margin-left: 10px;"
+								value="&#xf7; 17" />
+						</STRONG>
+						<p:outputLabel value="Calculo créditos correspondentes: " />
+						
+					</div>
+					<div style="min-height: 15px; background: #dedede; padding:3px;">
+						<STRONG>
+							<p:outputLabel style="margin-left: 10px;"
+								value="#{dashboardBean.totalCreditosCorrespondentes}">
+							</p:outputLabel>
+						</STRONG>
+						<p:outputLabel value="Total créditos correspondentes: " />
+						
+					</div>
+				</h:panelGroup>
+
+				<br clear="all"/>
+				
+				<p:toolbar>
+					<p:toolbarGroup align="right">
+						<p:commandButton id="btnRelatorioAtividades" value="Imprimir formulário atividades" 
+							ajax="false" style="margin-right: 3px" icon="ui-icon-print">
+						    <p:fileDownload value="#{dashboardBean.relatorioAtividades}" />
+						</p:commandButton>									
+						<p:commandButton id="btnSolicitarAvaliacao" value="Solicitar avaliação" icon="ui-icon-circle-check"
+									actionListener="#{dashboardBean.solicitarAvaliacao}" immediate="true" 
+									oncomplete="callbackSolicitarAvaliacao(args)"
+									rendered="#{loginBean.perfilAluno}" />
+					</p:toolbarGroup>
+				</p:toolbar>
+				
+				<br clear="all" />
+
+			</p:panel>
+		</h:form>
+		
+		<h:form id="parecerForm" prependId="true">
+			<p:dialog id="parecerDialog" widgetVar="parecerDialogW"
+				width="800" resizable="true" height="320" >
+				
+				<h:panelGroup id="conteudoParecerDialog">
+					<c:set var="_parecer" value="#{dashboardBean.atividadeAlunoSelecionada.parecer}"/>
+					
+					<p:outputLabel value="Não há parecer para essa atividade" rendered="#{empty _parecer and loginBean.perfilAluno}"/>
+					
+					<div class="campo">
+						<h:outputLabel value="Atividade: "/> <br />
+						<p:inputText value="#{dashboardBean.atividadeAlunoSelecionada.descricao}" disabled="true" style="width: 300px"/>
+					</div>
+					<br clear="all" />
+							
+					<h:panelGroup id="parecerPanel" styleClass="parecerPanel"
+						rendered="#{not empty _parecer}">
+						<div class="campo">		   		
+					   		<h:outputLabel value="Professor(a): "/> <br />
+					   		<p:inputText value="#{_parecer.professor.nome}" disabled="true" style="width: 300px"/>
+					   	</div>
+						<div class="campo">		   		
+					   		<h:outputLabel value="Data parecer: "/> <br />
+					   		<p:inputText value="#{_parecer.dataHoraCadastro}" disabled="true" style="width: 100px">
+					   			<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+					   		</p:inputText>
+					   	</div>
+						<div class="campo">		   		
+					   		<h:outputLabel value="Aprovado: "/> <br />
+					   		<p:selectOneMenu id="aprovado" value="#{_parecer.aprovado}" 
+					   			disabled="#{not dashboardBean.editandoParecer}" style="width: 70px">
+					   			
+					   			<f:selectItem itemLabel="Sim" itemValue="#{true}"/>
+					   			<f:selectItem itemLabel="Não" itemValue="#{false}"/>						   			
+					   		</p:selectOneMenu>
+					   	</div>
+					   	<div id="botoesEditarParecer">
+						   	<h:panelGroup rendered="#{loginBean.perfilProfessor}">
+				   				<p:commandButton id="btnEditarParecer" title="Editar"  icon="ui-icon-pencil"
+									actionListener="#{dashboardBean.prepareEditarParecer}"
+									immediate="true" rendered="#{dashboardBean.podeEditarParecer}" 
+									update="parecerPanel"/>
+				   				<p:commandButton id="btnExcluirParecer" title="Excluir"  icon="ui-icon-trash"
+									immediate="true" rendered="#{dashboardBean.podeEditarParecer}" 
+									onclick="confirmExclusaoDialogW.show()">
+								</p:commandButton>									
+							</h:panelGroup>
+					   	</div>		   	
+					   					
+					   	<br clear="all"/>
+					   	   	
+						<div style="margin-top: 0px">		   		
+					   		<h:outputLabel value="Observação: "/>
+					   		<p:inputTextarea id="observacaoParecer" value="#{_parecer.observacao}" 
+					   			disabled="#{not dashboardBean.editandoParecer}" 
+					   			style="width: 99%;" rows="5" />
+					   	</div>
+					   	
+					   	<br clear="all" />
+					   	
+					   	<p:toolbar>
+							<p:toolbarGroup align="right" rendered="#{dashboardBean.editandoParecer}">
+								<p:commandButton id="btnSalvar" value="Salvar" oncomplete="parecerDialogW.hide();"
+											actionListener="#{dashboardBean.editarParecer}" 
+											process="@this observacaoParecer aprovado" 
+											update=":formDashboard:atividadesDoAlunoTable" />
+								<p:commandButton id="btnCancelar" value="Cancelar"
+											actionListener="#{dashboardBean.cancelEditarParecer}" 
+											immediate="true" update="conteudoParecerDialog" />
+							</p:toolbarGroup>
+						</p:toolbar> 	
+					   	
+					</h:panelGroup>
+						
+						<p:panel id="fieldsParecer" header="Parecer" rendered="#{empty _parecer and loginBean.perfilProfessor}">
+							<div class="campo" style="float: none;">		   		
+						   		<h:outputLabel value="Observação: "/>
+						   		<p:inputTextarea value="#{dashboardBean.observacaoParecer}" 
+						   			style="width: 100%; height: 70px;" label="Observação" rows="5"
+						   			maxlength="1000" autoResize="false" />
+						   	</div>
+							
+							<br clear="all" />
+							
+							<p:toolbar>
+								<p:toolbarGroup align="right">
+									<p:commandButton id="btnAprovar" value="Aprovar"  icon="ui-icon-check"
+												actionListener="#{dashboardBean.aprovarAtividadeAluno}" 
+												process="@this fieldsParecer" update=":formDashboard:atividadesDoAlunoTable" 
+												oncomplete="parecerDialogW.hide();"/>
+									<p:commandButton id="btnReprovar" value="Reprovar" icon="ui-icon-closethick"
+												actionListener="#{dashboardBean.reprovarAtividadeAluno}" 
+												process="@this fieldsParecer" update=":formDashboard:atividadesDoAlunoTable"
+												oncomplete="parecerDialogW.hide();"/>
+								</p:toolbarGroup>
+							</p:toolbar>  				   	
+						</p:panel>						
+					   	
+				</h:panelGroup>
+
+			</p:dialog>
+		</h:form>
+		
+
+		<h:form id="confirmaExclusaoForm" prependId="true">				
+			<p:confirmDialog id="confirmExclusaoDialog" widgetVar="confirmExclusaoDialogW" closable="false" >
+			
+				<f:facet name="message">Confirma exclusão?</f:facet>
+				
+		        <p:commandButton value="Sim" icon="ui-icon-check"
+		        	oncomplete="confirmExclusaoDialogW.hide(); parecerDialogW.hide();" 
+		        	actionListener="#{dashboardBean.excluirParecer()}"
+		        	update=":formDashboard:atividadesDoAlunoTable"/>
+		        <p:commandButton value="Não" icon="ui-icon-close"
+		        	onclick="confirmExclusaoDialogW.hide();"/>
+		    </p:confirmDialog>	
+		</h:form>
+		
+		<p:confirmDialog id="alertaCreditosDialog" widgetVar="alertaCreditosDialogW" closable="false" >
+			<f:facet name="message"><div id="msgSolicitarAvaliacao"></div></f:facet>
+			
+			<div style="width:70px" class="centralizado">
+		        <p:commandButton value="Ok"
+		        	style="width:100%"
+		        	oncomplete="alertaCreditosDialogW.hide();" />
+		    </div>
+
+	    </p:confirmDialog>	
+
+	</ui:define>
+</ui:composition>
+

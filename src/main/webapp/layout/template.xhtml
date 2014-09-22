@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+<h:head>
+	<title>IntegralizaAC</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</h:head>
+<h:body>
+	<f:facet name="last">
+		<h:outputStylesheet library="css" name="global.css"/>
+	</f:facet>
+
+	<div id="container">
+	
+		<ui:insert name="cabecalho">
+			<ui:include src="cabecalho.xhtml" />
+		</ui:insert>	
+		
+		<ui:insert name="menu">
+			<ui:include src="menu.xhtml" />
+		</ui:insert>
+		
+		<div id="content">
+			<ui:insert name="content">
+               [Template content will be inserted here]
+            </ui:insert>
+		</div>
+		
+		<ui:insert name="rodape">
+			<ui:include src="rodape.xhtml" />
+		</ui:insert>
+
+	</div>
+	
+    <h:outputScript name="js/commons.js" />
+	<script type="text/javascript">
+		$(document).ready(function(){
+		    $('.numerico').live('keypress', validateNumber);
+		});
+	</script>
+</h:body>
+</html>

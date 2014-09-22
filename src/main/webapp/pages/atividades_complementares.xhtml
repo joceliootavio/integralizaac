@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:p="http://primefaces.org/ui"
+   template="/layout/template.xhtml">
+   
+   <ui:define name="content">
+   		
+   		<p:breadCrumb>
+   			<p:menuitem value="" url="#" />
+   			<p:menuitem value="Atividades Complementares" url="#" />   			
+   		</p:breadCrumb>
+			
+		<h:form id="atividadeComplementarForm">
+			<p:panel id="fields" header="Dados gerais" rendered="#{not loginBean.perfilAluno}">
+				<div class="campo">		   		
+			   		<h:outputLabel value="*Natureza: "/><br />
+					<p:selectOneMenu id="natureza" value="#{atividadeComplementarBean.atividade.natureza}" label="Natureza" required="true">
+						<f:selectItem itemLabel="Selecione" itemValue=""/>
+			   			<f:selectItems value="#{atividadeComplementarBean.listaTodasNaturezas}" var="n" itemLabel="#{n.descricao}" />
+			   		</p:selectOneMenu>
+			   	</div>
+			   	
+			   	<br clear="all" />			   	
+			
+				<div class="campo">		   		
+			   		<h:outputLabel value="*Descrição: "/><br />
+			   		<p:inputTextarea value="#{atividadeComplementarBean.atividade.descricao}" 
+			   			maxlength="250" style="width: 600px;" label="Descrição"
+			   			rows="3" autoResize="false"  
+			   			required="true" />
+			   	</div>
+			   	
+			   	<br clear="all" />
+			
+				<div class="campo">		   		
+			   		<h:outputLabel value="Horas por período: "/><br />
+			   		<p:inputText value="#{atividadeComplementarBean.atividade.maximoHorasPorPeriodo}" 
+			   			maxlength="3" style="width: 100px;" label="Horas por período" 
+			   			styleClass="numerico"/>
+			   	</div>
+			   	
+				<div class="campo">		   		
+			   		<h:outputLabel value="*Horas por todo o curso: "/><br />
+			   		<p:inputText value="#{atividadeComplementarBean.atividade.maximoHorasPorCurso}" 
+			   			maxlength="3" style="width: 100px;" label="Horas por todo o curso" 
+			   			required="true" styleClass="numerico"/>
+			   	</div>			   	
+			   	
+			   	<br clear="all" />
+			  		
+			</p:panel>
+			
+			<p:toolbar id="barraBotoes" rendered="#{not loginBean.perfilAluno}">
+				<p:toolbarGroup align="left">
+					<p:commandButton id="btnNovo" value="Novo" immediate="true" 
+								actionListener="#{atividadeComplementarBean.clean}" icon="ui-icon-document" 
+								process="@this" update="@form" />
+					<p:commandButton id="btnIncluir" value="Incluir" 
+								actionListener="#{atividadeComplementarBean.incluir}" 
+								process="@this fields" update="atividadeComplementarTable fields"
+								disabled="#{atividadeComplementarBean.atualizando}" />			
+					<p:commandButton id="btnAtualizar" value="Atualizar"
+								actionListener="#{atividadeComplementarBean.atualizar}" 
+								process="@this fields" update="@form"	
+								disabled="#{not atividadeComplementarBean.atualizando}" />
+					<p:commandButton id="btnExcluir" value="Excluir"
+								actionListener="#{atividadeComplementarBean.excluir}" 
+								process="@this fields" update="atividadeComplementarTable fields"	
+								disabled="#{not atividadeComplementarBean.atualizando}" />										
+				</p:toolbarGroup>
+			</p:toolbar>
+		
+			<p:dataTable id="atividadeComplementarTable"
+				widgetVar="atividadeComplementarTableW"
+				emptyMessage="Nenhuma atividade cadastrada."
+				var="_atividadeComplementar"
+				value="#{atividadeComplementarBean.listaAtividades}"
+				selectionMode="single"
+				rowKey="#{_atividadeComplementar.hashCode()}"
+				rows="#{resources.pageRows}" paginator="#{atividadeComplementarBean.showPaginator(atividadeComplementarBean.listaAtividades)}" 
+				rowsPerPageTemplate="10,25,50" paginatorPosition="bottom">
+				
+				<p:ajax event="rowSelect" listener="#{atividadeComplementarBean.selecionarAtividade}"
+					update=":atividadeComplementarForm:fields :atividadeComplementarForm:barraBotoes" />
+				
+				<p:column headerText="Natureza" width="160">
+					<h:outputText value="#{_atividadeComplementar.natureza.descricao}" />
+				</p:column>
+				
+				<p:column headerText="Atividade" style="white-space: normal;">
+					<h:outputText value="#{_atividadeComplementar.descricao}" />
+				</p:column>
+				
+				<p:column headerText="Máximo Horas Período" style="text-align: center; width: 70px">
+					<h:outputText value="#{_atividadeComplementar.maximoHorasPorPeriodo}" />
+				</p:column>
+				
+				<p:column headerText="Máximo Horas Curso" style="text-align: center; width: 70px">
+					<h:outputText value="#{_atividadeComplementar.maximoHorasPorCurso}" />
+				</p:column>				
+				
+			</p:dataTable>
+		</h:form>
+		
+   </ui:define>
+   
+</ui:composition>

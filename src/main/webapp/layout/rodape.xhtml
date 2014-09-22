@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<ui:composition lang="en"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui">
+    
+    <br />
+    
+    <div style="font-size: 11px;" align="center">
+		<h:outputLink value="#{request.contextPath}/resources/documents/resolucao_atividades_complementares.pdf" 
+	   		title="Resolução Atividades Complementares" target="_blank">
+	       <h:outputText value="Resolução Atividades Complementares da UECE" />
+	   </h:outputLink>
+	    <h:outputLink value="#{request.contextPath}/resources/documents/plano_pedagogico_computacao_uece.pdf" 
+	    	title="Projeto Pedagógico" target="_blank" style="margin-left: 10px">
+	        <h:outputText value="Plano pedagógico do curso de Ciências da Computação da UECE" />
+	    </h:outputLink>	   
+	</div>
+    
+  	<div id="rodape">
+		UECE - Universidade Estadual do Ceará | Sistema de Atividades Complementares
+	</div>
+   
+</ui:composition>

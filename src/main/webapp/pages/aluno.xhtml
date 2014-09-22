@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+
+	<ui:define name="menu">
+	</ui:define>
+
+	<ui:define name="content">
+
+		<div id="content-box">
+			<div style="height: 50px"></div>
+			<div class="padding">
+				<div style="height: 5px"></div>
+			</div>
+
+		   <div class="centralizado" style="width: 50%">
+
+				<p:messages id="messages" autoUpdate="true" />
+
+				<h:form id="formAluno">
+					<p:focus for="matricula" />
+					<p:panel header="Dados cadastrais" id="fields">
+
+						<div class="campo">
+							<h:outputLabel for="matricula" value="*Matrícula:" /> <br />
+							<p:inputText value="#{alunoBean.aluno.matricula}" required="true"
+								label="Matrícula" id="matricula" style="width: 100px"
+								maxlength="7" styleClass="numerico" validator="matriculaValidator">
+							</p:inputText>
+						</div>
+
+						<div class="campo">
+							<h:outputLabel for="nome" value="*Nome:" /> <br />
+							<p:inputText value="#{alunoBean.aluno.nome}" required="true"
+								label="Nome" id="nome" style="width: 500px" maxlength="50" />
+						</div>
+
+						<div class="campo">
+							<h:outputLabel value="*E-mail: " /> <br />
+							<p:inputText id="email" value="#{alunoBean.aluno.email}"
+								required="true" label="E-mail" maxlength="30"
+								validatorMessage="E-mail inválido">
+								<f:validateRegex
+									pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+							</p:inputText>
+						</div>
+<!-- 						
+						<div class="campo">
+							<h:outputLabel value="*Forma de ingresso: " for="formaIngresso" /> <br />
+							<p:selectOneMenu id="formaIngresso" value="#{alunoBean.aluno.periodo}"
+								required="true" label="Forma de ingresso"
+								style="width: 160px">
+								<f:selectItem itemLabel="Selecione" itemValue="" />
+							</p:selectOneMenu>
+						</div> -->						
+
+						<div class="campo">
+							<h:outputLabel value="*Período de ingresso: " for="periodo" /> <br />
+							<p:selectOneMenu id="periodo" value="#{alunoBean.aluno.periodo}"
+								required="true" label="Período de ingresso"
+								style="width: 160px">
+								<f:selectItem itemLabel="Selecione" itemValue="" />
+								<f:selectItems value="#{periodoBean.listaTodosPeriodos}" var="p"
+									itemLabel="#{p.nome}" />
+							</p:selectOneMenu>
+						</div>
+						
+						<br clear="all" />
+
+					</p:panel>
+
+					<p:toolbar id="barraBotoes">
+						<p:toolbarGroup align="right">
+							<p:commandButton id="btnCancelar" value="Cancelar"
+								action="#{alunoBean.cancelar}" ajax="false" immediate="true" />
+							<p:commandButton id="btnSalvar" value="Salvar"
+								actionListener="#{alunoBean.cadastrar}" process="@form"
+								update="@form"
+								onclick="$('#messages').hide()"
+								oncomplete="if (!args.validationFailed) dialogConfirmacaoW.show();" />
+
+						</p:toolbarGroup>
+					</p:toolbar>
+				</h:form>
+			</div>
+		</div>
+		<p:dialog id="dialogConfirmacao" widgetVar="dialogConfirmacaoW" 
+			closable="false" modal="true" resizable="false" draggable="false">
+			
+			<h:form>
+				<div class="mensagemDialog">
+					<h:outputLabel value="#{messages['aluno.inclusao']}" escape="false"/>
+				</div>
+				<div class="centralizado" style="width:80px">
+					<p:commandButton id="btnConfirmar" value="Ok"
+						action="#{alunoBean.cancelar}" ajax="false" style="width:100%"/>
+				</div>
+			</h:form>
+			
+		</p:dialog>
+	</ui:define>
+
+</ui:composition>

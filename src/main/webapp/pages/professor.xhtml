@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:p="http://primefaces.org/ui"
+   template="/layout/template.xhtml">
+   
+   <ui:define name="content">
+   
+   		<p:breadCrumb>
+   			<p:menuitem value="" url="#" />
+   			<p:menuitem value="Início" url="#" />   			
+   			<p:menuitem value="Usuários" url="#"/>
+   			<p:menuitem value="Professor" url="#"/>   			
+   		</p:breadCrumb>
+   		
+		<h:form id="professorForm">	
+			<p:panel header="Professor" id="fields">
+				<div class="campo">
+					<h:outputLabel value="*Nome: "/> <br />
+			   		<p:inputText id="nome" value="#{professorBean.professor.nome}" 
+			   			required="true" label="Nome" maxlength="50" style="width: 250px"/>
+			   	</div>
+		   		
+		   		<div class="campo">
+			   		<h:outputLabel value="*E-mail: "/> <br />
+			   		<p:inputText id="email" value="#{professorBean.professor.email}" 
+			   			required="true" label="E-mail" maxlength="30" validatorMessage="E-mail inválido"
+			   			style="width: 220px">
+			   			<f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+			   		</p:inputText>
+			   	</div>
+		   		
+		   		<div class="campo">		   		
+			   		<h:outputLabel value="*Matricula: "/> <br />
+			   		<p:inputText id="matricula" value="#{professorBean.professor.matricula}" 
+			   			required="true" label="Matricula" maxlength="9" />
+			   	</div>
+			   	
+			   	<br clear="all"/>
+			</p:panel>
+			
+			<p:toolbar id="barraBotoes">
+				<p:toolbarGroup align="left">
+					<p:commandButton id="btnNovo" value="Novo" immediate="true" 
+								actionListener="#{professorBean.clean}" icon="ui-icon-document" 
+								process="@this" update="@form" />
+					<p:commandButton id="btnIncluir" value="Incluir" 
+								actionListener="#{professorBean.incluir}" 
+								process="@this fields" update="professorTable fields"
+								disabled="#{professorBean.atualizando}" />			
+					<p:commandButton id="btnAtualizar" value="Atualizar"
+								actionListener="#{professorBean.atualizar}" 
+								process="@this fields" update="@form"	
+								disabled="#{not professorBean.atualizando}" />
+					<p:commandButton id="btnExcluir" value="Excluir"
+								onclick="dialogConfirmacaoW.show();"
+								process="@this fields"	
+								disabled="#{not professorBean.atualizando}" />										
+				</p:toolbarGroup>
+			</p:toolbar>
+			
+			<p:dataTable id="professorTable"
+				widgetVar="professorTableW"
+				emptyMessage="Nenhum professor cadastrado."
+				var="_usuario"
+				value="#{professorBean.listaProfessores}"
+				sortBy="#{_usuario.professor.nome}"
+				sortOrder="descending"
+				selectionMode="single"
+				rowKey="#{_usuario.professor.hashCode()}"
+				rows="#{resources.pageRows}" paginator="#{professorBean.showPaginator(professorBean.listaProfessores)}" paginatorPosition="top">
+				
+				<p:ajax event="rowSelect" listener="#{professorBean.selecionarProfessor}"
+					update=":professorForm:fields :professorForm:barraBotoes" />
+	
+				<p:column headerText="Nome">
+					<h:outputText value="#{_usuario.professor.nome}" />
+				</p:column>
+				
+				<p:column headerText="Matricula">
+					<h:outputText value="#{_usuario.professor.matricula}" />
+				</p:column>
+				
+				<p:column headerText="E-mail">
+					<h:outputText value="#{_usuario.professor.email}" />
+				</p:column>
+					
+			</p:dataTable>
+		</h:form>
+		
+		<ui:include src="/layout/dialog_confirmacao.xhtml">
+			<ui:param name="bean" value="#{professorBean}" />
+			<ui:param name="metodo" value="excluir" />
+			<ui:param name="update" value=":professorForm:professorTable :professorForm:fields" />			
+			<ui:param name="menssagem" value="#{messages['padrao.confirmaExcluir']}" />
+		</ui:include>
+		
+   </ui:define>
+   
+</ui:composition>

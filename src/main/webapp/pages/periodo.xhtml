@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:p="http://primefaces.org/ui"
+   template="/layout/template.xhtml">
+   
+   <ui:define name="content">
+   
+   		<p:breadCrumb>
+   			<p:menuitem value="" url="#" />
+   			<p:menuitem value="Início" url="#" />   			
+   			<p:menuitem value="Período" url="#"/>   			
+   		</p:breadCrumb>
+   		
+		<h:form id="periodoForm">	
+			<p:panel header="Período" id="fields" rendered="#{not loginBean.perfilAluno}">
+				<div class="campo">
+					<h:outputLabel value="*Nome: "/> <br />
+			   		<p:inputMask id="nome" value="#{periodoBean.periodo.nome}" 
+			   			required="true" mask="9999.9" style="width: 130px;" label="Nome">
+			   			<f:validateRegex pattern="[12]\d\d\d\.[12]" />
+			   		</p:inputMask>
+			   	</div>
+		   		
+		   		<div class="campo">
+			   		<h:outputLabel value="*Data início: "/> <br />
+			   		<p:calendar id="dataInicio" label="Data início" value="#{periodoBean.periodo.dataInicio}" 
+			   			required="true" size="6" pattern="dd/MM/yyyy"/>
+			   	</div>
+		   		
+		   		<div class="campo">		   		
+			   		<h:outputLabel value="*Data fim: "/> <br />
+			   		<p:calendar id="dataFim" label="Data fim" value="#{periodoBean.periodo.dataFim}" 
+			   			required="true" size="6" pattern="dd/MM/yyyy"/>
+			   	</div>
+				<br clear="all"/>
+			</p:panel>
+			
+			<p:toolbar id="barraBotoes" rendered="#{not loginBean.perfilAluno}">
+				<p:toolbarGroup align="left">
+					<p:commandButton id="btnNovo" value="Novo" immediate="true" 
+								actionListener="#{periodoBean.clean}" icon="ui-icon-document" 
+								process="@this" update="@form" />
+					<p:commandButton id="btnIncluir" value="Incluir" 
+								actionListener="#{periodoBean.incluir}" 
+								process="@this fields" update="periodoTable fields"
+								disabled="#{periodoBean.atualizando}" />			
+					<p:commandButton id="btnAtualizar" value="Atualizar"
+								actionListener="#{periodoBean.atualizar}" 
+								process="@this fields" update="@form"	
+								disabled="#{not periodoBean.atualizando}" />
+					<p:commandButton id="btnExcluir" value="Excluir"
+								actionListener="#{periodoBean.excluir}" 
+								process="@this fields" update="periodoTable fields"	
+								disabled="#{not periodoBean.atualizando}" />										
+				</p:toolbarGroup>
+			</p:toolbar>
+			
+			<p:dataTable id="periodoTable"
+				widgetVar="periodoTableW"
+				emptyMessage="Nenhum período cadastrado."
+				var="_periodo"
+				value="#{periodoBean.listaPeriodos}"
+				sortBy="#{_periodo.dataFim}"
+				sortOrder="descending"
+				selectionMode="single"
+				rowKey="#{_periodo.hashCode()}"
+				rows="#{resources.pageRows}" paginator="#{periodoBean.showPaginator(periodoBean.listaPeriodos)}" paginatorPosition="top">
+				
+				<p:ajax event="rowSelect" listener="#{periodoBean.selecionarPeriodo}"
+					update=":periodoForm:fields :periodoForm:barraBotoes" />
+	
+				<p:column headerText="Nome">
+					<h:outputText value="#{_periodo.nome}" />
+				</p:column>
+				
+				<p:column headerText="Data início">
+					<h:outputText value="#{_periodo.dataInicio}">
+						<f:convertDateTime pattern="dd/MM/yyyy"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="Data fim">
+					<h:outputText value="#{_periodo.dataFim}">
+						<f:convertDateTime pattern="dd/MM/yyyy"/>
+					</h:outputText>
+				</p:column>
+					
+			</p:dataTable>
+		</h:form>
+		
+<!-- 
+		<ui:include src="/layout/dialog_confirmacao.xhtml">
+			<ui:param name="bean" value="periodoBean" />
+			<ui:param name="metodo" value="excluir" />
+			<ui:param name="update" value=":periodoForm:periodoTable :periodoForm:fields" />			
+			<ui:param name="menssagem" value="#{messages['padrao.confirmaExcluir']}" />
+		</ui:include>	 -->		
+		
+   </ui:define>
+   
+</ui:composition>

@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<Context path="/integralizaac" docBase="integralizaac"
+   crossContext="true" reloadable="true" debug="1">
+   
+    <Resource name="jdbc/integralizaacDS"
+              url="jdbc:postgresql://localhost:5432/integralizaac"
+              driverClassName="org.postgresql.Driver"
+              username="postgres"
+              password="postgres"
+              auth="Container"
+              type="javax.sql.DataSource"
+              maxActive="20"
+              maxIdle="5"
+              maxWait="10000"/>
+    
+    <ResourceLink name="jdbc/integralizaacDS"
+              global="jdbc/integralizaacDS"
+              type="javax.sql.DataSource"/>
+</Context>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:p="http://primefaces.org/ui"
+   template="/layout/template.xhtml">
+   
+   <ui:define name="content">
+   		
+   		<f:event listener="#{alunoBean.initLista}" type="preRenderView" />
+   
+   		<p:breadCrumb>
+   			<p:menuitem value="" url="#" />
+   			<p:menuitem value="Início" url="#" />   			
+   			<p:menuitem value="Usuários" url="#"/>
+   			<p:menuitem value="Aluno" url="#"/>   			
+   		</p:breadCrumb>
+			
+		<h:form id="listaAlunosForm">
+			<p:dataTable id="alunosTable"
+				widgetVar="alunosTableW"
+				emptyMessage="Nenhum aluno cadastrado."
+				var="_usuario"
+				value="#{alunoBean.listaAlunos}"
+				sortBy="#{_usuario.aluno.nome}"
+				sortOrder="descending"
+				rowKey="#{_usuario.aluno.hashCode()}"
+				rows="#{resources.pageRows}" paginator="#{alunoBean.showPaginator(alunoBean.listaAlunos)}" paginatorPosition="top">
+				
+				<p:column headerText="Nome">
+					<h:outputText value="#{_usuario.aluno.nome}" />
+				</p:column>
+				
+				<p:column headerText="Matricula">
+					<h:outputText value="#{_usuario.aluno.matricula}" />
+				</p:column>
+				
+				<p:column headerText="E-mail">
+					<h:outputText value="#{_usuario.aluno.email}" />
+				</p:column>
+				
+				<p:column headerText="Período de ingresso">
+					<h:outputText value="#{_usuario.aluno.periodo.nome}" />
+				</p:column>				
+				
+				<p:column>
+					<p:commandButton value="" icon="ui-icon-shuffle" title="Resetar senha"
+						action="#{alunoBean.resetarSenha(_usuario)}"/>
+				</p:column>				
+					
+			</p:dataTable>
+		</h:form>
+		
+   </ui:define>
+   
+</ui:composition>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<ui:composition lang="pt_br" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:menubar autoDisplay="false" id="menuProfessor">
+		<!-- p:submenu label="Início" -->
+			<p:menuitem value="Dashboard" outcome="/pages/dashboard" />
+			<p:menuitem value="Dados cadastrais" outcome="/pages/dados_cadastrais" />				
+			<p:menuitem value="Sair" action="#{loginBean.logout}" ajax="false" icon="ui-icon-power"/>
+		<!-- /p:submenu-->
+		
+		<f:facet name="options">
+			<div style="float: left; margin: 5px 10px 5px 0px">
+	            <p:outputLabel value="Professor(a): "/>
+				<p:outputLabel value="#{loginBean.usuario.professor.nome}" styleClass="caixaAlta"/>
+			</div>				
+			<div style="float: left; margin: 5px">
+				<p:outputLabel value="Matrícula: "/>
+	            <p:outputLabel value="#{loginBean.usuario.professor.matricula}"/>            
+	        </div>
+        </f:facet>
+	</p:menubar>
+		
+</ui:composition>

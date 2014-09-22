@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<ui:composition lang="pt_br" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:menubar id="menuAluno">
+		<p:submenu label="Início" >
+			<p:menuitem value="Dashboard" outcome="/pages/dashboard" />
+			<p:menuitem value="Atividades Complementares" outcome="/pages/atividades_complementares" />
+			<p:menuitem value="Períodos" outcome="/pages/periodo" />						
+			<p:menuitem value="Dados cadastrais" action="#{dadosCadastraisBean.load}" ajax="false"/>
+		</p:submenu>
+ 		<p:submenu label="Atividades do aluno">
+			<p:menuitem value="Ensino" outcome="/pages/atividades/atividade_aluno">
+				<f:param name="natureza" value="A"/>
+			</p:menuitem>
+			<p:menuitem value="Pesquisa e Produção científica" outcome="/pages/atividades/atividade_aluno">
+				<f:param name="natureza" value="B"/>
+			</p:menuitem>
+			<p:menuitem value="Geral" outcome="/pages/atividades/atividade_aluno">
+				<f:param name="natureza" value="C"/>
+			</p:menuitem>
+			<p:menuitem value="Extensão" outcome="/pages/atividades/atividade_aluno">
+				<f:param name="natureza" value="D"/>
+			</p:menuitem>			
+		</p:submenu>
+				
+		<p:menuitem value="Sair" action="#{loginBean.logout}" ajax="false" icon="ui-icon-power"/>
+		
+		<f:facet name="options">
+			<div class="labelDoisPontos">
+	            <p:outputLabel value="Aluno: "/>
+				<p:outputLabel value="#{loginBean.usuario.aluno.nome}" styleClass="caixaAlta"/>
+			</div>				
+			<div style="float: left; margin: 5px">
+				<p:outputLabel value="Matrícula: "/>
+	            <p:outputLabel value="#{loginBean.usuario.aluno.matricula}"/>            
+	        </div>
+        </f:facet>
+	</p:menubar>
+		
+</ui:composition>
