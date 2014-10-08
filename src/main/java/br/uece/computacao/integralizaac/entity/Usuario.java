@@ -12,32 +12,70 @@ import javax.persistence.OneToOne;
 
 import br.uece.computacao.integralizaac.enums.PerfilEnum;
 
+/**
+ * @author Jocélio Otávio
+ * 
+ * Classe que representa a entididade Usuário do sistema.
+ * Os atributos aluno e coordenador são mutuamente
+ * exclusivos, ou seja, não deve haver usuário que seja
+ * ao mesmo tempo Aluno e Coordenador.
+ * 
+ */
 @Entity
-@NamedQueries({@NamedQuery(name=Usuario.FIND_ALL_PROFESSOR, query="select u from Usuario as u where u.perfil = br.uece.computacao.integralizaac.enums.PerfilEnum.Professor"),
+@NamedQueries({@NamedQuery(name=Usuario.FIND_ALL_COORDENADOR, query="select u from Usuario as u where u.perfil = br.uece.computacao.integralizaac.enums.PerfilEnum.Coordenador"),
 				@NamedQuery(name=Usuario.FIND_ALL_ALUNO, query="select u from Usuario as u where u.perfil = br.uece.computacao.integralizaac.enums.PerfilEnum.Aluno")})
 public class Usuario extends BaseEntity{
 	
-	public static final String FIND_ALL_PROFESSOR = "findAllProfessor";
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7846878949581706495L;
+	
+	public static final String FIND_ALL_COORDENADOR = "findAllCoordenador";
 	public static final String FIND_ALL_ALUNO = "findAllAluno";	
 
+	/**
+	 * Campo texto obrigatório de 30 caracteres que guarda o login do
+	 * usuário. Para o perfil Coordenador guarda o email, para o perfil Aluno
+	 * guarda a matricula e para o perfil Administrador guarda o nome do
+	 * usuário. 
+	 */
 	@Column(nullable=false, length=30)
 	private String login;
 	
+	/**
+	 * Campo texto obrigatório de 32 caracteres que guarda a senha
+	 * criptografada do usuário. A senha inicial é gerada automaticamente
+	 * pelo sistema.
+	 */
 	@Column(nullable=false, length=32)
 	private String senha;
 	
+	/**
+	 * Campo booleano que guarda a informação se o usuário está ativo.
+	 */
 	@Column
 	private boolean ativo;
 	
+	/**
+	 * Campo do tipo PerfilEnum que aceita somente os perfis
+	 * listados no enum @see PerfilEnum.
+	 */
 	@Enumerated(EnumType.STRING)
 	@Column(nullable=false, updatable=false)
 	private PerfilEnum perfil;
 	
+	/**
+	 * Referência a classe @see Aluno.
+	 */
 	@OneToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
 	private Aluno aluno;
 	
+	/**
+	 * Referência a class @see Coordenador.
+	 */
 	@OneToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-	private Professor professor;
+	private Coordenador coordenador;
 	
 	public Usuario() {
 		this(null);
@@ -46,13 +84,12 @@ public class Usuario extends BaseEntity{
 	public Usuario(PerfilEnum perfil) {
 		this.perfil = perfil;
 		
-		if (perfil == PerfilEnum.Professor){
-			professor = new Professor();
+		if (perfil == PerfilEnum.Coordenador){
+			coordenador = new Coordenador();
 		} else if (perfil == PerfilEnum.Aluno){
 			aluno = new Aluno();
 		}
 		
-		// TODO Após implementacao da ativacao do aluno essa linha deve ser condicionada
 		ativo = true;
 	}
 	
@@ -96,12 +133,12 @@ public class Usuario extends BaseEntity{
 		this.aluno = aluno;
 	}
 
-	public Professor getProfessor() {
-		return professor;
+	public Coordenador getCoordenador() {
+		return coordenador;
 	}
 
-	public void setProfessor(Professor professor) {
-		this.professor = professor;
+	public void setCoordenador(Coordenador coordenador) {
+		this.coordenador = coordenador;
 	}
 
 }

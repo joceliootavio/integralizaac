@@ -1,5 +1,12 @@
 package br.uece.computacao.integralizaac.exceptions;
 
+/**
+ * @author Jocélio Otávio
+ *
+ * Classe de exceção utilizada para instanciar qualquer exceção
+ * de acesso a dados da aplicação.
+ *
+ */
 public class DAOException extends RuntimeException {
     
     private static final long serialVersionUID = -8935712042044355058L;

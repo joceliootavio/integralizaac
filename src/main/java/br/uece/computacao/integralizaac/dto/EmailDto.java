@@ -1,8 +1,25 @@
 package br.uece.computacao.integralizaac.dto;
 
+/**
+ * @author Jocélio Otávio
+ * Classe que contém as informações necessárias para envio
+ * de email pela aplicação.
+ * 
+ */
 public class EmailDto {
+	/**
+	 * Assunto do email.
+	 */
 	private String assunto;
+	
+	/**
+	 * Destinatários do email separados por ','. 
+	 */
 	private String destinatarios;
+	
+	/**
+	 * Corpo do email.
+	 */
 	private String corpo;
 	
 	public String getAssunto() {

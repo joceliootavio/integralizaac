@@ -16,43 +16,92 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+/**
+ * @author Jocélio Otávio
+ *
+ * Classe que representa o relacionamento entre as entidades
+ * Aluno e AtividadeComplementar, e onde será guardada as 
+ * informações das atividades exercidas por um determinado 
+ * aluno.
+ * 
+ */
 @Inheritance(strategy=InheritanceType.JOINED)
 @Entity
 public class AtividadeAluno extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Referência obrigatória à classe Aluno.
+	 */
 	@ManyToOne(optional=false)
 	private Aluno aluno;
 	
+	/**
+	 * Referência obrigatória à classe @see AtividadeComplementar.
+	 */
 	@ManyToOne(optional=false, fetch=FetchType.EAGER)
 	private AtividadeComplementar atividade;
 	
-	@OneToOne(mappedBy="atividadeAluno")
+	/**
+	 * Referência a classe @see ParecerAtividadeAluno.
+	 */
+	@OneToOne(mappedBy="atividadeAluno", cascade=CascadeType.REMOVE)
 	private ParecerAtividadeAluno parecer;
 	
+	/**
+	 * Referência obrigatória a classe @see Periodo que representa o 
+	 * periodo em que a atividade foi exercida pelo Aluno.
+	 */
 	@ManyToOne(optional=false)
 	private Periodo periodo;
 	
+	/**
+	 * Referência a classe @see Instituicao.
+	 */
 	@ManyToOne
 	private Instituicao instituicao;	
 	
-	@Column
+	/**
+	 * Campo inteiro obrigatório que guarda a carga horária da atividade
+	 * exercida pelo aluno.
+	 */
+	@Column(nullable=false)
 	private Integer cargaHoraria;
 	
+	/**
+	 * Campo texto com 50 caracteres que guarda o nome do evento no qual
+	 * o aluno exerceu a atividade
+	 */
 	@Column(length=50, nullable=true)
 	private String nomeEvento;	
 	
+	/**
+	 * Campo texto obrigatório com 50 caracteres que guarda a descrição
+	 * para identificar a atividade exercida pelo Aluno.
+	 */
 	@Column(length=50, nullable=false)
 	private String descricao;
 	
+	/**
+	 * Campo texto de 20 caracteres que guarda o tipo de participação do
+	 * aluno em atividades que seja necessária essa informação.
+	 */
 	@Column(length=20, nullable=true)
 	private String tipoParticipacao;	
 	
+	/**
+	 * Campo alimentado automaticamente pelo banco de dados com 
+	 * a Data e hora do momento em que a atividade do aluno foi 
+	 * cadastrada.
+	 */
 	@Temporal(TemporalType.TIMESTAMP) 
 	@Column(columnDefinition="TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP", insertable=false, updatable=false)
 	private Date dataHoraCadastro;
 	
+	/**
+	 * Referência aos certificados da atividade exercida pelo Aluno. @see Certificado
+	 */
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="atividadeAluno", orphanRemoval=true)
 	private List<Certificado> certificados = new ArrayList<Certificado>();
 	

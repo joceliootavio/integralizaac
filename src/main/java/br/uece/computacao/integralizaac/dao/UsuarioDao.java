@@ -5,14 +5,28 @@ import java.util.List;
 import javax.persistence.TypedQuery;
 
 import br.uece.computacao.integralizaac.entity.Aluno;
-import br.uece.computacao.integralizaac.entity.Professor;
+import br.uece.computacao.integralizaac.entity.Coordenador;
 import br.uece.computacao.integralizaac.entity.Usuario;
 
+/**
+ * @author Jocélio Otávio
+ * 
+ * Classe responsável por acesso aos dados das entidades
+ * Usuários.
+ */
 public class UsuarioDao extends
 		AbstractDao<Usuario> {
 
 	private static final long serialVersionUID = 1L;
 	
+	/**
+	 * Método que retorna o usuário que tenho o mesmo login e senha
+	 * do que o passado como parâmetro, quando existir.
+	 *  
+	 * @param login Login do usuário.
+	 * @param senha Senha do usuário.
+	 * @return
+	 */
 	public Usuario buscarUsuario(String login, String senha) {
 		StringBuilder hql = new StringBuilder();
 		
@@ -29,27 +43,45 @@ public class UsuarioDao extends
 		return query.getSingleResult();
 	}
 	
-	public Professor buscarProfessorComEmail(String email) {
+	/**
+	 * Método que recupera o Coordenador que tenha email igual
+	 * ao email passado como parâmetro.
+	 * 
+	 * @param email Email do Coordenador
+	 * 
+	 * @return Objeto do tipo Coordenador
+	 */
+	public Coordenador buscarCoordenadorComEmail(String email) {
 		StringBuilder hql = new StringBuilder();
 		
-		hql.append("select p from Professor as p ");
+		hql.append("select p from Coordenador as p ");
 		hql.append("where p.email = :email ");
 		
-		TypedQuery<Professor> query = getEntityManager()
-				.createQuery(hql.toString(), Professor.class);
+		TypedQuery<Coordenador> query = getEntityManager()
+				.createQuery(hql.toString(), Coordenador.class);
 		
 		query.setParameter("email", email);
 		
 		return query.getSingleResult();
 	}
 	
-	public List<Usuario> listarTodosProfessores() {
+	/**
+	 * Método que lista todos os coordenadores cadastrados.
+	 * 
+	 * @return Lista de usuários coordenadores.
+	 */
+	public List<Usuario> listarTodosCoordenadores() {
 		TypedQuery<Usuario> query = getEntityManager()
-				.createNamedQuery(Usuario.FIND_ALL_PROFESSOR, Usuario.class);
+				.createNamedQuery(Usuario.FIND_ALL_COORDENADOR, Usuario.class);
 		
 		return query.getResultList();
 	}
 
+	/**
+	 * Método que lista de todos os alunos cadastrados.
+	 * 
+	 * @return Lista de usuários alunos.
+	 */
 	public List<Usuario> listarTodosAlunos() {
 		TypedQuery<Usuario> query = getEntityManager()
 				.createNamedQuery(Usuario.FIND_ALL_ALUNO, Usuario.class);
@@ -57,6 +89,14 @@ public class UsuarioDao extends
 		return query.getResultList();
 	}
 	
+	/**
+	 * Retorna aluno que tenha matrícula igual a passada como
+	 * parâmetro.
+	 * 
+	 * @param matricula Matrícula do aluno
+	 * 
+	 * @return Aluno com matrícula informada.
+	 */
 	public Aluno buscarAlunoComMatricula(String matricula) {
 		StringBuilder hql = new StringBuilder();
 		
@@ -71,6 +111,13 @@ public class UsuarioDao extends
 		return query.getSingleResult();
 	}
 	
+	/**
+	 * Recuperar aluno com o Id passado como parâmetro.
+	 * 
+	 * @param idAluno Id do aluno.
+	 * 
+	 * @return Objeto do tipo @see Aluno.
+	 */
 	public Aluno buscarAlunoPorId(Long idAluno) {
 		StringBuilder hql = new StringBuilder();
 		
@@ -85,6 +132,14 @@ public class UsuarioDao extends
 		return query.getSingleResult();
 	}	
 
+	/**
+	 * Recupera os alunos que contenha no nome ou na matrícula
+	 * o valor passado como parâmetro.
+	 * 
+	 * @param query Parte do nome ou matrícula do aluno.
+	 * 
+	 * @return Lista de alunos filtrada.
+	 */
 	public List<Aluno> buscarAlunoComMatriculaOuNome(String query) {
 		StringBuilder hql = new StringBuilder();
 		

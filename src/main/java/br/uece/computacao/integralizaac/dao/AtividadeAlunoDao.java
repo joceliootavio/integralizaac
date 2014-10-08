@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Query;
-import javax.persistence.TypedQuery;
 
 import br.uece.computacao.integralizaac.dto.DashboardDTO;
 import br.uece.computacao.integralizaac.dto.HorasAtividadeDTO;
@@ -15,16 +14,34 @@ import br.uece.computacao.integralizaac.entity.Aluno;
 import br.uece.computacao.integralizaac.entity.AtividadeAluno;
 import br.uece.computacao.integralizaac.enums.NaturezaEnum;
 
+/**
+ * @author Jocélio Otávio
+ *
+ * Classe responsável por acesso aos dados das Atividades
+ * do Aluno.
+ */
 public class AtividadeAlunoDao extends
 		AbstractDao<AtividadeAluno> {
 
 	private static final long serialVersionUID = 1L;
 	
+	/* (non-Javadoc)
+	 * @see br.uece.computacao.integralizaac.dao.AbstractDao#incluir(java.lang.Object)
+	 */
 	@Override
 	public void incluir(AtividadeAluno atividadeAluno) {
 		super.incluir(atividadeAluno);
 	}
 
+	/**
+	 * Método que Recuṕera todas as atividades de um determinado aluno e natureza
+	 * representada por uma lista de objetos DTO contendo todas as informações
+	 * que devem ser exibidas na tela de dashboard do Aluno ou Coordenador.
+	 * 
+	 * @param aluno Aluno do qual deve-se listar as atividades
+	 * @param natureza Natureza das atividades que deve ser retornada.
+	 * @return Objeto que representa uma lista de objetos DTO.
+	 */
 	public ListaDashboard listarAtividadesPorNatureza(Aluno aluno, NaturezaEnum natureza) {
 		StringBuilder hql = new StringBuilder();
 	
@@ -86,6 +103,13 @@ public class AtividadeAlunoDao extends
 		return listaDtos;
 	}
 
+	/**
+	 * Método que retorna o total de horas por período e por curso
+	 * de um determinado tipo de atividade e aluno.
+	 * 
+	 * @param atividadeAluno Atividade do aluno.
+	 * @return Objeto com as informações de horas calculadas.
+	 */
 	public HorasAtividadeDTO horasAtividade(AtividadeAluno atividadeAluno) {
 		StringBuilder hql = new StringBuilder();
 		
@@ -95,8 +119,11 @@ public class AtividadeAlunoDao extends
 		hql.append("from atividadealuno aa ");
 		hql.append("inner join atividadecomplementar ac ");
 		hql.append("on aa.atividade_id = ac.id ");
+		hql.append("left join pareceratividadealuno paa ");
+		hql.append("on aa.id = paa.atividadealuno_id ");		
 		hql.append("where aa.aluno_id = :alunoId ");
 		hql.append("and aa.atividade_id = :atividadeComplementarId ");
+		hql.append("and (paa.atividadealuno_id IS NULL OR paa.aprovado = TRUE)");		
 		hql.append("group by aa.periodo_id, ac.maximoHorasPorCurso, ac.maximoHorasPorPeriodo) tb ");		
 
 		Query query = getEntityManager()
@@ -120,6 +147,13 @@ public class AtividadeAlunoDao extends
 		return null;
 	}	
 
+	/**
+	 * Listar as naturezas das quais um determinado aluno tem
+	 * atividades cadastradas.
+	 * 
+	 * @param aluno Aluno.
+	 * @return Lista de naturezas.
+	 */
 	public List<NaturezaEnum> listarNaturezas(Aluno aluno) {
 		StringBuilder hql = new StringBuilder();
 		
@@ -127,7 +161,8 @@ public class AtividadeAlunoDao extends
 		   .append("from atividadecomplementar as ac ")
 		   .append("inner join atividadealuno as aa ")
 		   .append("on ac.id = aa.atividade_id ")
-		   .append("where aa.aluno_id = :alunoId ");		
+		   .append("where aa.aluno_id = :alunoId ")		
+		   .append("order by ac.natureza ");		
 
 		Query query = getEntityManager()
 				.createNativeQuery(hql.toString());
@@ -145,29 +180,4 @@ public class AtividadeAlunoDao extends
 		return result;
 	}	
 	
-	public List<AtividadeAluno> listarAtividades(Aluno aluno, Long ativComplementarId) {
-		StringBuilder hql = new StringBuilder();
-		
-		hql.append("select aa " );
-		hql.append("from AtividadeAluno as aa ");
-		hql.append("join fetch aa.periodo as p ");		
-		hql.append("where aa.aluno.id = :alunoId ");
-		
-		if (ativComplementarId != null) {
-			hql.append("and aa.atividade.id = :ativComplementarId ");
-		}
-		
-		hql.append("order by p.nome desc");
-
-		TypedQuery<AtividadeAluno> query = getEntityManager()
-				.createQuery(hql.toString(), AtividadeAluno.class);
-		
-		query.setParameter("alunoId", aluno.getId());
-		if (ativComplementarId != null) {
-			query.setParameter("ativComplementarId", ativComplementarId);
-		}
-		
-		return query.getResultList();
-	}
-
 }

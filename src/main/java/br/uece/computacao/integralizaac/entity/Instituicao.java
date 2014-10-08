@@ -11,6 +11,11 @@ public class Instituicao extends BaseEntity {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Campo texto de 50 caracteres que guarda o nome da 
+	 * instituição onde a atividade foi exercida pelo 
+	 * Aluno. 
+	 */
 	@Column(nullable=false, length=50, unique=true)
 	private String nome;
 	

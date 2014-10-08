@@ -15,11 +15,28 @@ import javax.persistence.criteria.Root;
 
 import br.uece.computacao.integralizaac.exceptions.DAOException;
 
+/**
+ * @author Jocélio Otávio
+ * 
+ * Classe abstrata da qual deve herdar todas as classes Dao
+ * da aplicação. Essa classe possui métodos utilitários 
+ * prontos que serão reaproveitados nas classes filhas. 
+ *
+ * @param <E> Tipo da entidade que deve ser persistida.
+ */
 public abstract class AbstractDao <E> implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
+	/**
+	 * Referẽncia a classe @see JPAUtil.
+	 */
 	private JPAUtil jpaUtil;
 	
+	/**
+	 * Referência a classe do tipo genérico declarado junto
+	 * a classe. Serve para facilitar as querys de busca
+	 * genéricas implementadas nessa classe
+	 */
 	protected Class<E> entityClass;
 	
 	@SuppressWarnings("unchecked")
@@ -47,8 +64,7 @@ public abstract class AbstractDao <E> implements Serializable {
 	/**
 	 * Exclui o objeto da base de dados.
 	 * 
-	 * @param objeto
-	 *            a ser removido
+	 * @param objeto a ser removido
 	 */
 	public final void excluir(E objeto) {
 		try {
@@ -66,8 +82,7 @@ public abstract class AbstractDao <E> implements Serializable {
 	/**
 	 * Executa o merge do objeto que se encontra em memória.
 	 * 
-	 * @param objeto
-	 *            a ser realizado o merge
+	 * @param objeto a ser realizado o merge
 	 * @return objeto que foi executado o merge
 	 */
 	public E atualizar(E objeto) {
@@ -80,6 +95,10 @@ public abstract class AbstractDao <E> implements Serializable {
 		return null;
 	}
 	
+	/**
+	 * Método que lista todos os objetos do tipo genérico.
+	 * @return
+	 */
 	public List<E> listarTodos() {
         CriteriaBuilder cb = jpaUtil.getEntityManager().getCriteriaBuilder();
         CriteriaQuery<E> cq = cb.createQuery(entityClass);
@@ -92,8 +111,7 @@ public abstract class AbstractDao <E> implements Serializable {
 	/**
 	 * Atualiza o objeto que se encontra em memória.
 	 * 
-	 * @param object
-	 *            objeto a ser atualizado
+	 * @param object objeto a ser atualizado
 	 */
 	public final void refresh(E object) {
 		getEntityManager().refresh(object);
@@ -119,7 +137,7 @@ public abstract class AbstractDao <E> implements Serializable {
 	}
 
 	/**
-	 * Executa o flush no entity manager.
+	 * Executa o clear no entity manager.
 	 * 
 	 */
 	public final void clear() {
@@ -127,14 +145,33 @@ public abstract class AbstractDao <E> implements Serializable {
 		getEntityManager().clear();
 	}
 
+	/**
+	 * Método que recupera o objeto através do id passado
+	 * como parâmetro
+	 * 
+	 * @param id Id do objeto
+	 * @return O objeto
+	 */
 	public E buscaPorId(long id) {
 		return getEntityManager().find(entityClass, id);
 	}
 
+	/**
+	 * Método que lança exceção do tipo @see DAOException utilizando
+	 * a exceção passada como parâmetro como raiz.
+	 * 
+	 * @param em Exceção ocorrida.
+	 * @throws DAOException Instância da classe de exceção do DAO.
+	 */
 	protected void handleException(RuntimeException e) throws DAOException {
 		throw new DAOException(e);
 	}
 
+	/**
+	 * Atualiza a sessão hibernate do objeto passado como parâmetro. 
+	 * 
+	 * @param entidade
+	 */
 	public void atualizarSessao(Object entidade) {
 		jpaUtil.getEntityManager().merge(entidade);
 	}

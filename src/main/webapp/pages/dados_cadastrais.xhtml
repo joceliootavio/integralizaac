@@ -37,6 +37,17 @@
 			   	</div>
 			   	
 			   	<h:panelGroup rendered="#{loginBean.perfilAluno}">
+					<div class="campo">
+						<h:outputLabel value="*Forma de ingresso: " for="formaIngresso" /> <br />
+						<p:selectOneMenu id="formaIngresso" value="#{dadosCadastraisBean.formaIngresso}"
+							required="true" label="Forma de ingresso"
+							style="width: 160px">
+							<f:selectItem itemLabel="Selecione" itemValue="" />
+							<f:selectItems value="#{dadosCadastraisBean.listaTodasFormasIngresso}" var="f"
+								itemLabel="#{f}" />
+						</p:selectOneMenu>
+					</div>			   	
+			   	
 			   		<div class="campo">		                    
 						<h:outputLabel value="*Período de ingresso: " for="periodo"/> <br />
 				   		<p:selectOneMenu id="periodo" value="#{dadosCadastraisBean.periodo}" 
@@ -86,7 +97,7 @@
 								actionListener="#{dadosCadastraisBean.salvar}" 
 								process="@this fields" update="@form" />
 					<p:commandButton id="btnCancelar" value="Cancelar" immediate="true" 
-								actionListener="#{dadosCadastraisBean.clean}" 
+								actionListener="#{dadosCadastraisBean.cancelar}" 
 								process="@this" update="@form" />
 				</p:toolbarGroup>
 			</p:toolbar>

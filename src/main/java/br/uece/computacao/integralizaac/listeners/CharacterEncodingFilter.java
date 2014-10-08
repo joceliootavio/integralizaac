@@ -9,6 +9,13 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+/**
+ * @author Jocélio Otávio
+ *
+ * Filtro responsável por setar o encoding padrão para
+ * todas as requisições da aplicação, a fim de evitar
+ * erro de encoding no JSF.
+ */
 public class CharacterEncodingFilter implements Filter {
 
     @Override

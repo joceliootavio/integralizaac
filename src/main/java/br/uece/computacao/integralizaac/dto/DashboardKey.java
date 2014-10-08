@@ -1,6 +1,14 @@
 package br.uece.computacao.integralizaac.dto;
 
 
+/**
+ * @author Jocélio Otávio
+ *
+ * Classe utilizada como chave no mapa de atividades do aluno
+ * de uma determinada atividade complementar e um determinado
+ * período.
+ *  
+ */
 public class DashboardKey {
 	private Long idAtividadeComplementar;
 	private String periodo;

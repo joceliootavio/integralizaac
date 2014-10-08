@@ -8,8 +8,22 @@ import br.uece.computacao.integralizaac.enums.NaturezaEnum;
 import br.uece.computacao.integralizaac.exceptions.BusinessException;
 import br.uece.computacao.integralizaac.utils.MsgUtil;
 
+/**
+ * @author Jocélio Otávio
+ *
+ * Classe responsável pelas regras de negócio da entidade
+ * @see AtividadeComplementar.
+ */
 public class AtividadeComplementarBO extends Business<AtividadeComplementar> {
+	
+	/**
+	 * Objeto da classe de persistencia da entidade @see AtividadeComplementar
+	 */
 	private AtividadeComplementarDao ativComplementarDao;
+	
+	/**
+	 * Objeto da classe de mensagens do sistema. 
+	 */
 	private MsgUtil msgUtil;
 	
 	public AtividadeComplementarBO(AtividadeComplementarDao dao) {
@@ -18,6 +32,12 @@ public class AtividadeComplementarBO extends Business<AtividadeComplementar> {
 		this.msgUtil = new MsgUtil();		
 	}
 	
+	/* (non-Javadoc)
+	 * @see br.uece.computacao.integralizaac.business.Business#incluir(br.uece.computacao.integralizaac.entity.BaseEntity)
+	 * 
+	 * Método de inclusão faz antes a validação da atividade complementar
+	 * a ser incluída.
+	 */
 	@Override
 	public void incluir(AtividadeComplementar atividadeComplementar) {
 		validarAtividadeComplementar(atividadeComplementar);
@@ -25,6 +45,12 @@ public class AtividadeComplementarBO extends Business<AtividadeComplementar> {
 		dao.incluir(atividadeComplementar);
 	}
 	
+	/* (non-Javadoc)
+	 * @see br.uece.computacao.integralizaac.business.Business#atualizar(br.uece.computacao.integralizaac.entity.BaseEntity)
+	 * 
+	 * Método de alteração faz antes a validação da atividade complementar
+	 * a ser alterada. 
+	 */
 	@Override
 	public void atualizar(AtividadeComplementar atividadeComplementar) {
 		validarAtividadeComplementar(atividadeComplementar);
@@ -32,6 +58,12 @@ public class AtividadeComplementarBO extends Business<AtividadeComplementar> {
 		dao.atualizar(atividadeComplementar);
 	}	
 	
+	/**
+	 * Método que faz a validação da atividade complementar, verificando se
+	 * já existe uma outra atividade com o mesmo nome.
+	 * 
+	 * @param atividadeComplementar Atividade complementar
+	 */
 	private void validarAtividadeComplementar(AtividadeComplementar atividadeComplementar) {
 		List<AtividadeComplementar> atividades = ativComplementarDao.buscarComDescricao(atividadeComplementar.getNatureza(), 
 																		atividadeComplementar.getDescricao(), 
@@ -46,14 +78,35 @@ public class AtividadeComplementarBO extends Business<AtividadeComplementar> {
 		}
 	}
 	
+	/**
+	 * Método que retorna a atividade complementar que tenha Id igual
+	 * ao código passado como parâmetro.
+	 * 
+	 * @param codAtividade Código da atividade
+	 * @return Atividade complementar
+	 */
 	public AtividadeComplementar buscaPorCodAtividade(long codAtividade) {
 		return ativComplementarDao.buscaPorId(codAtividade);
 	}
 	
+	/**
+	 * Método que retorna uma lista com todas as atividades complementares
+	 * cadastradas no banco.
+	 * 
+	 * @return Lista de atividades complementares.
+	 */
 	public List<AtividadeComplementar> listarTodasAtividades() {
 		return ativComplementarDao.listarTodos();
 	}
 
+	/**
+	 * Método que retorna a atividade complementar que tenha descrição
+	 * igual a descrição passada como parâmetro.
+	 * 
+	 * @param natureza Natureza da atividade
+	 * @param query Todo ou parte do descrição da atividade complementar.
+	 * @return
+	 */
 	public List<AtividadeComplementar> buscarComDescricao(NaturezaEnum natureza, String query) {
 		return ativComplementarDao.buscarComDescricao(natureza, query, false);
 	}

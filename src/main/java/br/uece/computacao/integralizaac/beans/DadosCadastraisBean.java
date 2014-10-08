@@ -1,6 +1,8 @@
 package br.uece.computacao.integralizaac.beans;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -13,9 +15,16 @@ import br.uece.computacao.integralizaac.business.UsuarioBO;
 import br.uece.computacao.integralizaac.dao.UsuarioDao;
 import br.uece.computacao.integralizaac.entity.Periodo;
 import br.uece.computacao.integralizaac.entity.Usuario;
+import br.uece.computacao.integralizaac.enums.FormaIngressoEnum;
 import br.uece.computacao.integralizaac.enums.PerfilEnum;
 import br.uece.computacao.integralizaac.services.EmailService;
 
+/**
+ * @author Jocélio Otávio
+ *
+ * Classe responsável pela camada Controller da aplicação
+ * especificamente na tela de cadastro de Dados Cadastrais.
+ */
 @ManagedBean
 @ViewScoped
 public class DadosCadastraisBean extends AbstractBean implements Serializable {
@@ -24,12 +33,17 @@ public class DadosCadastraisBean extends AbstractBean implements Serializable {
 	
 	UsuarioBO usuarioBusiness;
 	
+	/**
+	 * Atributo que guarda referencia ao usuário logado.
+	 */
 	@ManagedProperty("#{loginBean.usuario}")
 	private Usuario usuario;
 	
+	// Atributos que guardam os dados corrente do usuário.
 	private String nome;
 	private String matricula;
 	private String email;
+	private FormaIngressoEnum formaIngresso;	
 	private Periodo periodo;
 	private boolean atualizaSenha;
 	private String senhaAtual;
@@ -40,6 +54,10 @@ public class DadosCadastraisBean extends AbstractBean implements Serializable {
 		usuarioBusiness = new UsuarioBO(new UsuarioDao(), new EmailService());
 	}
 
+	/**
+	 * Método de inicialização da tela, onde são carregados
+	 * os dados do usuário logado, seja aluno ou coordenador.
+	 */
 	@PostConstruct	
 	public void init() {
 		if (usuario.getPerfil() == PerfilEnum.Aluno) {
@@ -47,21 +65,36 @@ public class DadosCadastraisBean extends AbstractBean implements Serializable {
 			matricula = usuario.getAluno().getMatricula();
 			email = usuario.getAluno().getEmail();
 			periodo = usuario.getAluno().getPeriodo();
-		} else if (usuario.getPerfil() == PerfilEnum.Professor) {
-			nome = usuario.getProfessor().getNome();
-			matricula = usuario.getProfessor().getMatricula();
-			email = usuario.getProfessor().getEmail();
+			formaIngresso = usuario.getAluno().getFormaIngresso();			
+		} else if (usuario.getPerfil() == PerfilEnum.Coordenador) {
+			nome = usuario.getCoordenador().getNome();
+			matricula = usuario.getCoordenador().getMatricula();
+			email = usuario.getCoordenador().getEmail();
 		}		
 	}
 	
+	/**
+	 * Método chamado ao carregar a tela de dados cadastrais
+	 * 
+	 * @return Url que redireciona para tela de dados cadastrais.
+	 */
 	public String load() {
 		return "/pages/dados_cadastrais.xhtml?faces-redirect=true";
 	}
 	
+	/**
+	 * Método que redireciona pra tela principal do sistema
+	 * ao cancelar a operação.
+	 * 
+	 * @return Url que redireciona para tela principal.
+	 */	
 	public String cancelar() {
 		return "/pages/main.xhtml?faces-redirect=true";
 	}
 	
+	/**
+	 * Método que salva os dados alterados pelo usuário.
+	 */
 	public void salvar() {
 		if (usuario.getPerfil() == PerfilEnum.Aluno) {
 			usuario.setLogin(matricula);
@@ -69,11 +102,12 @@ public class DadosCadastraisBean extends AbstractBean implements Serializable {
 			usuario.getAluno().setMatricula(matricula);
 			usuario.getAluno().setEmail(email);
 			usuario.getAluno().setPeriodo(periodo);
-		} else if (usuario.getPerfil() == PerfilEnum.Professor) {
+			usuario.getAluno().setFormaIngresso(formaIngresso);			
+		} else if (usuario.getPerfil() == PerfilEnum.Coordenador) {
 			usuario.setLogin(email);
-			usuario.getProfessor().setNome(nome);
-			usuario.getProfessor().setMatricula(matricula);
-			usuario.getProfessor().setEmail(email);
+			usuario.getCoordenador().setNome(nome);
+			usuario.getCoordenador().setMatricula(matricula);
+			usuario.getCoordenador().setEmail(email);
 		}
 		
 		if (atualizaSenha) {
@@ -89,7 +123,25 @@ public class DadosCadastraisBean extends AbstractBean implements Serializable {
 		
 		addInfoMessage("dados_cadastrais.alteracao");
 	}
-
+	
+	/**
+	 * Método que retorna todas as formas de ingresso cadastradas
+	 * de acordo com enum FormaIngressoEnum.
+	 * 
+	 * @return Lista de formas de ingresso.
+	 */
+	public List<FormaIngressoEnum> getListaTodasFormasIngresso() {
+		List<FormaIngressoEnum> retorno = new ArrayList<FormaIngressoEnum>();
+		
+		for (FormaIngressoEnum formaIngresso : FormaIngressoEnum.values()) {
+			retorno.add(formaIngresso);
+		}
+		
+		return retorno;
+	}
+	
+	// ################# Getters and Setters #####################	
+	
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
@@ -116,6 +168,14 @@ public class DadosCadastraisBean extends AbstractBean implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public FormaIngressoEnum getFormaIngresso() {
+		return formaIngresso;
+	}
+
+	public void setFormaIngresso(FormaIngressoEnum formaIngresso) {
+		this.formaIngresso = formaIngresso;
 	}
 
 	public Periodo getPeriodo() {

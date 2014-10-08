@@ -47,15 +47,17 @@
 									pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
 							</p:inputText>
 						</div>
-<!-- 						
+ 						
 						<div class="campo">
 							<h:outputLabel value="*Forma de ingresso: " for="formaIngresso" /> <br />
-							<p:selectOneMenu id="formaIngresso" value="#{alunoBean.aluno.periodo}"
+							<p:selectOneMenu id="formaIngresso" value="#{alunoBean.aluno.formaIngresso}"
 								required="true" label="Forma de ingresso"
 								style="width: 160px">
 								<f:selectItem itemLabel="Selecione" itemValue="" />
+								<f:selectItems value="#{alunoBean.listaTodasFormasIngresso}" var="f"
+									itemLabel="#{f}" />
 							</p:selectOneMenu>
-						</div> -->						
+						</div>						
 
 						<div class="campo">
 							<h:outputLabel value="*Período de ingresso: " for="periodo" /> <br />

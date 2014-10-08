@@ -9,10 +9,18 @@ import br.uece.computacao.integralizaac.entity.Certificado;
 import br.uece.computacao.integralizaac.utils.CertificadoUtils;
 
 
+/**
+ * @author Jocélio Otávio
+ *
+ * Classe responsável por realizar procedimentos antes e
+ * após persistir objetos do tipo @see Certificado.
+ *
+ */
 public class CertificadoListener {
 	
 	/**
-	 * Post persist.
+	 * Método que move da pasta temporária para a pasta definitiva
+	 * os certificados persistidos pelo Aluno.
 	 *
 	 * @param entity the entity
 	 */
@@ -31,7 +39,8 @@ public class CertificadoListener {
 	}	
 	
 	/**
-	 * Post remove.
+	 * Método que remove da pasta definitiva de certificados
+	 * o certificado removido pelo Aluno.
 	 *
 	 * @param entity the entity
 	 */
@@ -39,7 +48,6 @@ public class CertificadoListener {
 	public void postRemove(Object entity) {
 		if (entity instanceof Certificado) {
 			Certificado certificado = (Certificado) entity;			
-			System.out.println("Depois de removido");
 			
 			CertificadoUtils uploadUtils = new CertificadoUtils(certificado.getAtividadeAluno().getAluno());			
 			uploadUtils.removerCertificado(certificado);

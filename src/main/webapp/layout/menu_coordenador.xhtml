@@ -6,7 +6,7 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:p="http://primefaces.org/ui">
 
-	<p:menubar autoDisplay="false" id="menuProfessor">
+	<p:menubar autoDisplay="false" id="menuCoordenador">
 		<!-- p:submenu label="Início" -->
 			<p:menuitem value="Dashboard" outcome="/pages/dashboard" />
 			<p:menuitem value="Dados cadastrais" outcome="/pages/dados_cadastrais" />				
@@ -15,12 +15,12 @@
 		
 		<f:facet name="options">
 			<div style="float: left; margin: 5px 10px 5px 0px">
-	            <p:outputLabel value="Professor(a): "/>
-				<p:outputLabel value="#{loginBean.usuario.professor.nome}" styleClass="caixaAlta"/>
+	            <p:outputLabel value="Coordenador(a): "/>
+				<p:outputLabel value="#{loginBean.usuario.coordenador.nome}" styleClass="caixaAlta"/>
 			</div>				
 			<div style="float: left; margin: 5px">
 				<p:outputLabel value="Matrícula: "/>
-	            <p:outputLabel value="#{loginBean.usuario.professor.matricula}"/>            
+	            <p:outputLabel value="#{loginBean.usuario.coordenador.matricula}"/>            
 	        </div>
         </f:facet>
 	</p:menubar>

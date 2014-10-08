@@ -10,7 +10,17 @@ import br.uece.computacao.integralizaac.entity.Aluno;
 import br.uece.computacao.integralizaac.entity.AtividadeAluno;
 import br.uece.computacao.integralizaac.enums.NaturezaEnum;
 
+/**
+ * @author Jocélio Otávio
+ *
+ * Classe responsável pelas regras de negócio da entidade
+ * @see AtividadeAluno.
+ */
 public class AtividadeAlunoBO extends Business<AtividadeAluno>{
+	
+	/**
+	 * Objeto da classe de persistencia da entidade @see AtividadeAluno
+	 */
 	private AtividadeAlunoDao atividadeAlunoDao;
 	
 	public AtividadeAlunoBO(AtividadeAlunoDao dao) {
@@ -18,6 +28,14 @@ public class AtividadeAlunoBO extends Business<AtividadeAluno>{
 		atividadeAlunoDao = dao;
 	}
 
+	/**
+	 * Método que retorna <code>true</code> quando a atividade passada
+	 * como parâmetro faz exceder o limite de horas para aquele tipo
+	 * de atividade.
+	 * 
+	 * @param atividadeAluno Atividade adicionada pelo aluno.
+	 * @return
+	 */
 	public boolean excedeuHorasAtividade(AtividadeAluno atividadeAluno) {
 		atividadeAlunoDao.flush();
 		
@@ -37,6 +55,13 @@ public class AtividadeAlunoBO extends Business<AtividadeAluno>{
 		
 	}
 	
+	/**
+	 * Método que retorna a lista de naturezas nas quais um determinado
+	 * aluno tem atividades cadastradas.
+	 * 
+	 * @param aluno Aluno
+	 * @return Lista de naturezas
+	 */
 	public List<NaturezaEnum> listarNaturezas(Aluno aluno) {
 		if (aluno != null && aluno.getId() != null) {
 			return atividadeAlunoDao.listarNaturezas(aluno);
@@ -45,19 +70,19 @@ public class AtividadeAlunoBO extends Business<AtividadeAluno>{
 		} 
 	}
 	
+	/**
+	 * Método que retorna uma lista de DTOs que representam as atividades
+	 * do aluno daquela natureza.
+	 * 
+	 * @param aluno Aluno
+	 * @param natureza Natureza das atividades que serão retornadas.
+	 * @return Objeto do tipo @see ListaDashboard
+	 */
 	public ListaDashboard listarAtividadesPorNatureza(Aluno aluno, NaturezaEnum natureza) {
 		if (aluno != null && aluno.getId() != null) {
 			return atividadeAlunoDao.listarAtividadesPorNatureza(aluno, natureza);
 		} else {
 			return new ListaDashboard();
-		} 
-	}
-	
-	public List<AtividadeAluno> listarAtividades(Aluno aluno, Long ativComplementarId) {
-		if (aluno != null && aluno.getId() != null) {
-			return atividadeAlunoDao.listarAtividades(aluno, ativComplementarId);
-		} else {
-			return new ArrayList<AtividadeAluno>();
 		} 
 	}
 	

@@ -7,6 +7,13 @@ import javax.servlet.ServletContextListener;
 
 import br.uece.computacao.integralizaac.utils.ResourcesProvider;
 
+/**
+ * @author Jocélio Otávio
+ *
+ * Listener da aplicação responsável por criar os diretórios
+ * onde serão persistidos os certificados.
+ *
+ */
 public class IntegralizaAcContextListener implements ServletContextListener {
 	
 	private ResourcesProvider resourcesProvider;

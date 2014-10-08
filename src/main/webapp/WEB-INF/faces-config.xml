@@ -32,7 +32,4 @@
 	<factory>
 		<exception-handler-factory>br.uece.computacao.integralizaac.view.MyExceptionHandlerFactory</exception-handler-factory>
 	</factory>
-	<lifecycle>
-		<!--phase-listener>br.uece.computacao.integralizaac.listeners.LifeCycleJsfListener</phase-listener-->
-	</lifecycle>
 </faces-config>

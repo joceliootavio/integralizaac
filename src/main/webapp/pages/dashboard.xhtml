@@ -88,7 +88,7 @@
 											<h:outputText value="#{_atividadeDto.cargaHoraria}" />
 										</p:column>					
 										
-										<p:column headerText="Carga horária aproveitada"
+										<p:column headerText="Carga horária em análise"
 											styleClass="#{_atividadeDto.classeCssStatus}"
 											style="width: 60px; white-space: normal; text-align: center; ">
 											<h:panelGroup id="panelHorasAproveitadas" layout="block" 
@@ -191,7 +191,7 @@
 				
 				<p:toolbar>
 					<p:toolbarGroup align="right">
-						<p:commandButton id="btnRelatorioAtividades" value="Imprimir formulário atividades" 
+						<p:commandButton id="btnRelatorioAtividades" value="Imprimir mapa de atividades" 
 							ajax="false" style="margin-right: 3px" icon="ui-icon-print">
 						    <p:fileDownload value="#{dashboardBean.relatorioAtividades}" />
 						</p:commandButton>									
@@ -225,8 +225,8 @@
 					<h:panelGroup id="parecerPanel" styleClass="parecerPanel"
 						rendered="#{not empty _parecer}">
 						<div class="campo">		   		
-					   		<h:outputLabel value="Professor(a): "/> <br />
-					   		<p:inputText value="#{_parecer.professor.nome}" disabled="true" style="width: 300px"/>
+					   		<h:outputLabel value="Coordenador(a): "/> <br />
+					   		<p:inputText value="#{_parecer.coordenador.nome}" disabled="true" style="width: 300px"/>
 					   	</div>
 						<div class="campo">		   		
 					   		<h:outputLabel value="Data parecer: "/> <br />
@@ -244,7 +244,7 @@
 					   		</p:selectOneMenu>
 					   	</div>
 					   	<div id="botoesEditarParecer">
-						   	<h:panelGroup rendered="#{loginBean.perfilProfessor}">
+						   	<h:panelGroup rendered="#{loginBean.perfilCoordenador}">
 				   				<p:commandButton id="btnEditarParecer" title="Editar"  icon="ui-icon-pencil"
 									actionListener="#{dashboardBean.prepareEditarParecer}"
 									immediate="true" rendered="#{dashboardBean.podeEditarParecer}" 
@@ -281,7 +281,7 @@
 					   	
 					</h:panelGroup>
 						
-						<p:panel id="fieldsParecer" header="Parecer" rendered="#{empty _parecer and loginBean.perfilProfessor}">
+						<p:panel id="fieldsParecer" header="Parecer" rendered="#{empty _parecer and loginBean.perfilCoordenador}">
 							<div class="campo" style="float: none;">		   		
 						   		<h:outputLabel value="Observação: "/>
 						   		<p:inputTextarea value="#{dashboardBean.observacaoParecer}" 

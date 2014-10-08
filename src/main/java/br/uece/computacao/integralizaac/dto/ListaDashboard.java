@@ -5,9 +5,34 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Jocélio Otávio
+ *
+ * Classe que contém a lista de DTOs que serão exibidos no Dashboard.
+ * os atributos do tipo mapaSomaAtividadePeriodo e mapaSomaAtividade
+ * são utilizados para calculo da carga horária das atividades do 
+ * aluno. 
+ * 
+ */
 public class ListaDashboard {
+	
+	/**
+	 * Mapa que tem como chave a atividade complementar e o período,
+	 * a fim de guardar a carga horária total para cada combinação
+	 * desses dois valores. 
+	 */
 	private Map<DashboardKey, Integer> mapaSomaAtividadePeriodo;
-	private Map<Long, Integer> mapaSomaAtividade;	
+	
+	/**
+	 * Mapa que tem como chave o id da atividade complementar a fim
+	 * de somar a carga horária total de uma determinada 
+	 * atividade complementar exercida pelo aluno. 
+	 */
+	private Map<Long, Integer> mapaSomaAtividade;
+	
+	/**
+	 * Lista de DTOs que serão exibidos no Dashboard. 
+	 */
 	private List<DashboardDTO> listaDtos;
 	
 	public ListaDashboard() {

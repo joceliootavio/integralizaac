@@ -13,11 +13,28 @@ import javax.mail.internet.MimeMessage;
 
 import br.uece.computacao.integralizaac.dto.EmailDto;
 
+/**
+ * @author Jocélio Otávio
+ *
+ * Classe responsável por enviar email utilizando o protocolo SMTP.
+ * Os dados de acesso a conta do email via SMTP ficam no arquivo
+ * mail-smtp.properties
+ *
+ */
 public class EmailService {
+	/**
+	 * Tag que identifica todos os emails enviados pela aplicação.
+	 */
 	private static final String TAG_APP_EMAIL = "[IntegralizaAC]";
 	
+	/**
+	 * Representa o arquivo properties com os dados SMTP. 
+	 */
 	private Properties smtpConfig;
 	
+	/**
+	 * Construtor responsável por carregar o arquivo com os dados SMTP.
+	 */
 	public EmailService() {
 		try {
 			smtpConfig = new Properties();
@@ -27,6 +44,11 @@ public class EmailService {
 		}
 	}
 
+	/**
+	 * Método que envia email.
+	 * 
+	 * @param email DTO com os dados do email que deve ser enviado.
+	 */
 	public void enviarEmail(EmailDto email) {
 		try {
 			Session session = Session.getInstance(smtpConfig,

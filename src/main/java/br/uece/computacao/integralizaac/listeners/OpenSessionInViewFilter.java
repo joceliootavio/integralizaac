@@ -13,6 +13,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import br.uece.computacao.integralizaac.dao.JPAUtil;
 
+/**
+ * @author Jocélio Otávio
+ *
+ * Filtro responsável por abrir e fechar conexão com o banco
+ * no início e no fim da requisição, respectivamente.
+ * 
+ */
 public class OpenSessionInViewFilter implements Filter {
 
 	private JPAUtil jpaUtil;

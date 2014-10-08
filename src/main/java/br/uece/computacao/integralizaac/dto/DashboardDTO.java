@@ -1,6 +1,13 @@
 package br.uece.computacao.integralizaac.dto;
 
 
+/**
+ * @author Jocélio Otávio
+ *
+ * Classe que contém as informações necessárias para serem exibidas
+ * no Dashboard.
+ * 
+ */
 public class DashboardDTO {
 	private Integer ordem;
 	private Long idAtividade;

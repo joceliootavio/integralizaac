@@ -9,8 +9,21 @@ import br.uece.computacao.integralizaac.entity.Periodo;
 import br.uece.computacao.integralizaac.exceptions.BusinessException;
 import br.uece.computacao.integralizaac.utils.MsgUtil;
 
+/**
+ * @author Jocélio Otávio
+ *
+ * Classe responsável pelas regras de negócio da entidade
+ * @see Periodo.
+ */
 public class PeriodoBO extends Business<Periodo> {
+	/**
+	 * Objeto da classe de persistencia da entidade @see Periodo.
+	 */
 	private PeriodoDao periodoDao;
+	
+	/**
+	 * Objeto da classe mensagens do sistema. 
+	 */
 	private MsgUtil msgUtil;
 	
 	public PeriodoBO(PeriodoDao dao) {
@@ -19,6 +32,12 @@ public class PeriodoBO extends Business<Periodo> {
 		msgUtil = new MsgUtil();
 	}
 	
+	/**
+	 * Método que retorna uma lista com todos os
+	 * períodos cadastrados na base de dados.
+	 * 
+	 * @return Lista de períodos
+	 */
 	public List<Periodo> listarTodosPeriodos() {
 		List<Periodo> todosPeriodos = periodoDao.listarTodos();
 		
@@ -33,6 +52,13 @@ public class PeriodoBO extends Business<Periodo> {
 		return todosPeriodos; 
 	}
 	
+	/* (non-Javadoc)
+	 * @see br.uece.computacao.integralizaac.business.Business#incluir(br.uece.computacao.integralizaac.entity.BaseEntity)
+	 * 
+	 * Método de inclusão do periodo que valida o período antes
+	 * da inclusão.
+	 * 
+	 */
 	@Override
 	public void incluir(Periodo periodo) {
 		validarPeriodo(periodo);
@@ -40,6 +66,12 @@ public class PeriodoBO extends Business<Periodo> {
 		periodoDao.incluir(periodo);
 	}
 
+	/* (non-Javadoc)
+	 * @see br.uece.computacao.integralizaac.business.Business#atualizar(br.uece.computacao.integralizaac.entity.BaseEntity)
+	 * 
+	 * Método de alteração que valida o período antes
+	 * da alteração. 
+	 */
 	@Override
 	public void atualizar(Periodo periodo) {
 		validarPeriodo(periodo);
@@ -47,6 +79,13 @@ public class PeriodoBO extends Business<Periodo> {
 		periodoDao.atualizar(periodo);
 	}
 	
+	/**
+	 * Método de validação da entidade Periodo que verifica se
+	 * existe período no banco com o mesmo nome, ou se o período
+	 * seja concomitante com outro já cadastrado.
+	 * 
+	 * @param periodo Período a ser validado.
+	 */
 	protected void validarPeriodo(Periodo periodo) {
 		List<Periodo> periodos = periodoDao.buscarPeriodoComNome(periodo.getNome());
 		

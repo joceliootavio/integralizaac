@@ -14,6 +14,14 @@ import javax.servlet.http.HttpSession;
 
 import br.uece.computacao.integralizaac.entity.Usuario;
 
+/**
+ * @author Jocélio Otávio
+ *
+ * Filtro responsável por verificar se o usuário está
+ * logado no sistema. Se não estiver logado, o usuário
+ * será redirecionado para a tela de login.
+ *
+ */
 public class FiltroSeguranca implements Filter {
 
 	private static final String LOGIN_PAGE = "/pages/login.jsf";
