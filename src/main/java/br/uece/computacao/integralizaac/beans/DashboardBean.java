@@ -18,11 +18,6 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultStreamedContent;
@@ -44,6 +39,11 @@ import br.uece.computacao.integralizaac.enums.NaturezaEnum;
 import br.uece.computacao.integralizaac.enums.PerfilEnum;
 import br.uece.computacao.integralizaac.reports.RelatorioVO;
 import br.uece.computacao.integralizaac.services.EmailService;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 /**
  * @author Jocélio Otávio
@@ -358,9 +358,9 @@ public class DashboardBean extends AbstractBean implements Serializable {
 			mapaParametros.put("TOTAL_CREDITOS", getTotalCreditosCorrespondentes());
 			
 			JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(listaRelatorio, true);
-			String reportPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/WEB-INF/relatorios/quadro_atividades.jasper");
+			String reportPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/WEB-INF/relatorios/quadro_atividades.jrxml");
 			
-			jasperPrint = JasperFillManager.fillReport(reportPath, mapaParametros, beanCollectionDataSource);
+			jasperPrint = JasperFillManager.fillReport(JasperCompileManager.compileReport(reportPath), mapaParametros, beanCollectionDataSource);
 
 			JasperExportManager.exportReportToPdfStream(jasperPrint, outputBytes);
 			relatorio = new ByteArrayInputStream(outputBytes.toByteArray());
@@ -368,6 +368,7 @@ public class DashboardBean extends AbstractBean implements Serializable {
 			ex.printStackTrace();
 			addErrorMessageValue(ex.getMessage());
 		} finally {
+			jasperPrint = null;			
 			outputBytes.close();
 		}
 		
