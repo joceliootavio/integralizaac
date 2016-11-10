@@ -119,22 +119,6 @@
 					</dependency>
 				</dependencies>
 			</plugin>
-			
-			<plugin>
-			    <groupId>org.apache.maven.plugins</groupId>
-			    <artifactId>maven-war-plugin</artifactId>
-			    <version>2.3</version>
-			    <configuration>
-			        <warName>integralizaac</warName>
-			        <outputDirectory>C:\\Users\\jocelio\\Downloads</outputDirectory>
-			    </configuration>
-                <executions>
-                    <execution>
-                        <id>default-war</id>
-                        <phase>install</phase>
-                    </execution>
-                </executions>
-			</plugin>
 		</plugins>
 	</build>
 </project>
