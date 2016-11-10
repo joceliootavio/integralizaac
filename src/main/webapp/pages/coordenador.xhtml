@@ -27,7 +27,7 @@
 			   		<h:outputLabel value="*E-mail: "/> <br />
 			   		<p:inputText id="email" value="#{coordenadorBean.coordenador.email}" 
 			   			required="true" label="E-mail" maxlength="30" validatorMessage="E-mail inválido"
-			   			style="width: 220px">
+			   			style="width: 220px" styleClass="trim">
 			   			<f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
 			   		</p:inputText>
 			   	</div>

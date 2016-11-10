@@ -15,6 +15,7 @@ import br.uece.computacao.integralizaac.enums.PerfilEnum;
 import br.uece.computacao.integralizaac.exceptions.BusinessException;
 import br.uece.computacao.integralizaac.services.EmailService;
 import br.uece.computacao.integralizaac.utils.GeradorSenha;
+import br.uece.computacao.integralizaac.utils.ResourcesProvider;
 
 /**
  * @author Jocélio Otávio
@@ -32,11 +33,14 @@ public class UsuarioBO extends Business<Usuario> {
 	 * Objeto da classe responável por enviar emails.
 	 */
 	private EmailService emailService;
+
+	private ResourcesProvider resourcesProvider;
 	
 	public UsuarioBO(UsuarioDao dao, EmailService emailService) {
 		super(dao);
 		this.usuarioDao = dao;
 		this.emailService = emailService;
+		this.resourcesProvider = new ResourcesProvider();
 	}
 	
 	/**
@@ -94,7 +98,8 @@ public class UsuarioBO extends Business<Usuario> {
 			.append("Foi criado um novo usuário no IntegralizaAC com Matrícula <b>")
 			.append(usuario.getAluno().getMatricula())
 			.append("</b> e senha <b>")
-			.append(senhaUsuario).append("</b>");
+			.append(senhaUsuario).append("</b>. ")
+			.append(" A url de acesso ao sistema é <a href=\"").append(resourcesProvider.getValue("pathApp")).append("\">").append(resourcesProvider.getValue("pathApp")).append("</a>.");
 		
 		email.setCorpo(corpo.toString());
 		
@@ -115,8 +120,9 @@ public class UsuarioBO extends Business<Usuario> {
 		StringBuilder corpo = new StringBuilder()
 			.append("Foi criado um novo usuário no IntegralizaAC com matrícula <b>")
 			.append(usuario.getCoordenador().getMatricula()).append("</b>.<br/> <br/>")
-			.append("Para acessar o sistema utilize o e-mail como login, e a senha <b>")
-			.append(senhaUsuario).append("</b>");
+			.append(" Acesse o sistema pelo endereço <a href=\"").append(resourcesProvider.getValue("pathApp")).append("\">").append(resourcesProvider.getValue("pathApp")).append("</a>")
+			.append(" utilizando o e-mail como login, e a senha <b>")
+			.append(senhaUsuario).append("</b>.");
 		
 		email.setCorpo(corpo.toString());
 		

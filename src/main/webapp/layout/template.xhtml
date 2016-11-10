@@ -43,6 +43,9 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 		    $('.numerico').live('keypress', validateNumber);
+		    $('.trim').live('blur', function() {
+		    	$(this).val($(this).val().trim());
+		    });
 		});
 	</script>
 </h:body>

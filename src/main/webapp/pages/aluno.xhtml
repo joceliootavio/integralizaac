@@ -41,7 +41,7 @@
 						<div class="campo">
 							<h:outputLabel value="*E-mail: " /> <br />
 							<p:inputText id="email" value="#{alunoBean.aluno.email}"
-								required="true" label="E-mail" maxlength="30"
+								required="true" label="E-mail" maxlength="30" styleClass="trim"
 								validatorMessage="E-mail inválido">
 								<f:validateRegex
 									pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
