@@ -236,10 +236,6 @@ public class AtividadeAlunoBean <T> extends AbstractBean implements Serializable
 			addErrorMessageKey("atividade_aluno.certificadoObrigatorio");
 			return;
 		}
-		if (atividadeAlunoBO.verificaPeriodoAnteriorIngresso(atividadeAluno)) {
-			addErrorMessageKey("atividade_aluno.periodoAtividadeAnteriorPeriodoAluno");
-			return;
-		}
 		
 		tratarNovaInstituicao();
 		
