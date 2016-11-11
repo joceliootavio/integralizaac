@@ -41,18 +41,11 @@ public class CertificadoUtils {
 	}	
 	
 	public String getPathTemp() {
-		System.out.println(System.getenv("OPENSHIFT_DATA_DIR") + resourcesProvider.getValue("pathCertificados") + "temp");
-		if (System.getenv("OPENSHIFT_DATA_DIR") != null)
-			return System.getenv("OPENSHIFT_DATA_DIR") + resourcesProvider.getValue("pathCertificados") + "temp";
-		else 
-			return resourcesProvider.getValue("pathCertificados") + "temp";
+		return resourcesProvider.getValue("pathCertificados") + "temp";
 	}
 	
 	public String getPathPermanente() {
-		if (System.getenv("OPENSHIFT_DATA_DIR") != null)		
-			return System.getenv("OPENSHIFT_DATA_DIR") + resourcesProvider.getValue("pathCertificados") + "permanente";
-		else 
-			return resourcesProvider.getValue("pathCertificados") + "permanente";
+		return resourcesProvider.getValue("pathCertificados") + "permanente";
 	}	
 
 	public void getDiretorioTempCertificados() {
