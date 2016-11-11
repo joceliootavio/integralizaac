@@ -197,6 +197,11 @@ public class AtividadeAlunoBean <T> extends AbstractBean implements Serializable
 			return;
 		}
 		
+		if (atividadeAlunoBO.verificaPeriodoAnteriorIngresso(atividadeAluno)) {
+			addErrorMessageKey("atividade_aluno.periodoAtividadeAnteriorPeriodoAluno");
+			return;
+		}
+		
 		tratarNovaInstituicao();
 		
 		atividadeAlunoBO.incluir(atividadeAluno);
