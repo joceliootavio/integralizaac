@@ -8,8 +8,8 @@
       	<non-jta-data-source>java:comp/env/jdbc/IntegralizaAcDS</non-jta-data-source>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
-            <property name="hibernate.show_sql" value="true" />
-            <property name="hibernate.format_sql" value="true" />
+            <property name="hibernate.show_sql" value="false" />
+            <property name="hibernate.format_sql" value="false" />
             
             <property name="hibernate.hbm2ddl.auto" value="none" />
             <property name="hibernate.hbm2ddl.import_files" value="script_inicial_integralizaac.sql" />
