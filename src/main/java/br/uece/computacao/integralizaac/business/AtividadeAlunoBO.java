@@ -8,6 +8,7 @@ import br.uece.computacao.integralizaac.dto.HorasAtividadeDTO;
 import br.uece.computacao.integralizaac.dto.ListaDashboard;
 import br.uece.computacao.integralizaac.entity.Aluno;
 import br.uece.computacao.integralizaac.entity.AtividadeAluno;
+import br.uece.computacao.integralizaac.entity.Periodo;
 import br.uece.computacao.integralizaac.enums.NaturezaEnum;
 
 /**
@@ -53,6 +54,28 @@ public class AtividadeAlunoBO extends Business<AtividadeAluno>{
 		
 		return false;
 		
+	}
+	
+	public boolean verificaPeriodoAnteriorIngresso(AtividadeAluno atividadeAluno) {
+	
+		if (atividadeAluno.getPeriodo().compareTo(atividadeAluno.getAluno().getPeriodo()) > 0)
+			return true;
+		
+		return false;
+		
+	}	
+	
+	public static void main(String[] args) {
+		AtividadeAluno atividadeAluno = new AtividadeAluno();
+		
+		atividadeAluno.setAluno(new Aluno());
+		atividadeAluno.getAluno().setPeriodo(new Periodo());
+		atividadeAluno.getAluno().getPeriodo().setNome("2009.1");
+		
+		atividadeAluno.setPeriodo(new Periodo());
+		atividadeAluno.getPeriodo().setNome("2009.2");
+		
+		System.out.println(new AtividadeAlunoBO(null).verificaPeriodoAnteriorIngresso(atividadeAluno));
 	}
 	
 	/**

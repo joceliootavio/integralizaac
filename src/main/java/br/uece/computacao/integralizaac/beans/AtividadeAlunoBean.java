@@ -197,6 +197,11 @@ public class AtividadeAlunoBean <T> extends AbstractBean implements Serializable
 			return;
 		}
 		
+		if (atividadeAlunoBO.verificaPeriodoAnteriorIngresso(atividadeAluno)) {
+			addErrorMessageKey("atividade_aluno.periodoAtividadeAnteriorPeriodoAluno");
+			return;
+		}
+		
 		tratarNovaInstituicao();
 		
 		atividadeAlunoBO.incluir(atividadeAluno);
@@ -229,6 +234,10 @@ public class AtividadeAlunoBean <T> extends AbstractBean implements Serializable
 	public void atualizar() {
 		if (atividadeAluno.getCertificados() == null || atividadeAluno.getCertificados().size() == 0) {
 			addErrorMessageKey("atividade_aluno.certificadoObrigatorio");
+			return;
+		}
+		if (atividadeAlunoBO.verificaPeriodoAnteriorIngresso(atividadeAluno)) {
+			addErrorMessageKey("atividade_aluno.periodoAtividadeAnteriorPeriodoAluno");
 			return;
 		}
 		
