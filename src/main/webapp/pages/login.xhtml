@@ -21,7 +21,11 @@
 			   		
 			   		<p:tooltip for="login" value="Aluno deve utilizar a matrícula e coordenador deve utilizar o e-mail."/>
 			   		
-				    <p:panelGrid id="panelLogin" columns="2" cellpadding="5" style="align:center"> 
+	                <div class="mensagemLogin">
+	              		<p:messages autoUpdate="true" />
+	              	</div>			   		
+			   		
+				    <p:panelGrid id="panelLogin" columns="2" cellpadding="5" style="" styleClass="tableLogin"> 
 				    	<f:facet name="header">	  
 			        		Acesso ao sistema
 			    		</f:facet>  
@@ -35,18 +39,18 @@
 			                    id="senha" maxlength="30" />                
 			                          	              
 			            <f:facet name="footer" >  
-		                	<h:link value="Cadastre-se" outcome="/pages/aluno.jsf" 
-		                		style="float: left; padding-top: 10px;"/>		                	
 			                <p:commandButton id="btnLogin" value="Login" 
 			                	process="@form" ajax="false" action="#{loginBean.efetuarLogin}"
 			                	style="float: right;"/>
 			            </f:facet>  	             
 			        </p:panelGrid>
 			        
-	                <div class="mensagemLogin">
-	              		<p:messages autoUpdate="true" />
-	              	</div>
-	              	
+                	<div class="linksLogin" style="width: 14%;">
+	                	<h:link value="Cadastre-se" outcome="/pages/aluno.jsf" 
+	                		style="padding-right: 10px;"/>		                	
+	                	<h:link value="Redefinir senha" outcome="/pages/reset-senha.jsf" />			                		
+                	</div>			        
+      	
 			   </h:form> 	     
 		   </div>
 		</div>

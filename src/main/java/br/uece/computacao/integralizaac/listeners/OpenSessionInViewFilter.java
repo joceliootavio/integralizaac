@@ -12,6 +12,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
 import br.uece.computacao.integralizaac.dao.JPAUtil;
+import br.uece.computacao.integralizaac.exceptions.BusinessException;
 
 /**
  * @author Jocélio Otávio
@@ -38,17 +39,16 @@ public class OpenSessionInViewFilter implements Filter {
 			chain.doFilter(req, res);
 			
             em.getTransaction().commit();
+        } catch (BusinessException ex) {  
+        	System.out.println("BusinessException: " + ex.getMessage());
+            
+            threatRollback(em);  
+  
+            throw new ServletException(ex);      
         } catch (Throwable ex) {  
             ex.printStackTrace();
             
-            try {  
-            	if (em.getTransaction().isActive()) {  
-            		em.getTransaction().rollback();  
-            	} 
-            } catch (Throwable rbEx) {  
-            	rbEx.printStackTrace();
-                System.out.println("Could not rollback transaction after exception!");  
-            }  
+            threatRollback(em);  
   
             throw new ServletException(ex);  
         } finally {
@@ -57,6 +57,17 @@ public class OpenSessionInViewFilter implements Filter {
             }
         }  
 
+	}
+
+	private void threatRollback(EntityManager em) {
+		try {  
+			if (em.getTransaction().isActive()) {  
+				em.getTransaction().rollback();  
+			} 
+		} catch (Throwable rbEx) {  
+			rbEx.printStackTrace();
+		    System.out.println("Could not rollback transaction after exception!");  
+		}
 	}
 
 	@Override

@@ -276,3 +276,16 @@ font-size: 12px !important;
 	z-index: -1;
 } 
 
+.tableLogin {
+	align:center;
+}
+
+.linksLogin {
+	width: 14%;
+}
+
+.linksLogin a {
+	float: left; 
+	padding-top: 10px;
+	 
+}

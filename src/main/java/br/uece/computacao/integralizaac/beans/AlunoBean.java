@@ -112,6 +112,24 @@ public class AlunoBean extends AbstractBean implements Serializable {
 	}
 	
 	/**
+	 * Método que redefine a senha do usuário passado como
+	 * parâmetro.
+	 * 
+	 * @param usuario Usuário
+	 */
+	public void resetarSenhaAluno() {
+		try {
+			Usuario usuario = usuarioBO.buscaUsuario(aluno.getMatricula());
+			resetarSenha(usuario);
+					
+			addInfoMessage("aluno.resetSenhaAluno");
+		} catch (Exception e) {
+			addErrorMessageValue(e.getMessage());
+			FacesContext.getCurrentInstance().validationFailed();
+		}			
+	}
+	
+	/**
 	 * Méotdo que retorna a lista de todas as formas de 
 	 * ingresso de acordo com o enum @see FormaIngressoEnum
 	 *  

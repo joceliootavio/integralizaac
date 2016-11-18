@@ -288,7 +288,23 @@ public class UsuarioBO extends Business<Usuario> {
 	public Aluno buscaAlunoPorId(Long idAluno) {
 		return usuarioDao.buscarAlunoPorId(idAluno);
 	}
-
+	
+	
+	/**
+	 * Método que retorna o aluno com a mesma matrícula passada como
+	 * parâmetro.
+	 * 
+	 * @param login Matrícula do aluno.
+	 * @return Usuario com o login informado, ou nulo.
+	 */	
+	public Usuario buscaUsuario(String login) {	
+		try {
+			return usuarioDao.buscarUsuario(login);
+		} catch (NoResultException e) {
+			throw new BusinessException("Não existe usuario cadastrado com a matrícula informada.");
+		}
+	}
+	
 	/**
 	 * Método que gera uma nova senha, atualiza o usuário e
 	 * envia email para o usuário com a nova senha.

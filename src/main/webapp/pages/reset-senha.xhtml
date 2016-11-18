@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+
+	<ui:define name="menu">
+	</ui:define>
+
+	<ui:define name="content">
+
+		<div id="content-box">
+			<div style="height: 50px"></div>
+			<div class="padding">
+				<div style="height: 5px"></div>
+			</div>
+
+		   <div class="centralizado" style="width: 20%">
+
+				<p:messages id="messages" autoUpdate="true" />
+
+				<h:form id="formAluno">
+					<p:focus for="matricula" />
+					<p:panel header="Redefinir senha" id="fields">
+
+						<div class="campo">
+							<h:outputLabel for="matricula" value="*Matrícula:" /> <br />
+							<p:inputText value="#{alunoBean.aluno.matricula}" required="true"
+								label="Matrícula" id="matricula" style="width: 100px"
+								maxlength="7" styleClass="numerico" validator="matriculaValidator">
+							</p:inputText>
+						</div>
+
+						<br clear="all" />
+
+					</p:panel>
+
+					<p:toolbar id="barraBotoes">
+						<p:toolbarGroup align="right">
+							<p:commandButton id="btnCancelar" value="Cancelar"
+								action="#{alunoBean.cancelar}" ajax="false" immediate="true" />
+							<p:commandButton id="btnSalvar" value="Confirmar"
+								actionListener="#{alunoBean.resetarSenhaAluno}" process="@form"
+								update="@form"
+								onclick="$('#messages').hide()"
+								oncomplete="if (!args.validationFailed) dialogConfirmacaoW.show();" />
+
+						</p:toolbarGroup>
+					</p:toolbar>
+				</h:form>
+			</div>
+		</div>
+		<p:dialog id="dialogConfirmacao" widgetVar="dialogConfirmacaoW" 
+			closable="false" modal="true" resizable="false" draggable="false">
+			
+			<h:form>
+				<div class="mensagemDialog">
+					<h:outputLabel value="#{messages['aluno.resetSenhaAluno']}" escape="false"/>
+				</div>
+				<div class="centralizado" style="width:80px">
+					<p:commandButton id="btnConfirmar" value="Ok"
+						action="#{alunoBean.cancelar}" ajax="false" style="width:100%"/>
+				</div>
+			</h:form>
+			
+		</p:dialog>
+	</ui:define>
+
+</ui:composition>

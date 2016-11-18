@@ -112,6 +112,28 @@ public class UsuarioDao extends
 	}
 	
 	/**
+	 * Retorna usuario que tenha matrícula igual a passada como
+	 * parâmetro.
+	 * 
+	 * @param login Matrícula do aluno
+	 * 
+	 * @return Aluno com matrícula informada.
+	 */
+	public Usuario buscarUsuario(String login) {
+		StringBuilder hql = new StringBuilder();
+		
+		hql.append("select u from Usuario as u ");
+		hql.append("where u.login = :login ");
+		
+		TypedQuery<Usuario> query = getEntityManager()
+				.createQuery(hql.toString(), Usuario.class);
+		
+		query.setParameter("login", login);
+		
+		return query.getSingleResult();
+	}	
+	
+	/**
 	 * Recuperar aluno com o Id passado como parâmetro.
 	 * 
 	 * @param idAluno Id do aluno.
