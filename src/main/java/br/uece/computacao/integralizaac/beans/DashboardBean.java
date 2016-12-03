@@ -358,9 +358,11 @@ public class DashboardBean extends AbstractBean implements Serializable {
 			mapaParametros.put("TOTAL_CREDITOS", getTotalCreditosCorrespondentes());
 			
 			JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(listaRelatorio, true);
-			String reportPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/WEB-INF/relatorios/quadro_atividades.jrxml");
+			//String reportPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/WEB-INF/relatorios/quadro_atividades.jrxml");
+			String reportPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/WEB-INF/relatorios/quadro_atividades.jasper");
 			
-			jasperPrint = JasperFillManager.fillReport(JasperCompileManager.compileReport(reportPath), mapaParametros, beanCollectionDataSource);
+			//jasperPrint = JasperFillManager.fillReport(JasperCompileManager.compileReport(reportPath), mapaParametros, beanCollectionDataSource);
+			jasperPrint = JasperFillManager.fillReport(reportPath, mapaParametros, beanCollectionDataSource);			
 
 			JasperExportManager.exportReportToPdfStream(jasperPrint, outputBytes);
 			relatorio = new ByteArrayInputStream(outputBytes.toByteArray());
