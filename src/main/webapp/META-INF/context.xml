@@ -7,7 +7,7 @@
               url="jdbc:postgresql://localhost:5432/integralizaac"
               driverClassName="org.postgresql.Driver"
               username="postgres"
-              password="postgres"
+              password="senha"
               auth="Container"
               type="javax.sql.DataSource"
               maxActive="20"

@@ -19,24 +19,35 @@
 			<p:panel header="Coordenador" id="fields">
 				<div class="campo">
 					<h:outputLabel value="*Nome: "/> <br />
-			   		<p:inputText id="nome" value="#{coordenadorBean.coordenador.nome}" 
+			   		<p:inputText id="nome" value="#{coordenadorBean.usuario.nome}" 
 			   			required="true" label="Nome" maxlength="50" style="width: 250px"/>
 			   	</div>
 		   		
 		   		<div class="campo">
 			   		<h:outputLabel value="*E-mail: "/> <br />
-			   		<p:inputText id="email" value="#{coordenadorBean.coordenador.email}" 
+			   		<p:inputText id="email" value="#{coordenadorBean.usuario.email}" 
 			   			required="true" label="E-mail" maxlength="30" validatorMessage="E-mail inválido"
 			   			style="width: 220px" styleClass="trim">
 			   			<f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
 			   		</p:inputText>
 			   	</div>
 		   		
-		   		<div class="campo">		   		
+		   		<div class="campo">
 			   		<h:outputLabel value="*Matricula: "/> <br />
-			   		<p:inputText id="matricula" value="#{coordenadorBean.coordenador.matricula}" 
+			   		<p:inputText id="matricula" value="#{coordenadorBean.usuario.coordenador.matricula}" 
 			   			required="true" label="Matricula" maxlength="9" />
 			   	</div>
+			   	
+				<div class="campo">
+					<h:outputLabel value="*Curso: " for="curso" /> <br />
+					<p:selectOneMenu id="curso" value="#{coordenadorBean.usuario.coordenador.curso}"
+						required="true" label="Curso"
+						style="width: 250px">
+						<f:selectItem itemLabel="Selecione" itemValue="" />
+						<f:selectItems value="#{coordenadorBean.listaCursosVigentes}" var="c"
+							itemLabel="#{c.nome}" />
+					</p:selectOneMenu>
+				</div>			   	
 			   	
 			   	<br clear="all"/>
 			</p:panel>
@@ -66,17 +77,17 @@
 				emptyMessage="Nenhum coordenador cadastrado."
 				var="_usuario"
 				value="#{coordenadorBean.listaCoordenadores}"
-				sortBy="#{_usuario.coordenador.nome}"
+				sortBy="#{_usuario.nome}"
 				sortOrder="descending"
 				selectionMode="single"
-				rowKey="#{_usuario.coordenador.hashCode()}"
+				rowKey="#{_usuario.hashCode()}"
 				rows="#{resources.pageRows}" paginator="#{coordenadorBean.showPaginator(coordenadorBean.listaCoordenadores)}" paginatorPosition="top">
 				
 				<p:ajax event="rowSelect" listener="#{coordenadorBean.selecionarCoordenador}"
 					update=":coordenadorForm:fields :coordenadorForm:barraBotoes" />
 	
 				<p:column headerText="Nome">
-					<h:outputText value="#{_usuario.coordenador.nome}" />
+					<h:outputText value="#{_usuario.nome}" />
 				</p:column>
 				
 				<p:column headerText="Matricula">
@@ -84,9 +95,12 @@
 				</p:column>
 				
 				<p:column headerText="E-mail">
-					<h:outputText value="#{_usuario.coordenador.email}" />
+					<h:outputText value="#{_usuario.email}" />
 				</p:column>
-					
+				
+				<p:column headerText="Curso">
+					<h:outputText value="#{_usuario.coordenador.curso.nome}" />
+				</p:column>
 			</p:dataTable>
 		</h:form>
 		

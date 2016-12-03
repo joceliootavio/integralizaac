@@ -33,12 +33,16 @@
 		<f:facet name="options">
 			<div class="labelDoisPontos">
 	            <p:outputLabel value="Aluno: "/>
-				<p:outputLabel value="#{loginBean.usuario.aluno.nome}" styleClass="caixaAlta"/>
+				<p:outputLabel value="#{loginBean.usuario.nome}" styleClass="caixaAlta"/>
 			</div>				
 			<div style="float: left; margin: 5px">
 				<p:outputLabel value="Matrícula: "/>
 	            <p:outputLabel value="#{loginBean.usuario.aluno.matricula}"/>            
 	        </div>
+	        <div style="float: left; margin: 5px">
+				<p:outputLabel value="Curso: "/>
+	            <p:outputLabel value="#{loginBean.usuario.aluno.curso.nome}"/>            
+	        </div>	        
         </f:facet>
 	</p:menubar>
 		

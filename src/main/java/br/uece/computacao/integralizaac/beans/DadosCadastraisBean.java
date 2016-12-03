@@ -13,6 +13,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import br.uece.computacao.integralizaac.business.UsuarioBO;
 import br.uece.computacao.integralizaac.dao.UsuarioDao;
+import br.uece.computacao.integralizaac.entity.Curso;
 import br.uece.computacao.integralizaac.entity.Periodo;
 import br.uece.computacao.integralizaac.entity.Usuario;
 import br.uece.computacao.integralizaac.enums.FormaIngressoEnum;
@@ -45,6 +46,7 @@ public class DadosCadastraisBean extends AbstractBean implements Serializable {
 	private String email;
 	private FormaIngressoEnum formaIngresso;	
 	private Periodo periodo;
+	private Curso curso;
 	private boolean atualizaSenha;
 	private String senhaAtual;
 	private String novaSenha;
@@ -60,16 +62,17 @@ public class DadosCadastraisBean extends AbstractBean implements Serializable {
 	 */
 	@PostConstruct	
 	public void init() {
+		nome = usuario.getNome();		
+		email = usuario.getEmail();
+		
 		if (usuario.getPerfil() == PerfilEnum.Aluno) {
-			nome = usuario.getAluno().getNome();
 			matricula = usuario.getAluno().getMatricula();
-			email = usuario.getAluno().getEmail();
 			periodo = usuario.getAluno().getPeriodo();
-			formaIngresso = usuario.getAluno().getFormaIngresso();			
+			formaIngresso = usuario.getAluno().getFormaIngresso();
+			curso = usuario.getAluno().getCurso();
 		} else if (usuario.getPerfil() == PerfilEnum.Coordenador) {
-			nome = usuario.getCoordenador().getNome();
 			matricula = usuario.getCoordenador().getMatricula();
-			email = usuario.getCoordenador().getEmail();
+			curso = usuario.getCoordenador().getCurso();
 		}		
 	}
 	
@@ -96,18 +99,19 @@ public class DadosCadastraisBean extends AbstractBean implements Serializable {
 	 * Método que salva os dados alterados pelo usuário.
 	 */
 	public void salvar() {
+		usuario.setNome(nome);
+		usuario.setEmail(email);
+		
 		if (usuario.getPerfil() == PerfilEnum.Aluno) {
 			usuario.setLogin(matricula);
-			usuario.getAluno().setNome(nome);
 			usuario.getAluno().setMatricula(matricula);
-			usuario.getAluno().setEmail(email);
 			usuario.getAluno().setPeriodo(periodo);
-			usuario.getAluno().setFormaIngresso(formaIngresso);			
+			usuario.getAluno().setFormaIngresso(formaIngresso);
+			usuario.getAluno().setCurso(curso);
 		} else if (usuario.getPerfil() == PerfilEnum.Coordenador) {
 			usuario.setLogin(email);
-			usuario.getCoordenador().setNome(nome);
 			usuario.getCoordenador().setMatricula(matricula);
-			usuario.getCoordenador().setEmail(email);
+			usuario.getCoordenador().setCurso(curso);
 		}
 		
 		if (atualizaSenha) {
@@ -184,6 +188,14 @@ public class DadosCadastraisBean extends AbstractBean implements Serializable {
 
 	public void setPeriodo(Periodo periodo) {
 		this.periodo = periodo;
+	}
+
+	public Curso getCurso() {
+		return curso;
+	}
+
+	public void setCurso(Curso curso) {
+		this.curso = curso;
 	}
 
 	public boolean isAtualizaSenha() {

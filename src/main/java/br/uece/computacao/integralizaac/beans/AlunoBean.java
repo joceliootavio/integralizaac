@@ -8,11 +8,15 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import br.uece.computacao.integralizaac.business.CursoBO;
 import br.uece.computacao.integralizaac.business.UsuarioBO;
+import br.uece.computacao.integralizaac.dao.CursoDao;
 import br.uece.computacao.integralizaac.dao.UsuarioDao;
 import br.uece.computacao.integralizaac.entity.Aluno;
+import br.uece.computacao.integralizaac.entity.Curso;
 import br.uece.computacao.integralizaac.entity.Usuario;
 import br.uece.computacao.integralizaac.enums.FormaIngressoEnum;
+import br.uece.computacao.integralizaac.enums.PerfilEnum;
 import br.uece.computacao.integralizaac.services.EmailService;
 
 /**
@@ -38,10 +42,19 @@ public class AlunoBean extends AbstractBean implements Serializable {
 	private UsuarioBO usuarioBO;
 	
 	/**
+	 * Objeto da classe de negócio da entidade Curso.
+	 */
+	private CursoBO cursoBO;	
+	
+	/**
 	 * Atributo que deve guardar os dados do aluno a ser
 	 * cadastrado.
 	 */
 	private Aluno aluno;
+	
+	private String nome;
+	
+	private String email;
 
 	/**
 	 * Lista de todos os alunos cadastrados na base de dados.
@@ -50,6 +63,7 @@ public class AlunoBean extends AbstractBean implements Serializable {
 	
 	public AlunoBean() {
 		usuarioBO = new UsuarioBO(new UsuarioDao(), new EmailService());
+		cursoBO = new CursoBO(new CursoDao());
 		aluno = new Aluno();
 	}
 	
@@ -76,7 +90,13 @@ public class AlunoBean extends AbstractBean implements Serializable {
 	 */
 	public void cadastrar() {
 		try {
-			usuarioBO.cadastrarAluno(aluno);
+			Usuario usuario = new Usuario(PerfilEnum.Aluno);
+			usuario.setLogin(aluno.getMatricula());
+			usuario.setNome(nome);
+			usuario.setEmail(email);
+			usuario.setAluno(aluno);
+
+			usuarioBO.cadastrarAluno(usuario);
 		} catch (Exception e) {
 			addErrorMessageValue(e.getMessage());
 			FacesContext.getCurrentInstance().validationFailed();
@@ -91,10 +111,10 @@ public class AlunoBean extends AbstractBean implements Serializable {
 	 * 
 	 * @return Lista de alunos filtrada.
 	 */
-	public List<Aluno> completeAluno(String query) {
-		List<Aluno> retorno;
+	public List<Usuario> completeAluno(String query) {
+		List<Usuario> retorno;
 		
-		retorno = usuarioBO.buscarAlunosComMatriculaOuNome(query);
+		retorno = usuarioBO.buscarUsuarioAlunosComMatriculaOuNome(query);
 		
 		return retorno; 
 	}
@@ -145,6 +165,14 @@ public class AlunoBean extends AbstractBean implements Serializable {
 		return retorno;
 	}
 	
+	/**
+	 * Retorna a lista de cursos vigentes
+	 * @return
+	 */
+	public List<Curso> getListaCursosVigentes() {
+		return cursoBO.listarCursosVigentes(0l);
+	}
+	
 	// ################# Getters and Setters #####################
 
 	public Aluno getAluno() {
@@ -153,6 +181,22 @@ public class AlunoBean extends AbstractBean implements Serializable {
 
 	public List<Usuario> getListaAlunos() {
 		return listaAlunos;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 }

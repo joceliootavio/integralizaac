@@ -125,8 +125,8 @@ public class DashboardBean extends AbstractBean implements Serializable {
 		atividadeAlunoBO = new AtividadeAlunoBO(new AtividadeAlunoDao());
 		
 		EmailService emailService = new EmailService();
-		parecerAtividadeAlunoBO = new ParecerAtividadeAlunoBO(new ParecerAtividadeAlunoDao(), emailService);
 		usuarioBO = new UsuarioBO(new UsuarioDao(), emailService);
+		parecerAtividadeAlunoBO = new ParecerAtividadeAlunoBO(new ParecerAtividadeAlunoDao(), emailService, usuarioBO);
 		
 		mapaAtividades = new LinkedHashMap<NaturezaEnum, ListaDashboard>();
 		somaTotalHoras = 0;
@@ -315,7 +315,7 @@ public class DashboardBean extends AbstractBean implements Serializable {
 		if (somaTotalHoras < horasExigidas) {
 			RequestContext.getCurrentInstance().addCallbackParam("mensagem", msgUtil.getMessage("dashboard.msgHorasExigidas"));
 		} else {
-			usuarioBO.avisarCoordenadoresAvaliacao(aluno);
+			usuarioBO.avisarCoordenadoresAvaliacao(usuario);
 			RequestContext.getCurrentInstance().addCallbackParam("mensagem", msgUtil.getMessage("dashboard.msgSolicitacaoAvaliacao"));
 		}
 	}
@@ -350,7 +350,7 @@ public class DashboardBean extends AbstractBean implements Serializable {
 			Map<String, Object> mapaParametros = new HashMap<String, Object>();
 			mapaParametros.put("CENTRO_FACULDADE", "Centro de Ciências e Tecnologia");
 			mapaParametros.put("CURSO", "Ciências da Computação");
-			mapaParametros.put("ALUNO", aluno.getNome());
+			mapaParametros.put("ALUNO", usuario.getNome());
 			mapaParametros.put("MATRICULA", aluno.getMatricula());			
 			mapaParametros.put("PERIODO_INGRESSO", aluno.getPeriodo().getNome());			
 			mapaParametros.put("FORMA_INGRESSO", aluno.getFormaIngresso().name());

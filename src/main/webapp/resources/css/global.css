@@ -287,5 +287,11 @@ font-size: 12px !important;
 .linksLogin a {
 	float: left; 
 	padding-top: 10px;
-	 
+	font-size: 13px;	 
+}
+
+.linksLogin span {
+	float: left; 
+	margin: 8px;
+	margin-right: 16px;	
 }

@@ -44,6 +44,21 @@ public class Usuario extends BaseEntity{
 	private String login;
 	
 	/**
+	 * Campo texto obrigatório de 50 caracteres que guarda o 
+	 * nome do usuário.
+	 */
+	@Column(nullable=false, length=50)
+	private String nome;	
+	
+	/**
+	 * Campo texto obrigatório de 30 caracteres que guarda
+	 * o e-mail do usuário. Esse campo só deve aceitar emails
+	 * institucionais. 
+	 */
+	@Column(nullable=false, length=30)
+	private String email;	
+	
+	/**
 	 * Campo texto obrigatório de 32 caracteres que guarda a senha
 	 * criptografada do usuário. A senha inicial é gerada automaticamente
 	 * pelo sistema.
@@ -139,6 +154,22 @@ public class Usuario extends BaseEntity{
 
 	public void setCoordenador(Coordenador coordenador) {
 		this.coordenador = coordenador;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 }

@@ -5,8 +5,8 @@ import java.util.List;
 import javax.persistence.TypedQuery;
 
 import br.uece.computacao.integralizaac.entity.Aluno;
-import br.uece.computacao.integralizaac.entity.Coordenador;
 import br.uece.computacao.integralizaac.entity.Usuario;
+import br.uece.computacao.integralizaac.enums.PerfilEnum;
 
 /**
  * @author Jocélio Otávio
@@ -44,23 +44,24 @@ public class UsuarioDao extends
 	}
 	
 	/**
-	 * Método que recupera o Coordenador que tenha email igual
+	 * Método que recupera o Usuario que tenha email igual
 	 * ao email passado como parâmetro.
 	 * 
-	 * @param email Email do Coordenador
+	 * @param email Email do Usuario
 	 * 
-	 * @return Objeto do tipo Coordenador
+	 * @return Objeto do tipo Usuario
 	 */
-	public Coordenador buscarCoordenadorComEmail(String email) {
+	public Usuario buscarUsuarioCoordenadorComEmail(String email) {
 		StringBuilder hql = new StringBuilder();
 		
-		hql.append("select p from Coordenador as p ");
-		hql.append("where p.email = :email ");
+		hql.append("select u from Usuario as u ");
+		hql.append("where u.email = :email and u.perfil = :perfil");
 		
-		TypedQuery<Coordenador> query = getEntityManager()
-				.createQuery(hql.toString(), Coordenador.class);
+		TypedQuery<Usuario> query = getEntityManager()
+				.createQuery(hql.toString(), Usuario.class);
 		
 		query.setParameter("email", email);
+		query.setParameter("perfil", PerfilEnum.Coordenador);
 		
 		return query.getSingleResult();
 	}
@@ -162,21 +163,27 @@ public class UsuarioDao extends
 	 * 
 	 * @return Lista de alunos filtrada.
 	 */
-	public List<Aluno> buscarAlunoComMatriculaOuNome(String query) {
+	public List<Usuario> buscarUsuarioAlunoComMatriculaOuNome(String query) {
 		StringBuilder hql = new StringBuilder();
 		
-		hql.append("select a from Aluno as a ");
-		hql.append("where UPPER(a.matricula) like UPPER(:matricula) ");
-		hql.append("or UPPER(a.nome) like UPPER(:nome) ");		
+		try {
+			hql.append("select u from Usuario as u ");
+			hql.append("where UPPER(u.aluno.matricula) like UPPER(:matricula) ");
+			hql.append("or UPPER(u.nome) like UPPER(:nome) ");		
+			
+			TypedQuery<Usuario> typedQuery = getEntityManager()
+					.createQuery(hql.toString(), Usuario.class);
+			
+			String queryCoringa = query + "%";
+			typedQuery.setParameter("matricula", queryCoringa);
+			typedQuery.setParameter("nome", queryCoringa);
+			
+			return typedQuery.getResultList();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 		
-		TypedQuery<Aluno> typedQuery = getEntityManager()
-				.createQuery(hql.toString(), Aluno.class);
-		
-		String queryCoringa = query + "%";
-		typedQuery.setParameter("matricula", queryCoringa);
-		typedQuery.setParameter("nome", queryCoringa);		
-		
-		return typedQuery.getResultList();
+		return null;
 	}
 	
 }

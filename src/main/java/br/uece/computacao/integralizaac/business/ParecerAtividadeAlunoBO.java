@@ -4,6 +4,7 @@ import br.uece.computacao.integralizaac.dao.ParecerAtividadeAlunoDao;
 import br.uece.computacao.integralizaac.dto.EmailDto;
 import br.uece.computacao.integralizaac.entity.AtividadeAluno;
 import br.uece.computacao.integralizaac.entity.ParecerAtividadeAluno;
+import br.uece.computacao.integralizaac.entity.Usuario;
 import br.uece.computacao.integralizaac.services.EmailService;
 
 /**
@@ -15,13 +16,16 @@ import br.uece.computacao.integralizaac.services.EmailService;
 public class ParecerAtividadeAlunoBO extends Business<ParecerAtividadeAluno>{
 	
 	/**
-	 * Objeto da classe responável por enviar emails.
+	 * Objeto da classe responsável por enviar emails.
 	 */
 	private EmailService emailService;
 	
-	public ParecerAtividadeAlunoBO(ParecerAtividadeAlunoDao dao, EmailService emailService) {
+	private UsuarioBO usuarioBO;
+	
+	public ParecerAtividadeAlunoBO(ParecerAtividadeAlunoDao dao, EmailService emailService, UsuarioBO usuarioBO) {
 		super(dao);
 		this.emailService = emailService;
+		this.usuarioBO = usuarioBO;
 	}
 	
 	/* (non-Javadoc)
@@ -76,10 +80,12 @@ public class ParecerAtividadeAlunoBO extends Business<ParecerAtividadeAluno>{
 				AtividadeAluno atividadeAluno = parecer.getAtividadeAluno();
 				EmailDto email = new EmailDto();
 				email.setAssunto("Parecer do Coordenador");
-				email.setDestinatarios(atividadeAluno.getAluno().getEmail());
+				
+				Usuario usuario = usuarioBO.buscaUsuario(atividadeAluno.getAluno().getMatricula());
+				email.setDestinatarios(usuario.getEmail());
 				
 				StringBuilder corpo = new StringBuilder()
-				.append("Aluno(a) <b>").append(atividadeAluno.getAluno().getNome()).append("</b>.<br/><br/>")
+				.append("Aluno(a) <b>").append(usuario.getNome()).append("</b>.<br/><br/>")
 				.append("As informações de parecer do coordenador para a atividade <b>").append(atividadeAluno.getDescricao()).append("</b> foram atualizadas.");
 				
 				email.setCorpo(corpo.toString());

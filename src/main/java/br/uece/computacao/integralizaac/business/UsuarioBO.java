@@ -9,12 +9,12 @@ import org.apache.commons.codec.digest.DigestUtils;
 import br.uece.computacao.integralizaac.dao.UsuarioDao;
 import br.uece.computacao.integralizaac.dto.EmailDto;
 import br.uece.computacao.integralizaac.entity.Aluno;
-import br.uece.computacao.integralizaac.entity.Coordenador;
 import br.uece.computacao.integralizaac.entity.Usuario;
 import br.uece.computacao.integralizaac.enums.PerfilEnum;
 import br.uece.computacao.integralizaac.exceptions.BusinessException;
 import br.uece.computacao.integralizaac.services.EmailService;
 import br.uece.computacao.integralizaac.utils.GeradorSenha;
+import br.uece.computacao.integralizaac.utils.MsgUtil;
 import br.uece.computacao.integralizaac.utils.ResourcesProvider;
 
 /**
@@ -36,11 +36,17 @@ public class UsuarioBO extends Business<Usuario> {
 
 	private ResourcesProvider resourcesProvider;
 	
+	/**
+	 * Objeto da classe mensagens do sistema. 
+	 */
+	private MsgUtil msgUtil;	
+	
 	public UsuarioBO(UsuarioDao dao, EmailService emailService) {
 		super(dao);
 		this.usuarioDao = dao;
 		this.emailService = emailService;
 		this.resourcesProvider = new ResourcesProvider();
+		this.msgUtil = new MsgUtil();
 	}
 	
 	/**
@@ -66,15 +72,9 @@ public class UsuarioBO extends Business<Usuario> {
 	 * 
 	 * @param aluno
 	 */
-	public void cadastrarAluno(Aluno aluno) {
-		Usuario usuario = new Usuario(PerfilEnum.Aluno);
-		
-		usuario.setLogin(aluno.getMatricula());
-		
+	public void cadastrarAluno(Usuario usuario) {
 		String senhaGerada = GeradorSenha.getSenhaRandomica();
 		usuario.setSenha(criptografarSenha(senhaGerada));
-		
-		usuario.setAluno(aluno);
 		
 		validarAluno(usuario);
 		
@@ -92,7 +92,7 @@ public class UsuarioBO extends Business<Usuario> {
 	private void enviarEmailNovoAluno(Usuario usuario, String senhaUsuario) {
 		EmailDto email = new EmailDto();
 		email.setAssunto("Novo usuário");
-		email.setDestinatarios(usuario.getAluno().getEmail());
+		email.setDestinatarios(usuario.getEmail());
 		
 		StringBuilder corpo = new StringBuilder()
 			.append("Foi criado um novo usuário no IntegralizaAC com Matrícula <b>")
@@ -115,7 +115,7 @@ public class UsuarioBO extends Business<Usuario> {
 	private void enviarEmailNovoCoordenador(Usuario usuario, String senhaUsuario) {
 		EmailDto email = new EmailDto();
 		email.setAssunto("Novo usuário");
-		email.setDestinatarios(usuario.getCoordenador().getEmail());
+		email.setDestinatarios(usuario.getEmail());
 		
 		StringBuilder corpo = new StringBuilder()
 			.append("Foi criado um novo usuário no IntegralizaAC com matrícula <b>")
@@ -134,17 +134,12 @@ public class UsuarioBO extends Business<Usuario> {
 	 * automática e enviando email para o coordenador com 
 	 * a nova senha gerada.
 	 * 
-	 * @param coordenador 
+	 * @param usuario 
 	 */
-	public void cadastrarCoordenador(Coordenador coordenador) {
-		Usuario usuario = new Usuario(PerfilEnum.Coordenador);
-		
-		usuario.setLogin(coordenador.getEmail());
-		
+	public void cadastrarCoordenador(Usuario usuario) {
 		String senhaGerada = GeradorSenha.getSenhaRandomica();
 		usuario.setSenha(criptografarSenha(senhaGerada));
-		
-		usuario.setCoordenador(coordenador);
+		usuario.setLogin(usuario.getEmail());
 		
 		validarCoordenador(usuario);
 		
@@ -184,6 +179,14 @@ public class UsuarioBO extends Business<Usuario> {
 					&& (usuario.getAluno().getId() == null || usuario.getAluno().getId() != alunoPersistido.getId())) {
 				throw new BusinessException("Existe aluno cadastro com a matrícula informada.");
 			}
+			
+			if (usuario.getAluno().getPeriodo().getDataInicio() != null && usuario.getAluno().getCurso().getDataEncerramento() != null) {
+				if (usuario.getAluno().getPeriodo().getDataInicio().compareTo(usuario.getAluno().getCurso().getDataEncerramento()) > 0
+						|| usuario.getAluno().getCurso().getDataImplantacao().compareTo(usuario.getAluno().getPeriodo().getDataInicio()) > 0) {
+					
+					throw new BusinessException(msgUtil.getMessage("aluno.dataIngressoForaDataVigenciaCurso"));
+				}
+			}
 		} catch (NoResultException e) {
 			// Continua
 		}
@@ -201,9 +204,9 @@ public class UsuarioBO extends Business<Usuario> {
 				throw new IllegalArgumentException("Objeto coordenador está nulo.");
 			}
 			
-			Coordenador coordenadorPersistido = usuarioDao.buscarCoordenadorComEmail(usuario.getCoordenador().getEmail());
-			if (coordenadorPersistido != null  
-					&& (usuario.getCoordenador().getId() == null || usuario.getCoordenador().getId() != coordenadorPersistido.getId())) {
+			Usuario usuarioPersistido = usuarioDao.buscarUsuarioCoordenadorComEmail(usuario.getEmail());
+			if (usuarioPersistido != null  
+					&& (usuario.getId() == null || usuario.getId() != usuarioPersistido.getId())) {
 				throw new BusinessException("Existe coordenador cadastrado com o E-mail informado.");
 			}
 		} catch (NoResultException e) {
@@ -216,13 +219,13 @@ public class UsuarioBO extends Business<Usuario> {
 	 * no sistema, avisando da avaliação solicitada por um determinado
 	 * aluno.
 	 * 
-	 * @param aluno Aluno que solicitou a avaliação.
+	 * @param usuarioAluno Usuario que solicitou a avaliação.
 	 */
-	public void avisarCoordenadoresAvaliacao(Aluno aluno) {
+	public void avisarCoordenadoresAvaliacao(Usuario usuarioAluno) {
 		List<Usuario> coordenadores = usuarioDao.listarTodosCoordenadores();
 		
-		for (Usuario usuario : coordenadores) {
-			enviarEmailAvaliacao(aluno, usuario.getCoordenador());
+		for (Usuario usuarioCoordenador : coordenadores) {
+			enviarEmailAvaliacao(usuarioAluno, usuarioCoordenador);
 		}
 	}
 
@@ -232,14 +235,14 @@ public class UsuarioBO extends Business<Usuario> {
 	 * @param aluno Aluno que solicitou a avaliação
 	 * @param coordenador Coordenador que receberá o email.
 	 */
-	private void enviarEmailAvaliacao(Aluno aluno, Coordenador coordenador) {
+	private void enviarEmailAvaliacao(Usuario usuarioAluno, Usuario usuarioCoordenador) {
 		EmailDto email = new EmailDto();
 		email.setAssunto("Solicitação de Avaliação");
-		email.setDestinatarios(coordenador.getEmail());
+		email.setDestinatarios(usuarioCoordenador.getEmail());
 		
 		StringBuilder corpo = new StringBuilder()
-			.append("O aluno <b>").append(aluno.getNome())
-			.append("</b> com Matrícula <b>").append(aluno.getMatricula())
+			.append("O aluno <b>").append(usuarioAluno.getNome())
+			.append("</b> com Matrícula <b>").append(usuarioAluno.getAluno().getMatricula())
 			.append("</b> solicitou a avaliação de suas atividades no IntegralizaAC.");
 		
 		email.setCorpo(corpo.toString());
@@ -274,8 +277,8 @@ public class UsuarioBO extends Business<Usuario> {
 	 * @param query Parte da matrícula ou nome que deve ser pesquisado.
 	 * @return Lista de alunos.
 	 */
-	public List<Aluno> buscarAlunosComMatriculaOuNome(String query) {
-		return usuarioDao.buscarAlunoComMatriculaOuNome(query);
+	public List<Usuario> buscarUsuarioAlunosComMatriculaOuNome(String query) {
+		return usuarioDao.buscarUsuarioAlunoComMatriculaOuNome(query);
 	}
 	
 	/**
@@ -319,7 +322,7 @@ public class UsuarioBO extends Business<Usuario> {
 		
 		EmailDto email = new EmailDto();
 		email.setAssunto("Nova senha usuário");
-		email.setDestinatarios(usuario.getAluno().getEmail());
+		email.setDestinatarios(usuario.getEmail());
 		
 		StringBuilder corpo = new StringBuilder()
 			.append("Sua nova senha para acesso ao IntegralizaAC é <b>")

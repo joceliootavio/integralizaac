@@ -8,9 +8,11 @@ import javax.faces.bean.ViewScoped;
 
 import org.primefaces.event.SelectEvent;
 
+import br.uece.computacao.integralizaac.business.CursoBO;
 import br.uece.computacao.integralizaac.business.UsuarioBO;
+import br.uece.computacao.integralizaac.dao.CursoDao;
 import br.uece.computacao.integralizaac.dao.UsuarioDao;
-import br.uece.computacao.integralizaac.entity.Coordenador;
+import br.uece.computacao.integralizaac.entity.Curso;
 import br.uece.computacao.integralizaac.entity.Usuario;
 import br.uece.computacao.integralizaac.enums.PerfilEnum;
 import br.uece.computacao.integralizaac.services.EmailService;
@@ -27,7 +29,12 @@ public class CoordenadorBean extends AbstractBean implements Serializable {
 
 	private static final long serialVersionUID = -8541357128043522063L;
 	
-	UsuarioBO usuarioBusiness;
+	private UsuarioBO usuarioBusiness;
+	
+	/**
+	 * Objeto da classe de negócio da entidade Curso.
+	 */
+	private CursoBO cursoBusiness;
 	
 	/**
 	 * Flag que identifica quando o usuário está alterando ou
@@ -42,12 +49,6 @@ public class CoordenadorBean extends AbstractBean implements Serializable {
 	private Usuario usuario;
 	
 	/**
-	 * Atributo que guarda os dados do Coordenador 
-	 * que está sendo incluído, alterado ou excluído. 
-	 */
-	private Coordenador coordenador;	
-	
-	/**
 	 * Lista de coordenadores cadastrados. 
 	 */
 	private List<Usuario> listaCoordenadores;
@@ -55,6 +56,7 @@ public class CoordenadorBean extends AbstractBean implements Serializable {
 	//@PostConstruct
 	public CoordenadorBean() {
 		usuarioBusiness = new UsuarioBO(new UsuarioDao(), new EmailService());
+		cursoBusiness = new CursoBO(new CursoDao());
 		listaCoordenadores = usuarioBusiness.listarTodosCoordenadores();
 		clean();
 	}
@@ -72,7 +74,6 @@ public class CoordenadorBean extends AbstractBean implements Serializable {
 	 */
 	public void clean() {
 		usuario = new Usuario(PerfilEnum.Coordenador);
-		coordenador = usuario.getCoordenador();
 		atualizando = false;
 		
 		cleanSubmittedValues("coordenadorForm");
@@ -82,7 +83,7 @@ public class CoordenadorBean extends AbstractBean implements Serializable {
 	 * Método de inclusão da entidade Coordenador.
 	 */
 	public void incluir() {
-		usuarioBusiness.cadastrarCoordenador(coordenador);
+		usuarioBusiness.cadastrarCoordenador(usuario);
 		listaCoordenadores = usuarioBusiness.listarTodosCoordenadores();
 		
 		addInfoMessage("atividade_aluno.inclusao");
@@ -126,21 +127,30 @@ public class CoordenadorBean extends AbstractBean implements Serializable {
 	public void selecionarCoordenador(SelectEvent evento) {
 		this.atualizando = true;
 		this.usuario = (Usuario) evento.getObject();
-		this.coordenador = usuario.getCoordenador();
 	}
 	
-	// ################# Getters and Setters #####################	
-
-	public Coordenador getCoordenador() {
-		return coordenador;
+	/**
+	 * Retorna a lista de cursos vigentes
+	 * @return
+	 */
+	public List<Curso> getListaCursosVigentes() {
+		Long idCursoExistente = atualizando ? usuario.getCoordenador().getCurso().getId() : 0l;
+		return cursoBusiness.listarCursosVigentes(idCursoExistente);
 	}
-
-	public void setCoordenador(Coordenador professor) {
-		this.coordenador = professor;
-	}
+	
+	// ################# Getters and Setters #####################
+	
 
 	public List<Usuario> getListaCoordenadores() {
 		return listaCoordenadores;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	public boolean isAtualizando() {

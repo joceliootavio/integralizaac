@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:p="http://primefaces.org/ui"
+   template="/layout/template.xhtml">
+   
+   <ui:define name="content">
+   
+   		<p:breadCrumb>
+   			<p:menuitem value="" url="#" />
+   			<p:menuitem value="Início" url="#" />   			
+   			<p:menuitem value="Curso" url="#"/>   			
+   		</p:breadCrumb>
+   		
+		<h:form id="cursoForm">	
+			<p:panel header="Curso" id="fields" rendered="#{not loginBean.perfilAluno}">
+				<div class="campo">
+					<h:outputLabel value="*Código: "/> <br />
+			   		<p:inputText id="codigo" value="#{cursoBean.curso.codigo}" 
+			   			required="true" label="Código" maxlength="10" style="width: 130px"/>
+			   	</div>
+			   				
+				<div class="campo">
+					<h:outputLabel value="*Nome: "/> <br />
+			   		<p:inputText id="nome" value="#{cursoBean.curso.nome}" 
+			   			required="true" label="Nome" maxlength="50" style="width: 250px"/>
+			   	</div>
+		   		
+		   		<div class="campo">
+			   		<h:outputLabel value="*Data implantação: "/> <br />
+			   		<p:calendar id="dataImplantacao" label="Data implantação" value="#{cursoBean.curso.dataImplantacao}" 
+			   			required="true" size="6" pattern="dd/MM/yyyy"/>
+			   	</div>
+		   		
+		   		<div class="campo">		   		
+			   		<h:outputLabel value="*Data encerramento: "/> <br />
+			   		<p:calendar id="dataEncerramento" label="Data encerramento" value="#{cursoBean.curso.dataEncerramento}" 
+			   			size="6" pattern="dd/MM/yyyy"/>
+			   	</div>
+				<br clear="all"/>
+			</p:panel>
+			
+			<p:toolbar id="barraBotoes" rendered="#{not loginBean.perfilAluno}">
+				<p:toolbarGroup align="left">
+					<p:commandButton id="btnNovo" value="Novo" immediate="true" 
+								actionListener="#{cursoBean.clean}" icon="ui-icon-document" 
+								process="@this" update="@form" />
+					<p:commandButton id="btnIncluir" value="Incluir" 
+								actionListener="#{cursoBean.incluir}" 
+								process="@this fields" update="cursoTable fields"
+								disabled="#{cursoBean.atualizando}" />			
+					<p:commandButton id="btnAtualizar" value="Atualizar"
+								actionListener="#{cursoBean.atualizar}" 
+								process="@this fields" update="@form"	
+								disabled="#{not cursoBean.atualizando}" />
+					<p:commandButton id="btnExcluir" value="Excluir"
+								actionListener="#{cursoBean.excluir}" 
+								process="@this fields" update="cursoTable fields"	
+								disabled="#{not cursoBean.atualizando}" />										
+				</p:toolbarGroup>
+			</p:toolbar>
+			
+			<p:dataTable id="cursoTable"
+				widgetVar="cursoTableW"
+				emptyMessage="Nenhum curso cadastrado."
+				var="_curso"
+				value="#{cursoBean.listaCursos}"
+				sortBy="#{_curso.nome}"
+				sortOrder="ascending"
+				selectionMode="single"
+				rowKey="#{_curso.hashCode()}"
+				rows="#{resources.pageRows}" paginator="#{cursoBean.showPaginator(cursoBean.listaCursos)}" paginatorPosition="top">
+				
+				<p:ajax event="rowSelect" listener="#{cursoBean.selecionarCurso}"
+					update=":cursoForm:fields :cursoForm:barraBotoes" />
+	
+				<p:column headerText="Nome">
+					<h:outputText value="#{_curso.nome}" />
+				</p:column>
+				
+				<p:column headerText="Data implantação">
+					<h:outputText value="#{_curso.dataImplantacao}">
+						<f:convertDateTime pattern="dd/MM/yyyy"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="Data fim">
+					<h:outputText value="#{_curso.dataEncerramento}">
+						<f:convertDateTime pattern="dd/MM/yyyy"/>
+					</h:outputText>
+				</p:column>
+					
+			</p:dataTable>
+		</h:form>
+		
+<!-- 
+		<ui:include src="/layout/dialog_confirmacao.xhtml">
+			<ui:param name="bean" value="cursoBean" />
+			<ui:param name="metodo" value="excluir" />
+			<ui:param name="update" value=":cursoForm:cursoTable :cursoForm:fields" />			
+			<ui:param name="menssagem" value="#{messages['padrao.confirmaExcluir']}" />
+		</ui:include>	 -->		
+		
+   </ui:define>
+   
+</ui:composition>

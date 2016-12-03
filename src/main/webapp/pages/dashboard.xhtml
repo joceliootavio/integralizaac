@@ -22,15 +22,15 @@
 						<h:outputLabel value="Aluno: " for="aluno" /><br />
 						<p:autoComplete id="aluno" value="#{dashboardBean.aluno}"
 							converter="entityConverter" effect="blind"
-							completeMethod="#{alunoBean.completeAluno}" var="a"
+							completeMethod="#{alunoBean.completeAluno}" var="u"
 							queryDelay="500"
-							itemLabel="#{a.nome}" itemValue="#{a}" dropdown="true">
+							itemLabel="#{u.nome}" itemValue="#{u.aluno}" dropdown="true">
 	
 							<p:ajax event="itemSelect" update="atividadesDoAlunoTable sumarioHorasAtividades"
 								listener="#{dashboardBean.autocompleteSelect}" />
 	
 							<p:column>
-								<p:outputLabel value="#{a.matricula} - #{a.nome}" />
+								<p:outputLabel value="#{u.aluno.matricula} - #{u.nome}" />
 							</p:column>
 	
 						</p:autoComplete>

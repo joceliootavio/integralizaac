@@ -101,4 +101,8 @@ public class Certificado extends BaseEntity {
 		this.extensao = extensao;
 	}
 
+	public void setAtividadeAluno(AtividadeAluno atividadeAluno) {
+		this.atividadeAluno = atividadeAluno;
+	}
+
 }

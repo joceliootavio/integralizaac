@@ -20,13 +20,6 @@ public class Aluno extends BaseEntity {
 	 * 
 	 */
 	private static final long serialVersionUID = 8217078288149747337L;
-
-	/**
-	 * Campo texto obrigatório de 50 caracteres que guarda o 
-	 * nome do Aluno.
-	 */
-	@Column(nullable=false, length=50)
-	private String nome;
 	
 	/**
 	 * Campo texto obrigatório de 8 caracteres que guarda a 
@@ -45,14 +38,6 @@ public class Aluno extends BaseEntity {
 	private Periodo periodo;
 	
 	/**
-	 * Campo texto obrigatório de 30 caracteres que guarda
-	 * o e-mail do aluno. Esse campo só deve aceitar emails
-	 * institucionais. 
-	 */
-	@Column(nullable=false, length=30)
-	private String email;
-	
-	/**
 	 * Campo do tipo Enum que pode aceitar os tipos listados
 	 * em @see FormaIngressoEnum. Esse campo é salvo no banco no
 	 * formato texto.
@@ -60,6 +45,12 @@ public class Aluno extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	@Column(nullable=false)
 	private FormaIngressoEnum formaIngresso;
+	
+	/**
+	 * Referência a classe @see Curso.
+	 */
+	@ManyToOne
+	private Curso curso;
 
 	public String getMatricula() {
 		return matricula;
@@ -67,14 +58,6 @@ public class Aluno extends BaseEntity {
 
 	public void setMatricula(String matricula) {
 		this.matricula = matricula;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
 	}
 
 	public Periodo getPeriodo() {
@@ -85,20 +68,20 @@ public class Aluno extends BaseEntity {
 		this.periodo = periodo;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
 	public FormaIngressoEnum getFormaIngresso() {
 		return formaIngresso;
 	}
 
 	public void setFormaIngresso(FormaIngressoEnum formaIngresso) {
 		this.formaIngresso = formaIngresso;
+	}
+
+	public Curso getCurso() {
+		return curso;
+	}
+
+	public void setCurso(Curso curso) {
+		this.curso = curso;
 	}
 
 }

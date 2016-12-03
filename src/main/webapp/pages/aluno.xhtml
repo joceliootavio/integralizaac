@@ -34,15 +34,15 @@
 
 						<div class="campo">
 							<h:outputLabel for="nome" value="*Nome:" /> <br />
-							<p:inputText value="#{alunoBean.aluno.nome}" required="true"
+							<p:inputText value="#{alunoBean.nome}" required="true"
 								label="Nome" id="nome" style="width: 500px" maxlength="50" />
 						</div>
 
 						<div class="campo">
 							<h:outputLabel value="*E-mail: " /> <br />
-							<p:inputText id="email" value="#{alunoBean.aluno.email}"
+							<p:inputText id="email" value="#{alunoBean.email}"
 								required="true" label="E-mail" maxlength="30" styleClass="trim"
-								validatorMessage="E-mail inválido">
+								validatorMessage="E-mail inválido" style="width: 200px">
 								<f:validateRegex
 									pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
 							</p:inputText>
@@ -69,6 +69,18 @@
 									itemLabel="#{p.nome}" />
 							</p:selectOneMenu>
 						</div>
+						
+									   	
+						<div class="campo">
+							<h:outputLabel value="*Curso: " for="curso" /> <br />
+							<p:selectOneMenu id="curso" value="#{alunoBean.aluno.curso}"
+								required="true" label="Curso"
+								style="width: 250px">
+								<f:selectItem itemLabel="Selecione" itemValue="" />
+								<f:selectItems value="#{alunoBean.listaCursosVigentes}" var="c"
+									itemLabel="#{c.nome}" />
+							</p:selectOneMenu>
+						</div>	
 						
 						<br clear="all" />
 

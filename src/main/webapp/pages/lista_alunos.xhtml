@@ -23,13 +23,13 @@
 				emptyMessage="Nenhum aluno cadastrado."
 				var="_usuario"
 				value="#{alunoBean.listaAlunos}"
-				sortBy="#{_usuario.aluno.nome}"
+				sortBy="#{_usuario.nome}"
 				sortOrder="descending"
 				rowKey="#{_usuario.aluno.hashCode()}"
 				rows="#{resources.pageRows}" paginator="#{alunoBean.showPaginator(alunoBean.listaAlunos)}" paginatorPosition="top">
 				
 				<p:column headerText="Nome">
-					<h:outputText value="#{_usuario.aluno.nome}" />
+					<h:outputText value="#{_usuario.nome}" />
 				</p:column>
 				
 				<p:column headerText="Matricula">
@@ -37,12 +37,16 @@
 				</p:column>
 				
 				<p:column headerText="E-mail">
-					<h:outputText value="#{_usuario.aluno.email}" />
+					<h:outputText value="#{_usuario.email}" />
 				</p:column>
 				
 				<p:column headerText="Período de ingresso">
 					<h:outputText value="#{_usuario.aluno.periodo.nome}" />
 				</p:column>				
+				
+				<p:column headerText="Curso">
+					<h:outputText value="#{_usuario.aluno.curso.nome}" />
+				</p:column>
 				
 				<p:column>
 					<p:commandButton value="" icon="ui-icon-shuffle" title="Resetar senha"

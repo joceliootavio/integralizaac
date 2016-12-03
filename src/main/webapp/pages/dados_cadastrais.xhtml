@@ -35,6 +35,7 @@
 			   			<f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
 			   		</p:inputText>
 			   	</div>
+ 	
 			   	
 			   	<h:panelGroup rendered="#{loginBean.perfilAluno}">
 					<div class="campo">
@@ -57,6 +58,18 @@
 				   		</p:selectOneMenu>		                    
 				   	</div>
 				</h:panelGroup>
+									   	
+				<div class="campo">
+					<h:outputLabel value="*Curso: " for="curso" /> <br />
+					<p:selectOneMenu id="curso" value="#{dadosCadastraisBean.curso}"
+						required="true" label="Curso" disabled="#{loginBean.perfilCoordenador}"
+						style="width: 250px">
+						
+						<f:selectItem itemLabel="Selecione" itemValue="" />
+						<f:selectItems value="#{coordenadorBean.listaCursosVigentes}" var="c"
+							itemLabel="#{c.nome}" />
+					</p:selectOneMenu>
+				</div>	
 				
 				<br clear="all" />
 				
