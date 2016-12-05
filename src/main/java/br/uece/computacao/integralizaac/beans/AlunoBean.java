@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
@@ -51,6 +52,12 @@ public class AlunoBean extends AbstractBean implements Serializable {
 	 * cadastrado.
 	 */
 	private Aluno aluno;
+	
+	/**
+	 * Atributo que guarda referencia ao usuário logado.
+	 */	
+	@ManagedProperty("#{loginBean.usuario}")
+	private Usuario usuario;	
 	
 	private String nome;
 	
@@ -114,7 +121,7 @@ public class AlunoBean extends AbstractBean implements Serializable {
 	public List<Usuario> completeAluno(String query) {
 		List<Usuario> retorno;
 		
-		retorno = usuarioBO.buscarUsuarioAlunosComMatriculaOuNome(query);
+		retorno = usuarioBO.buscarUsuarioAlunosComMatriculaOuNome(usuario, query);
 		
 		return retorno; 
 	}
@@ -199,4 +206,8 @@ public class AlunoBean extends AbstractBean implements Serializable {
 		this.email = email;
 	}
 
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+	
 }

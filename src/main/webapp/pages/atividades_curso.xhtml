@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:p="http://primefaces.org/ui"
+   template="/layout/template.xhtml">
+   
+   <ui:define name="content">
+   		
+   		<p:breadCrumb>
+   			<p:menuitem value="" url="#" />
+   			<p:menuitem value="Atividades do curso" url="#" />   			
+   		</p:breadCrumb>
+			
+		<h:form id="atividadeComplementarForm">   		
+ 			<p:dataTable id="atividadeComplementarTable"
+				widgetVar="atividadeComplementarTableW"
+				emptyMessage="Nenhuma atividade cadastrada."
+				var="_atividadeComplementar"
+				value="#{atividadeCursoBean.listaAtividades}"
+				selection="#{atividadeCursoBean.listaAtividadesSelecionadas}"
+				rowKey="#{_atividadeComplementar.id}">
+				
+				<p:ajax event="rowUnselectCheckbox" process="@form" listener="#{atividadeCursoBean.unselectAtividade}" update="@form"/>
+				
+		        <p:column selectionMode="multiple" style="width:16px;text-align:center" />
+				
+				<p:column headerText="Natureza" width="160">
+					<h:outputText value="#{_atividadeComplementar.natureza.descricao}" />
+				</p:column>
+				
+				<p:column headerText="Atividade" style="white-space: normal;">
+					<h:outputText value="#{_atividadeComplementar.descricao}" />
+				</p:column>
+				
+				<p:column headerText="Máximo Horas Período" style="text-align: center; width: 70px">
+					<h:outputText value="#{_atividadeComplementar.maximoHorasPorPeriodo}" />
+				</p:column>
+				
+				<p:column headerText="Máximo Horas Curso" style="text-align: center; width: 70px">
+					<h:outputText value="#{_atividadeComplementar.maximoHorasPorCurso}" />
+				</p:column>				
+				
+			</p:dataTable>
+			
+			<p:toolbar id="barraBotoes" rendered="#{not loginBean.perfilAluno}">
+				<p:toolbarGroup align="right">
+					<p:commandButton id="btnCancelar" value="Cancelar" immediate="true" 
+								actionListener="#{atividadeCursoBean.clean}" icon="ui-icon-document" 
+								process="@this" update="@form" />
+					<p:commandButton id="btnAtualizar" value="Atualizar"
+								actionListener="#{atividadeCursoBean.atualizar}" 
+								process="@this atividadeComplementarTable" update="@form" />
+				</p:toolbarGroup>
+			</p:toolbar>  			
+		</h:form>
+		
+   </ui:define>
+   
+</ui:composition>

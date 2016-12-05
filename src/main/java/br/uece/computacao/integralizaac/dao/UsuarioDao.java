@@ -163,13 +163,17 @@ public class UsuarioDao extends
 	 * 
 	 * @return Lista de alunos filtrada.
 	 */
-	public List<Usuario> buscarUsuarioAlunoComMatriculaOuNome(String query) {
+	public List<Usuario> buscarUsuarioAlunoComMatriculaOuNome(Long cursoId, String query) {
 		StringBuilder hql = new StringBuilder();
 		
 		try {
 			hql.append("select u from Usuario as u ");
-			hql.append("where UPPER(u.aluno.matricula) like UPPER(:matricula) ");
-			hql.append("or UPPER(u.nome) like UPPER(:nome) ");		
+			hql.append("where (UPPER(u.aluno.matricula) like UPPER(:matricula) ");			
+			hql.append("or UPPER(u.nome) like UPPER(:nome)) ");
+			
+			if (cursoId != null) {
+				hql.append("and u.aluno.curso.id = :cursoId ");
+			}
 			
 			TypedQuery<Usuario> typedQuery = getEntityManager()
 					.createQuery(hql.toString(), Usuario.class);
@@ -177,6 +181,10 @@ public class UsuarioDao extends
 			String queryCoringa = query + "%";
 			typedQuery.setParameter("matricula", queryCoringa);
 			typedQuery.setParameter("nome", queryCoringa);
+			
+			if (cursoId != null) {
+				typedQuery.setParameter("cursoId", cursoId);
+			}
 			
 			return typedQuery.getResultList();
 		} catch (Exception ex) {

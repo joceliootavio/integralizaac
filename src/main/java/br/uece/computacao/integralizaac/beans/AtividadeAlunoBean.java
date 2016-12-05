@@ -332,7 +332,7 @@ public class AtividadeAlunoBean <T> extends AbstractBean implements Serializable
 	public List<AtividadeComplementar> completeAtividadeComplementar(String query) {
 		List<AtividadeComplementar> retorno;
 		
-		retorno = ativComplementarBO.buscarComDescricao(natureza, query);
+		retorno = ativComplementarBO.buscarComDescricao(aluno.getCurso(),natureza, query);
 		
 		return retorno; 
 	}

@@ -93,5 +93,5 @@ public class AtividadeComplementar extends BaseEntity{
 	public void setMaximoHorasPorCurso(Integer maximoHorasPorCurso) {
 		this.maximoHorasPorCurso = maximoHorasPorCurso;
 	}
-	
+
 }

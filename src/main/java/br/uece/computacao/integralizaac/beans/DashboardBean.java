@@ -39,7 +39,6 @@ import br.uece.computacao.integralizaac.enums.NaturezaEnum;
 import br.uece.computacao.integralizaac.enums.PerfilEnum;
 import br.uece.computacao.integralizaac.reports.RelatorioVO;
 import br.uece.computacao.integralizaac.services.EmailService;
-import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;

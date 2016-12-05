@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.uece.computacao.integralizaac.dao.AtividadeComplementarDao;
 import br.uece.computacao.integralizaac.entity.AtividadeComplementar;
+import br.uece.computacao.integralizaac.entity.Curso;
 import br.uece.computacao.integralizaac.enums.NaturezaEnum;
 import br.uece.computacao.integralizaac.exceptions.BusinessException;
 import br.uece.computacao.integralizaac.utils.MsgUtil;
@@ -103,11 +104,28 @@ public class AtividadeComplementarBO extends Business<AtividadeComplementar> {
 	 * Método que retorna a atividade complementar que tenha descrição
 	 * igual a descrição passada como parâmetro.
 	 * 
-	 * @param natureza Natureza da atividade
+	 * @param curso Curso no qual o aluno está matriculado
+	 * @param natureza Natureza da atividade 
 	 * @param query Todo ou parte do descrição da atividade complementar.
 	 * @return
 	 */
-	public List<AtividadeComplementar> buscarComDescricao(NaturezaEnum natureza, String query) {
-		return ativComplementarDao.buscarComDescricao(natureza, query, false);
+	public List<AtividadeComplementar> buscarComDescricao(Curso curso, NaturezaEnum natureza, String query) {
+		return ativComplementarDao.buscarComDescricao(curso, natureza, query, false);
+	}
+	
+	
+	/**
+	 * Método que verifica se tem aluno utilizando a atividade passada como
+	 * parâmetro.
+	 *  
+	 * @param atividadeComplementarId ID da atividade.
+	 * @return Quantidade de alunos utilizando a atividade
+	 */
+	public boolean verificaAtividadeUtilizada(Long atividadeComplementarId) {
+		if (ativComplementarDao.verificaAtividadeUtilizada(atividadeComplementarId) > 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

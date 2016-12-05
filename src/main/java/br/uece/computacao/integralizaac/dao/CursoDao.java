@@ -54,16 +54,24 @@ public class CursoDao extends
 		StringBuilder hql = new StringBuilder();
 		
 		hql.append("select c from Curso as c ");
-		hql.append("where c.id = :idCursoExistente " );
-		hql.append("or (c.dataEncerramento <= :dataAtual or :idCursoExistente = 0)");
+		hql.append("where (c.dataEncerramento is null or c.dataEncerramento >= :dataAtual) " );
+		
+		if (idCursoExistente != 0) {
+			hql.append("or c.id = :idCursoExistente");
+		}
 		
 		TypedQuery<Curso> query = getEntityManager()
 				.createQuery(hql.toString(), Curso.class);
 		
 		query.setParameter("dataAtual", new Date());
-		query.setParameter("idCursoExistente", idCursoExistente);		
+		
+		if (idCursoExistente != 0) {
+			query.setParameter("idCursoExistente", idCursoExistente);
+		}
 		
 		return query.getResultList();
 	}
 
 }
+
+	

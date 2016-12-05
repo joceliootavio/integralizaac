@@ -274,11 +274,17 @@ public class UsuarioBO extends Business<Usuario> {
 	 * Método que retorna uma lista de alunos contendo na matricula
 	 * ou no nome o texto passado como parâmetro.
 	 * 
-	 * @param query Parte da matrícula ou nome que deve ser pesquisado.
+	 * @param usuarioLogado Usuário que está executando a ação.
+	 * @param query Parte da matrícula ou nome que deve ser pesquisado. 
 	 * @return Lista de alunos.
 	 */
-	public List<Usuario> buscarUsuarioAlunosComMatriculaOuNome(String query) {
-		return usuarioDao.buscarUsuarioAlunoComMatriculaOuNome(query);
+	public List<Usuario> buscarUsuarioAlunosComMatriculaOuNome(Usuario usuarioLogado, String query) {
+		Long cursoId = (usuarioLogado.getPerfil() == PerfilEnum.Coordenador 
+						 && usuarioLogado.getCoordenador() != null
+						 && usuarioLogado.getCoordenador().getCurso() != null)
+							? usuarioLogado.getCoordenador().getCurso().getId() : null;
+ 
+		return usuarioDao.buscarUsuarioAlunoComMatriculaOuNome(cursoId, query);
 	}
 	
 	/**
