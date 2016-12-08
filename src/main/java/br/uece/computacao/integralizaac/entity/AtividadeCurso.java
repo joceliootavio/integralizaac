@@ -46,6 +46,8 @@ public class AtividadeCurso extends BaseEntity {
 	@Temporal(TemporalType.TIMESTAMP) 
 	@Column(columnDefinition="TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP", insertable=false, updatable=false)
 	private Date dataHoraCadastro;
+	
+	private boolean ativo = true;
 
 	public Curso getCurso() {
 		return curso;
@@ -69,6 +71,14 @@ public class AtividadeCurso extends BaseEntity {
 
 	public void setDataHoraCadastro(Date dataHoraCadastro) {
 		this.dataHoraCadastro = dataHoraCadastro;
+	}
+
+	public boolean isAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
 	}
 	
 }

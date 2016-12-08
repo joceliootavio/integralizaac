@@ -1,5 +1,6 @@
 package br.uece.computacao.integralizaac.business;
 
+import java.io.Serializable;
 import java.util.List;
 
 import br.uece.computacao.integralizaac.dao.AtividadeComplementarDao;
@@ -15,7 +16,7 @@ import br.uece.computacao.integralizaac.utils.MsgUtil;
  * Classe responsável pelas regras de negócio da entidade
  * @see AtividadeComplementar.
  */
-public class AtividadeComplementarBO extends Business<AtividadeComplementar> {
+public class AtividadeComplementarBO extends Business<AtividadeComplementar> implements Serializable {
 	
 	/**
 	 * Objeto da classe de persistencia da entidade @see AtividadeComplementar
@@ -121,8 +122,8 @@ public class AtividadeComplementarBO extends Business<AtividadeComplementar> {
 	 * @param atividadeComplementarId ID da atividade.
 	 * @return Quantidade de alunos utilizando a atividade
 	 */
-	public boolean verificaAtividadeUtilizada(Long atividadeComplementarId) {
-		if (ativComplementarDao.verificaAtividadeUtilizada(atividadeComplementarId) > 0) {
+	public boolean verificaAtividadeUtilizada(Long atividadeComplementarId, Curso curso) {
+		if (ativComplementarDao.verificaAtividadeUtilizada(atividadeComplementarId, curso) > 0) {
 			return true;
 		} else {
 			return false;

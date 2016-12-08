@@ -47,7 +47,16 @@
 						<f:selectItems value="#{coordenadorBean.listaCursosVigentes}" var="c"
 							itemLabel="#{c.nome}" />
 					</p:selectOneMenu>
-				</div>			   	
+				</div>		
+			   	
+				<div class="campo">
+					<h:outputLabel value="*Ativo: " for="ativo" /> <br />
+					<p:selectBooleanCheckbox id="ativo" value="#{coordenadorBean.usuario.ativo}"
+						label="Curso"
+						style="width: 250px">
+						
+					</p:selectBooleanCheckbox>
+				</div>						   	
 			   	
 			   	<br clear="all"/>
 			</p:panel>
@@ -100,6 +109,10 @@
 				
 				<p:column headerText="Curso">
 					<h:outputText value="#{_usuario.coordenador.curso.nome}" />
+				</p:column>
+				
+				<p:column headerText="Ativo" >
+					<h:outputText value="#{_usuario.ativo ? 'Sim' : 'Não'}" />
 				</p:column>
 			</p:dataTable>
 		</h:form>

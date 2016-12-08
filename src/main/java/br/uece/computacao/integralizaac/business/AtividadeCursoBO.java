@@ -1,5 +1,6 @@
 package br.uece.computacao.integralizaac.business;
 
+import java.io.Serializable;
 import java.util.List;
 
 import br.uece.computacao.integralizaac.dao.AtividadeCursoDao;
@@ -13,7 +14,7 @@ import br.uece.computacao.integralizaac.entity.Curso;
  * Classe responsável pelas regras de negócio da entidade
  * @see AtividadeComplementar.
  */
-public class AtividadeCursoBO extends Business<AtividadeCurso> {
+public class AtividadeCursoBO extends Business<AtividadeCurso> implements Serializable {
 	
 	/**
 	 * Objeto da classe de persistencia da entidade @see AtividadeCurso

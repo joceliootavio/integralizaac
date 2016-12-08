@@ -33,6 +33,7 @@ public class UsuarioDao extends
 		hql.append("select u from Usuario as u ");
 		hql.append("where u.login = :login ");
 		hql.append("and u.senha = :senha ");		
+		hql.append("and u.ativo = true ");		
 		
 		TypedQuery<Usuario> query = getEntityManager()
 				.createQuery(hql.toString(), Usuario.class);

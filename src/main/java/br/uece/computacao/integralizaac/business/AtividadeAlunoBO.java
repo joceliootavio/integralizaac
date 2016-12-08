@@ -1,5 +1,6 @@
 package br.uece.computacao.integralizaac.business;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,7 @@ import br.uece.computacao.integralizaac.enums.NaturezaEnum;
  * Classe responsável pelas regras de negócio da entidade
  * @see AtividadeAluno.
  */
-public class AtividadeAlunoBO extends Business<AtividadeAluno>{
+public class AtividadeAlunoBO extends Business<AtividadeAluno> implements Serializable {
 	
 	/**
 	 * Objeto da classe de persistencia da entidade @see AtividadeAluno

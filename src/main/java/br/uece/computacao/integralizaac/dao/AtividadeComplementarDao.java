@@ -85,16 +85,18 @@ public class AtividadeComplementarDao extends
 	 * @param atividadeComplementarId ID da atividade.
 	 * @return Quantidade de alunos utilizando a atividade
 	 */
-	public long verificaAtividadeUtilizada(Long atividadeComplementarId) {
+	public long verificaAtividadeUtilizada(Long atividadeComplementarId, Curso curso) {
 		StringBuilder hql = new StringBuilder();
 		
 		hql.append("select COUNT(a) from AtividadeAluno as a  ");
 		hql.append("where a.atividade.id = :atividadeComplementarId ");
+		hql.append("and a.aluno.curso.id = :cursoId ");		
 		
 		Query query = getEntityManager()
 				.createQuery(hql.toString());
 		
-		query.setParameter("atividadeComplementarId", atividadeComplementarId);
+		query.setParameter("atividadeComplementarId", atividadeComplementarId);		
+		query.setParameter("cursoId", curso.getId());
 		
 		return (Long) query.getSingleResult();
 	}

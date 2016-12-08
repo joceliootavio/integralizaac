@@ -27,13 +27,13 @@
 		   		<div class="campo">
 			   		<h:outputLabel value="*Data início: "/> <br />
 			   		<p:calendar id="dataInicio" label="Data início" value="#{periodoBean.periodo.dataInicio}" 
-			   			required="true" size="6" pattern="dd/MM/yyyy"/>
+			   			required="true" size="7" pattern="dd/MM/yyyy" mindate="01/01/1979" navigator="true"/>
 			   	</div>
 		   		
 		   		<div class="campo">		   		
 			   		<h:outputLabel value="*Data fim: "/> <br />
 			   		<p:calendar id="dataFim" label="Data fim" value="#{periodoBean.periodo.dataFim}" 
-			   			required="true" size="6" pattern="dd/MM/yyyy"/>
+			   			required="true" size="7" pattern="dd/MM/yyyy" mindate="01/01/1979" navigator="true"/>
 			   	</div>
 				<br clear="all"/>
 			</p:panel>

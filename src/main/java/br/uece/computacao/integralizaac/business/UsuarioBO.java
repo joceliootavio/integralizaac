@@ -1,5 +1,6 @@
 package br.uece.computacao.integralizaac.business;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.NoResultException;
@@ -22,7 +23,7 @@ import br.uece.computacao.integralizaac.utils.ResourcesProvider;
  * Classe responsável pelas regras de negócio da entidade
  * @see Usuario.
  */
-public class UsuarioBO extends Business<Usuario> {
+public class UsuarioBO extends Business<Usuario> implements Serializable {
 
 	/**
 	 * Objeto da classe de persistencia da entidade Usuario
@@ -158,7 +159,9 @@ public class UsuarioBO extends Business<Usuario> {
 	public void atualizar(Usuario usuario) {
 		if (usuario.getPerfil() == PerfilEnum.Coordenador && usuario.getCoordenador() != null) {
 			validarCoordenador(usuario);
+			usuario.setLogin(usuario.getEmail());
 		} else if (usuario.getPerfil() == PerfilEnum.Aluno && usuario.getAluno() != null) {
+			usuario.setLogin(usuario.getAluno().getMatricula());
 			validarAluno(usuario);
 		}
 		

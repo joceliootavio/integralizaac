@@ -1,5 +1,7 @@
 package br.uece.computacao.integralizaac.business;
 
+import java.io.Serializable;
+
 import javax.persistence.NoResultException;
 
 import br.uece.computacao.integralizaac.dao.InstituicaoDao;
@@ -13,7 +15,7 @@ import br.uece.computacao.integralizaac.utils.MsgUtil;
  * Classe responsável pelas regras de negócio da entidade
  * @see Instituicao.
  */
-public class InstituicaoBO extends Business<Instituicao> {
+public class InstituicaoBO extends Business<Instituicao> implements Serializable {
 	
 	/**
 	 * Objeto da classe de persistencia da entidade @see Instituicao

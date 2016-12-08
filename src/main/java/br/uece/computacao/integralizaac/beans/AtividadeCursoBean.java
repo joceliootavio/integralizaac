@@ -47,7 +47,7 @@ public class AtividadeCursoBean extends AbstractBean implements Serializable {
 	/**
 	 * Lista com as atividades complementares selecionadas.
 	 */
-	private List<AtividadeComplementar> listaAtividadesSelecionadas;	
+	private List<AtividadeComplementar> listaAtividadesSelecionadas;
 	
 	public AtividadeCursoBean() {
 		atividadeComplemenarBO = new AtividadeComplementarBO(new AtividadeComplementarDao());
@@ -59,7 +59,7 @@ public class AtividadeCursoBean extends AbstractBean implements Serializable {
 	public void unselectAtividade(UnselectEvent evento) {
 		AtividadeComplementar atividadeDeselecionada = (AtividadeComplementar) evento.getObject();
 		
-		if (atividadeComplemenarBO.verificaAtividadeUtilizada(atividadeDeselecionada.getId())) {
+		if (atividadeComplemenarBO.verificaAtividadeUtilizada(atividadeDeselecionada.getId(), cursoDoCoordenador)) {
 			addErrorMessageValue("Atividade \"" + atividadeDeselecionada.getDescricao()+ "\" já foi utilizada por um aluno portanto não pode ser removida.");
 			FacesContext.getCurrentInstance().validationFailed();
 			listaAtividadesSelecionadas.add(atividadeDeselecionada);

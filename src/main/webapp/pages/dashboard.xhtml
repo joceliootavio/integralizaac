@@ -20,14 +20,14 @@
 				<h:panelGroup rendered="#{not loginBean.perfilAluno}">
 					<div class="filtroAluno">
 						<h:outputLabel value="Aluno: " for="aluno" /><br />
-						<p:autoComplete id="aluno" value="#{dashboardBean.aluno}"
+						<p:autoComplete id="aluno" value="#{dashboardBean.usuarioAluno}"
 							converter="entityConverter" effect="blind"
 							completeMethod="#{alunoBean.completeAluno}" var="u"
 							queryDelay="500"
-							itemLabel="#{u.nome}" itemValue="#{u.aluno}" dropdown="true">
+							itemLabel="#{u.nome}" itemValue="#{u}" dropdown="true">
 	
-							<p:ajax event="itemSelect" update="atividadesDoAlunoTable sumarioHorasAtividades"
-								listener="#{dashboardBean.autocompleteSelect}" />
+							<p:ajax event="itemSelect" process="@this" update="atividadesDoAlunoTable sumarioHorasAtividades groupBotoesRelatorio"
+								listener="#{dashboardBean.autocompleteSelect}" oncomplete="btnRelatorioAtividadesW.enable()"/>
 	
 							<p:column>
 								<p:outputLabel value="#{u.aluno.matricula} - #{u.nome}" />
@@ -190,9 +190,9 @@
 				<br clear="all"/>
 				
 				<p:toolbar>
-					<p:toolbarGroup align="right">
-						<p:commandButton id="btnRelatorioAtividades" value="Imprimir mapa de atividades" 
-							ajax="false" style="margin-right: 3px" icon="ui-icon-print">
+					<p:toolbarGroup align="right" id="groupBotoesRelatorio">
+						<p:commandButton id="btnRelatorioAtividades" value="Imprimir mapa de atividades" widgetVar="btnRelatorioAtividadesW" 
+							ajax="false" style="margin-right: 3px" icon="ui-icon-print" disabled="#{empty dashboardBean.usuarioAluno}" >
 						    <p:fileDownload value="#{dashboardBean.relatorioAtividades}" />
 						</p:commandButton>									
 						<p:commandButton id="btnSolicitarAvaliacao" value="Solicitar avaliação" icon="ui-icon-circle-check"

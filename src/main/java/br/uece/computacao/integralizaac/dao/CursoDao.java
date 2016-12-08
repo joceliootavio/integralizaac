@@ -27,16 +27,18 @@ public class CursoDao extends
 	 * 
 	 * @return Lista de objetos Curso.
 	 */
-	public List<Curso> buscarCursoComNome(String nome) {
+	public List<Curso> buscarCursoComNomeOuCodigo(String nome, String codigo) {
 		StringBuilder hql = new StringBuilder();
 		
 		hql.append("select c from Curso as c ");
 		hql.append("where c.nome = :nomeCurso ");
+		hql.append("or c.codigo = :codigo ");		
 		
 		TypedQuery<Curso> query = getEntityManager()
 				.createQuery(hql.toString(), Curso.class);
 		
 		query.setParameter("nomeCurso", nome);
+		query.setParameter("codigo", codigo);		
 		
 		return query.getResultList();
 	}

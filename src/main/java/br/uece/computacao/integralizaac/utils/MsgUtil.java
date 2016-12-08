@@ -1,5 +1,6 @@
 package br.uece.computacao.integralizaac.utils;
 
+import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
@@ -10,8 +11,12 @@ import java.util.ResourceBundle;
  * de mensagens específicas da aplicação.
  * 
  */
-public class MsgUtil {
+public class MsgUtil implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * Representa o arquivo de mensagens.
 	 */

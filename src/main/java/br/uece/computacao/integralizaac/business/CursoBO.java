@@ -1,5 +1,6 @@
 package br.uece.computacao.integralizaac.business;
 
+import java.io.Serializable;
 import java.util.List;
 
 import br.uece.computacao.integralizaac.dao.CursoDao;
@@ -13,7 +14,7 @@ import br.uece.computacao.integralizaac.utils.MsgUtil;
  * Classe responsável pelas regras de negócio da entidade
  * @see Curso.
  */
-public class CursoBO extends Business<Curso> {
+public class CursoBO extends Business<Curso> implements Serializable {
 	/**
 	 * Objeto da classe de persistencia da entidade @see Curso.
 	 */
@@ -59,18 +60,18 @@ public class CursoBO extends Business<Curso> {
 	
 	/**
 	 * Método de validação da entidade Curso que verifica se
-	 * existe período no banco com o mesmo nome, ou se o período
-	 * seja concomitante com outro já cadastrado.
+	 * existe curso no banco com o mesmo nome ou código de 
+	 * outro curso já cadastrado.
 	 * 
 	 * @param curso Período a ser validado.
 	 */
 	protected void validarCurso(Curso curso) {
-		List<Curso> cursos = cursoDao.buscarCursoComNome(curso.getNome());
+		List<Curso> cursos = cursoDao.buscarCursoComNomeOuCodigo(curso.getNome(), curso.getCodigo());
 		
 		if (cursos != null) {
 			
 			if ((!curso.isPesistido() && cursos.size() == 1) 
-					|| (curso.isPesistido() && !cursos.isEmpty() && !curso.equals(cursos.get(0)))) {
+					|| (curso.isPesistido() && !cursos.isEmpty() && (!curso.equals(cursos.get(0)) || cursos.size() > 1))) {
 				throw new BusinessException(msgUtil.getMessage("curso.cursoJaCadastrado"));
 			}
 		}

@@ -11,7 +11,9 @@ public enum NaturezaEnum {
 	ENSINO("A", "Acadêmica: Ensino"), 
 	PESQUISA_E_PRODUCAO("B", "Acadêmica: Pesquisa e Produção Científica"), 
 	GERAL("C", "Acadêmica: Geral"), 
-	EXTENSAO("D", "Acadêmica: Extensão");
+	EXTENSAO("D", "Acadêmica: Extensão"),
+	ESPORTIVA("E", "Acadêmica: Esportiva"),
+	CULTURAL("F", "Acadêmica: Cultural");	
 	
 	/**
 	 * Identificador utilizado pela PROGRAD no mapa de registro 

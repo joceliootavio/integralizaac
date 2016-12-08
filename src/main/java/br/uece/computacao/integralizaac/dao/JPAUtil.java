@@ -1,5 +1,7 @@
 package br.uece.computacao.integralizaac.dao;
 
+import java.io.Serializable;
+
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -13,8 +15,12 @@ import javax.servlet.http.HttpServletRequest;
  * gerenciador de entidades. 
  *
  */
-public class JPAUtil {
+public class JPAUtil implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * Atributo único para toda aplicação, uma vez que 
 	 * esse tipo de objeto é muito caro para ser

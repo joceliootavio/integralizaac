@@ -80,6 +80,13 @@ public class DashboardBean extends AbstractBean implements Serializable {
 	private Aluno aluno;
 	
 	/**
+	 * Atributo que guarda o aluno selecionado pelo coordenador
+	 * ou quando o usuário for do perfil aluno, o próprio aluno
+	 * logado.
+	 */
+	private Usuario usuarioAluno;	
+	
+	/**
 	 * Lista de naturezas na qual o aluno tem atividades 
 	 * cadastradas
 	 */
@@ -154,7 +161,7 @@ public class DashboardBean extends AbstractBean implements Serializable {
 	 * @param event Evento que originou a chamada.
 	 */
 	public void autocompleteSelect(SelectEvent event) {
-		selecionarAluno((Aluno) event.getObject());
+		selecionarAluno(((Usuario) event.getObject()).getAluno());
 	}
 	
 	/**
@@ -384,6 +391,15 @@ public class DashboardBean extends AbstractBean implements Serializable {
 
 	public void setAluno(Aluno aluno) {
 		this.aluno = aluno;
+	}
+	
+	public Usuario getUsuarioAluno() {
+		return usuarioAluno;
+	}
+
+	public void setUsuarioAluno(Usuario usuarioAluno) {
+		this.aluno = usuarioAluno.getAluno();
+		this.usuarioAluno = usuarioAluno;
 	}
 
 	public Usuario getUsuario() {

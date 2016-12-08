@@ -31,13 +31,13 @@
 		   		<div class="campo">
 			   		<h:outputLabel value="*Data implantação: "/> <br />
 			   		<p:calendar id="dataImplantacao" label="Data implantação" value="#{cursoBean.curso.dataImplantacao}" 
-			   			required="true" size="6" pattern="dd/MM/yyyy"/>
+			   			required="true" size="7" pattern="dd/MM/yyyy" mindate="01/01/1979" navigator="true"/>
 			   	</div>
 		   		
 		   		<div class="campo">		   		
-			   		<h:outputLabel value="*Data encerramento: "/> <br />
+			   		<h:outputLabel value="Data encerramento: "/> <br />
 			   		<p:calendar id="dataEncerramento" label="Data encerramento" value="#{cursoBean.curso.dataEncerramento}" 
-			   			size="6" pattern="dd/MM/yyyy"/>
+			   			size="7" pattern="dd/MM/yyyy" mindate="01/01/1979" navigator="true"/>
 			   	</div>
 				<br clear="all"/>
 			</p:panel>
@@ -76,9 +76,13 @@
 				<p:ajax event="rowSelect" listener="#{cursoBean.selecionarCurso}"
 					update=":cursoForm:fields :cursoForm:barraBotoes" />
 	
+				<p:column headerText="Código">
+					<h:outputText value="#{_curso.codigo}" />
+				</p:column>
+				
 				<p:column headerText="Nome">
 					<h:outputText value="#{_curso.nome}" />
-				</p:column>
+				</p:column>				
 				
 				<p:column headerText="Data implantação">
 					<h:outputText value="#{_curso.dataImplantacao}">
