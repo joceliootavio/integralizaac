@@ -1,6 +1,7 @@
 package br.uece.computacao.integralizaac.beans;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -11,6 +12,7 @@ import org.primefaces.event.SelectEvent;
 import br.uece.computacao.integralizaac.business.CursoBO;
 import br.uece.computacao.integralizaac.dao.CursoDao;
 import br.uece.computacao.integralizaac.entity.Curso;
+import br.uece.computacao.integralizaac.enums.CentroEnum;
 
 /**
  * @author Jocélio Otávio
@@ -42,6 +44,11 @@ public class CursoBean extends AbstractBean implements Serializable {
 	 * Lista dos períodos já cadastrados.
 	 */
 	private List<Curso> listaCursos;
+	
+	/**
+	 * Lista com todos os centros.
+	 */
+	private List<CentroEnum> listaTodosCentros;	
 	
 	//@PostConstruct
 	public CursoBean() {
@@ -96,6 +103,20 @@ public class CursoBean extends AbstractBean implements Serializable {
 		this.atualizando = true;
 		this.periodo = (Curso) evento.getObject();
 	}
+	
+	
+	/**
+	 * Método que retorna a lista de todos os centros
+	 * de acordo com o enum @see CentroEnum.
+	 * 
+	 * @return Lista de centros.
+	 */
+	public List<CentroEnum> getListaTodosCentros() {
+		if (listaTodosCentros == null) {
+			listaTodosCentros = Arrays.asList(CentroEnum.values());
+		}
+		return listaTodosCentros;
+	}	
 	
 	// ################# Getters and Setters #####################	
 

@@ -252,7 +252,7 @@ public class AtividadeAlunoBean <T> extends AbstractBean implements Serializable
 	 * Método de exclusão.
 	 */
 	public void excluir() {
-		atividadeAlunoBO.excluir(atividadeAluno);
+		atividadeAlunoBO.excluir(atividadeAlunoBO.buscaPorId(atividadeAluno.getId()));
 		addInfoMessage("atividade_aluno.exclusao");		
 		clean();
 	}

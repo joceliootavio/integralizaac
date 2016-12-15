@@ -16,6 +16,13 @@
    		
 		<h:form id="cursoForm">	
 			<p:panel header="Curso" id="fields" rendered="#{not loginBean.perfilAluno}">
+				<div class="campo">		   		
+			   		<h:outputLabel value="*Centro: "/><br />
+					<p:selectOneMenu id="centro" value="#{cursoBean.curso.centro}" label="Centro" required="true">
+						<f:selectItem itemLabel="Selecione" itemValue=""/>
+			   			<f:selectItems value="#{cursoBean.listaTodosCentros}" var="c" itemLabel="#{c}" />
+			   		</p:selectOneMenu>
+			   	</div>
 				<div class="campo">
 					<h:outputLabel value="*Código: "/> <br />
 			   		<p:inputText id="codigo" value="#{cursoBean.curso.codigo}" 
@@ -75,6 +82,10 @@
 				
 				<p:ajax event="rowSelect" listener="#{cursoBean.selecionarCurso}"
 					update=":cursoForm:fields :cursoForm:barraBotoes" />
+					
+				<p:column headerText="Centro">
+					<h:outputText value="#{_curso.centro}" />
+				</p:column>					
 	
 				<p:column headerText="Código">
 					<h:outputText value="#{_curso.codigo}" />

@@ -192,7 +192,7 @@
 				<p:toolbar>
 					<p:toolbarGroup align="right" id="groupBotoesRelatorio">
 						<p:commandButton id="btnRelatorioAtividades" value="Imprimir mapa de atividades" widgetVar="btnRelatorioAtividadesW" 
-							ajax="false" style="margin-right: 3px" icon="ui-icon-print" disabled="#{empty dashboardBean.usuarioAluno}" >
+							ajax="false" style="margin-right: 3px" icon="ui-icon-print" disabled="#{not loginBean.perfilAluno and empty dashboardBean.usuarioAluno}" >
 						    <p:fileDownload value="#{dashboardBean.relatorioAtividades}" />
 						</p:commandButton>									
 						<p:commandButton id="btnSolicitarAvaliacao" value="Solicitar avaliação" icon="ui-icon-circle-check"

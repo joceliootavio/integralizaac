@@ -108,6 +108,16 @@ public class Usuario extends BaseEntity{
 		ativo = true;
 	}
 	
+	public Curso getCurso() {
+		if (perfil == PerfilEnum.Coordenador){
+			return coordenador.getCurso();
+		} else if (perfil == PerfilEnum.Aluno){
+			return aluno.getCurso();
+		}
+		
+		return null;
+	}
+	
 	public String getLogin() {
 		return login;
 	}

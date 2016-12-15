@@ -28,23 +28,23 @@
 				rowKey="#{_usuario.aluno.hashCode()}"
 				rows="#{resources.pageRows}" paginator="#{alunoBean.showPaginator(alunoBean.listaAlunos)}" paginatorPosition="top">
 				
-				<p:column headerText="Nome">
+				<p:column headerText="Nome" sortBy="#{_usuario.nome}">
 					<h:outputText value="#{_usuario.nome}" />
 				</p:column>
 				
-				<p:column headerText="Matricula">
+				<p:column headerText="Matricula" sortBy="#{_usuario.aluno.matricula}">
 					<h:outputText value="#{_usuario.aluno.matricula}" />
 				</p:column>
 				
-				<p:column headerText="E-mail">
+				<p:column headerText="E-mail" sortBy="#{_usuario.email}">
 					<h:outputText value="#{_usuario.email}" />
 				</p:column>
 				
-				<p:column headerText="Período de ingresso">
+				<p:column headerText="Período de ingresso" sortBy="#{_usuario.aluno.periodo.nome}">
 					<h:outputText value="#{_usuario.aluno.periodo.nome}" />
 				</p:column>				
 				
-				<p:column headerText="Curso">
+				<p:column headerText="Curso" sortBy="#{_usuario.aluno.curso.nome}">
 					<h:outputText value="#{_usuario.aluno.curso.nome}" />
 				</p:column>
 				

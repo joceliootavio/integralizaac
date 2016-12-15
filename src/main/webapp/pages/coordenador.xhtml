@@ -95,23 +95,23 @@
 				<p:ajax event="rowSelect" listener="#{coordenadorBean.selecionarCoordenador}"
 					update=":coordenadorForm:fields :coordenadorForm:barraBotoes" />
 	
-				<p:column headerText="Nome">
+				<p:column headerText="Nome" sortBy="#{_usuario.nome}">
 					<h:outputText value="#{_usuario.nome}" />
 				</p:column>
 				
-				<p:column headerText="Matricula">
+				<p:column headerText="Matricula" sortBy="#{_usuario.coordenador.matricula}">
 					<h:outputText value="#{_usuario.coordenador.matricula}" />
 				</p:column>
 				
-				<p:column headerText="E-mail">
+				<p:column headerText="E-mail" sortBy="#{_usuario.email}">
 					<h:outputText value="#{_usuario.email}" />
 				</p:column>
 				
-				<p:column headerText="Curso">
+				<p:column headerText="Curso" sortBy="#{_usuario.coordenador.curso.nome}">
 					<h:outputText value="#{_usuario.coordenador.curso.nome}" />
 				</p:column>
 				
-				<p:column headerText="Ativo" >
+				<p:column headerText="Ativo" sortBy="#{_usuario.ativo}">
 					<h:outputText value="#{_usuario.ativo ? 'Sim' : 'Não'}" />
 				</p:column>
 			</p:dataTable>

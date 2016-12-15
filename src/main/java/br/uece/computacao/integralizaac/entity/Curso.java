@@ -4,8 +4,11 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import br.uece.computacao.integralizaac.enums.CentroEnum;
 
 /**
  * @author Jocélio Otávio
@@ -47,6 +50,13 @@ public class Curso extends BaseEntity {
 	@Temporal(TemporalType.DATE)
 	private Date dataEncerramento;
 	
+	/**
+	 * Campo obrigatório do tipo CentroEnum que aceita somente os 
+	 * valores listados no enum @see CentroEnum.
+	 */
+	@Enumerated
+	@Column(nullable=false)
+	private CentroEnum centro;	
 	
 	public String getCodigo() {
 		return codigo;
@@ -78,6 +88,14 @@ public class Curso extends BaseEntity {
 
 	public void setDataEncerramento(Date dataEncerramento) {
 		this.dataEncerramento = dataEncerramento;
+	}
+
+	public CentroEnum getCentro() {
+		return centro;
+	}
+
+	public void setCentro(CentroEnum centro) {
+		this.centro = centro;
 	}
 
 }
