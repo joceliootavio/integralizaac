@@ -354,7 +354,7 @@ public class DashboardBean extends AbstractBean implements Serializable {
 			}
 			
 			Map<String, Object> mapaParametros = new HashMap<String, Object>();
-			mapaParametros.put("CENTRO_FACULDADE", aluno.getCurso().getCentro());
+			mapaParametros.put("CENTRO_FACULDADE", aluno.getCurso().getCentro().toString());
 			mapaParametros.put("CURSO", aluno.getCurso());
 			mapaParametros.put("ALUNO", usuario.getNome());
 			mapaParametros.put("MATRICULA", aluno.getMatricula());			
