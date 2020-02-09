@@ -196,10 +196,18 @@ Para configurar o projeto siga os passos:
     git clone git@github.com:joceliootavio/integralizaac.git
     ```
 
-2. Importe o projeto no Eclipse
+2. Importe o projeto no InteliJ
 
-3. Rode o build completo da aplicação. Para isso, faça:
 
-    ```SHELL
-    mvn install
-    ``` 
+Implantação do projeto
+-----------------------
+
+Para implantar o projeto basta executar o script integralizaac-install.sh que está na raiz do projeto. Obs: Não esquecer de dar permissão de execução. 
+
+```SHELL
+./integralizaac-install.sh
+```
+
+Esse comando instala todas as dependências necessárias para aplicação funcionar.
+
+Usuário e senha padrão do sistema é admin/123456.
