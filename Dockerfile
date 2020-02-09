@@ -1,5 +1,6 @@
-FROM tomcat:8.5.50-jdk8-openjdk
+FROM tomcat:7.0.99-jdk8-openjdk
 
+COPY ./target/integralizaac/WEB-INF/lib/postgresql-9.0-801.jdbc4.jar /usr/local/tomcat/lib
 COPY ./target/integralizaac.war /usr/local/tomcat/webapps
 
 RUN apt-get update

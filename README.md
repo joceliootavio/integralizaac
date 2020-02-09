@@ -9,7 +9,7 @@ O projeto trabalha e depende de várias ferramentas para rodar. Entre elas podem
 
 * Java 8 (JDK);
 * Eclipse IDE for Java EE Developers (Kepler ou superior) / IntelliJ IDEA;
-* Apache Tomcat 8.5.50;
+* Apache Tomcat 7.0.99;
 * Bancos de dados PostgreSQL;
 * Maven;
 * Git;
@@ -122,11 +122,11 @@ Instalação do Tomcat (somente para desenvolvimento)
 
 O servidor de aplicação Tomcat está disponível em várias realeses, cada versão suporta uma diferente versão da especificação JSP/Servlet. Como iremos trabalhar com Servlet 2.5, nós precisamos baixar a versão **Tomcat 8.5**.
 
-Até esta data a última versão do Tomcat é **Apache Tomcat 8.5.50**.
+Até esta data a última versão do Tomcat é **Apache Tomcat 7.0.99**.
 
 Para baixar e instalar, basta seguir os passos abaixo:
 
-1. Acesse a [página de downloads do Tomcat 8.5](http://tomcat.apache.org/download-85.cgi);
+1. Acesse a [página de downloads do Tomcat 8.5](http://tomcat.apache.org/download-7.cgi);
 2. Desça a barra de rolagem até "Binary Distributions > Core" e baixe o `.zip` ou `.tar.gz`;
 3. Extraia o zip e mova o diretório para seu diretório `HOME`, algo como `/home/<usuario>/java/apache-tomcat-8.5.50`;
 

@@ -2,11 +2,7 @@ package br.uece.computacao.integralizaac.entity;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Enumerated;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 import br.uece.computacao.integralizaac.enums.CentroEnum;
 
@@ -54,7 +50,7 @@ public class Curso extends BaseEntity {
 	 * Campo obrigatório do tipo CentroEnum que aceita somente os 
 	 * valores listados no enum @see CentroEnum.
 	 */
-	@Enumerated
+	@Enumerated(EnumType.STRING)
 	@Column(nullable=false)
 	private CentroEnum centro;	
 	

@@ -2,7 +2,7 @@ version: '3'
 services:
   mypostgres:
     container_name: mypostgres
-    image: postgres:10
+    image: postgres:9
     restart: always
     ports:
       - "5432:5432"
@@ -11,10 +11,10 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_DB=integralizaac
     volumes:
-      - /opt/postgres10/:/var/lib/postgresql/data/
-      - /opt/postgres10/:/home/dump/
+      - /opt/postgres9/:/var/lib/postgresql/data/
+      - /opt/postgres9/:/home/dump/
   tomcat:
-    container_name: tomcat8
+    container_name: tomcat7
     build: .
     restart: always
     ports:
@@ -23,3 +23,5 @@ services:
       - mypostgres  
     depends_on:
       - mypostgres
+    volumes:
+      - /opt/integralizaac:/opt/integralizaac

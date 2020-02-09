@@ -3,15 +3,9 @@ INSERT INTO periodo(id, nome, dataInicio, dataFim) VALUES(nextval('periodo_id_se
 INSERT INTO periodo(id, nome, dataInicio, dataFim) VALUES(nextval('periodo_id_seq'), '2011.1', '2010-12-21', '2011-07-01');
 INSERT INTO periodo(id, nome, dataInicio, dataFim) VALUES(nextval('periodo_id_seq'), '2012.2', '2012-07-02', '2012-12-20');
 
-INSERT INTO usuario(login, senha, ativo, perfil) VALUES ('admin', 'e10adc3949ba59abbe56e057f20f883e', true, 'Administrador');
+INSERT INTO usuario(login, senha, ativo, perfil, email, nome) VALUES ('admin', 'e10adc3949ba59abbe56e057f20f883e', true, 'Administrador', 'user@integralizaac.uece.br', 'Administrador');
 
-INSERT INTO curso(id, codigo, nome, dataImplantacao, dataEncerramento) VALUES(nextval('curso_id_seq'), '114', 'CIÊNCIAS DA COMPUTAÇÃO', '1993-01-01', NULL);
-
-INSERT INTO aluno(matricula, periodo_id, formaingresso, curso) VALUES ('0760699', currval('periodo_id_seq'), 'Vestibular', currval('curso_id_seq'));
-INSERT INTO usuario(login, senha, ativo, perfil, aluno_id, nome, email) VALUES ('0760699', 'e10adc3949ba59abbe56e057f20f883e', true, 'Aluno', currval('aluno_id_seq'), 'Jocelio Otavio', 'jojocunha@gmail.com');
-
-INSERT INTO coordenador(matricula) VALUES ('111111-X', currval('curso_id_seq'));
-INSERT INTO usuario(login, senha, ativo, perfil, coordenador_id, nome, email) VALUES ('jocelio.otavio@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', true, 'Coordenador', currval('coordenador_id_seq'), 'Coordenador 1', 'jocelio.otavio@gmail.com');
+INSERT INTO curso(id, codigo, nome, dataImplantacao, dataEncerramento, centro) VALUES(nextval('curso_id_seq'), '114', 'CIÊNCIAS DA COMPUTAÇÃO', '1993-01-01', NULL, 'CCT');
 
 INSERT INTO atividadecomplementar(descricao, maximohorasporcurso, maximohorasporperiodo, natureza) VALUES ('Cursos de língua estrangeira – mínimo três semestres', 60, null, 0);
 
