@@ -63,7 +63,7 @@ public class EmailService {
 			
 			msg.setText(email.getCorpo(), "utf-8", "html");
 			msg.setSubject(TAG_APP_EMAIL + " " + email.getAssunto());
-			msg.setFrom(new InternetAddress("siac@uece.br"));
+			msg.setFrom(new InternetAddress("integralizaac@uece.br"));
 			msg.addRecipient(Message.RecipientType.TO,    new InternetAddress(email.getDestinatarios()));
 			Transport.send(msg);
 			

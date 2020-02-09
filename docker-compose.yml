@@ -1,0 +1,25 @@
+version: '3'
+services:
+  mypostgres:
+    container_name: mypostgres
+    image: postgres:10
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=integralizaac
+    volumes:
+      - /opt/postgres10/:/var/lib/postgresql/data/
+      - /opt/postgres10/:/home/dump/
+  tomcat:
+    container_name: tomcat8
+    build: .
+    restart: always
+    ports:
+      - "8080:8080"
+    links:
+      - mypostgres  
+    depends_on:
+      - mypostgres

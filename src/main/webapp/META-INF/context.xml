@@ -4,10 +4,10 @@
    crossContext="true" reloadable="true" debug="1">
    
     <Resource name="jdbc/integralizaacDS"
-              url="jdbc:postgresql://localhost:5432/integralizaac"
+              url="jdbc:postgresql://mypostgres:5432/integralizaac"
               driverClassName="org.postgresql.Driver"
               username="postgres"
-              password="senha"
+              password="123"
               auth="Container"
               type="javax.sql.DataSource"
               maxActive="20"
